@@ -6,7 +6,7 @@
 
 QT       += core gui
 
-greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
+greaterThan(QT_MAJOR_VERSION, 4): QT += widgets printsupport
 
 TARGET = SpectrumAnalyzer
 TEMPLATE = app
@@ -22,16 +22,27 @@ DEFINES += QT_DEPRECATED_WARNINGS
 # You can also select to disable deprecated APIs only up to a certain version of Qt.
 #DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
 
+# serial library
 DEPENDPATH += ../lib/serial
 INCLUDEPATH += ../lib/serial/include
-LIBS += -L../lib/build-serial -lserial
 
+linux:LIBS += -L../lib/build-serial
+win32:LIBS += -L../lib/build-serial/debug
+
+LIBS += -lserial
+
+# qcustomplot library
+INCLUDEPATH += ../lib/qcustomplot
+
+# sources
 SOURCES += \
-        main.cpp \
-        mainwindow.cpp
+    ../lib/qcustomplot/qcustomplot.cpp \
+    main.cpp \
+    mainwindow.cpp
 
 HEADERS += \
-        mainwindow.h
+    ../lib/qcustomplot/qcustomplot.h \
+    mainwindow.h
 
 FORMS += \
         mainwindow.ui
