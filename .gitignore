@@ -1,2 +1,5 @@
 **/build*
 **/*.pro.user
+**/*.swp
+
+lib/qcustomplot-win

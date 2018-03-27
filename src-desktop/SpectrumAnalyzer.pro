@@ -38,11 +38,13 @@ INCLUDEPATH += ../lib/qcustomplot
 SOURCES += \
     ../lib/qcustomplot/qcustomplot.cpp \
     main.cpp \
-    mainwindow.cpp
+    mainwindow.cpp \
+    serialworker.cpp
 
 HEADERS += \
     ../lib/qcustomplot/qcustomplot.h \
-    mainwindow.h
+    mainwindow.h \
+    serialworker.h
 
 FORMS += \
         mainwindow.ui

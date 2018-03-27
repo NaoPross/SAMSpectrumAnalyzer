@@ -2,10 +2,9 @@
 #define MAINWINDOW_H
 
 #include <QMainWindow>
-#include <QTimer>
+#include <QThread>
 
-#include <string>
-
+#include "serialworker.h"
 #include "serial/serial.h"
 
 namespace Ui {
@@ -23,14 +22,13 @@ public:
     void serialLog(const QString &text);
 
 private slots:
-    void readSerialLog();
     void on_serialBtn_clicked();
 
 private:
     Ui::MainWindow *_ui;
-    QTimer *_timer;
+    serial::Serial _serial;
 
-    serial::Serial *_serialDevice = nullptr;
+    SerialWorker _serialWorker;
 };
 
 #endif // MAINWINDOW_H
