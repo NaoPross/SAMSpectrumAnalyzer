@@ -9,7 +9,7 @@ run: desktop
 	LD_LIBRARY_PATH=build-desktop ./build-desktop/SpectrumAnalyzer
 
 .PHONY: desktop
-desktop: src-desktop serial
+desktop: src-desktop serial qcustomplot
 	mkdir -p build-desktop
 	$(QMAKE) -o build-desktop/ src-desktop
 	$(MAKE) -C build-desktop
@@ -27,6 +27,15 @@ serial: lib/serial/src
 	$(QMAKE) -o lib/build-serial/ lib/serial
 	$(MAKE) -C lib/build-serial/
 
-lib/serial/src:
+.PHONY: qcustomplot
+qcustomplot: lib/qcustomplot/src
+	sed -i -e 's/qmake474/$(QMAKE)/' lib/qcustomplot/release.py
+	cd lib/qcustomplot && ./release.py
+
+lib/serial/src: gitmodules
+lib/qcustomplot/src: gitmodules
+
+.PHONY: gitmodules
+gitmodules:
 	$(GIT) submodule init
 	$(GIT) submodule update
