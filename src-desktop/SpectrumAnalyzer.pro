@@ -24,7 +24,7 @@ DEFINES += QT_DEPRECATED_WARNINGS
 
 DEPENDPATH += ../lib/serial
 INCLUDEPATH += ../lib/serial/include
-LIBS += -L../lib/build-serial/debug -lserial
+LIBS += -L../lib/build-serial -lserial
 
 SOURCES += \
         main.cpp \
