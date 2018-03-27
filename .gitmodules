@@ -1,5 +1,5 @@
-[submodule "lib/QCustomPlot"]
-	path = lib/QCustomPlot
+[submodule "lib/qcustomplot"]
+	path = lib/qcustomplot
 	url = https://gitlab.com/DerManu/QCustomPlot.git
 [submodule "lib/serial"]
 	path = lib/serial
