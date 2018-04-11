@@ -1,0 +1,154 @@
+\part{Trasformata di Fourier}
+
+\section{Introduzione}
+\subsection{Funzione armonica}
+Una funzione armonica, sinusoidale, pu\`o essere descritta in molteplici modi.
+Iniziamo dunque osservando le forme pi\`u semplici, ossia la forma
+trigonometrica.
+\begin{align} \label{eq:harmonics-trig}
+    f(x) &= a\cdot\sin (\omega x + \varphi) \\
+    f(x) &= b\cdot\cos(\omega x + \vartheta)
+\end{align}
+Conoscendo la formula di Eulero \eqref{eq:euler}
+\begin{equation} \label{eq:euler}
+    e^{i\varphi} = \cos(\varphi) + i\cdot\sin(\varphi)
+\end{equation}
+possiamo riscrivere \(f(x)\) nei seguenti modi
+\begin{align} \label{eq:harmonics-complex}
+    f(x) &= \frac{a}{2i}\cdot(e^{i(x\omega + \varphi)} - e^{-i(x\omega + \varphi)}) \\
+    f(x) &= \frac{b}{2}\cdot(e^{i(x\omega + \vartheta)} + e^{-i(x\omega + \vartheta)})
+\end{align}
+
+% \subsection{Spazio Hermitiano}
+% Lo spazio Hermitiano \`e una generalizzazione dello spazio Euclidiano in cui
+% \`e possibile avere il prodotto interno, ossia una generalizzazione del
+% prodotto scalare in \(\mathbb{C}\).
+% Ci\`o sar\`a utile per rappresentare in maniera compatta la serie di Fourier.
+% Definiamo quindi il prodotto interno come
+% \[
+%     \langle u,v\rangle = u^\top\cdot v = \int_{-\infty}^{\infty} u(x)v(x)\,\dd{x}
+% \]
+% Esso soddisfa le seguenti propriet\`a
+% \begin{itemize}
+%     \item Commutativa \(\langle u,v\rangle = \langle v,u\rangle\)
+%     \item Bilinerati\`a \(\langle\lambda u,v\rangle = \lambda\langle u,v\rangle\)
+%     \item Definito positivo 
+%         \(\langle u,u\rangle \geq 0\land \langle u,u\rangle = 0 \iff u = (0;\,\dots;\,0)\)
+% \end{itemize}
+% Ed inoltre permette di eseguire prodotti tra vettori di dimensione infinita,
+% ossia tra funzioni continue.
+
+% \subsection{Integrali di alcune funzioni trigonometriche}
+% Per avere delle fondamenta solide prima dell'introduzione dell'argomento
+% principale, saranno dimostrate alcune verit\`a matematiche su degli integrali
+% definiti di funzioni trigonometriche periodiche.
+% Per tutti i casi seguenti definiamo \(T\) come il periodo della funzione periodica.
+% 
+% \begin{align*}
+%     & \int_0^T \sin(\frac{m2\pi x}{T})\,\dd{x} = 0
+%         \quad \forall m \in \mathbb{Z} \\
+%     %
+%     & \int_0^T \cos(\frac{m2\pi x}{T})\,\dd{x} = 0
+%         \quad \forall m \in \mathbb{Z^*} \\
+%     %
+%     & \int_0^T \sin(\frac{m2\pi x}{T})\cos(\frac{n2\pi x}{T})\,\dd{x} = 0
+%         \quad \forall m,n \in \mathbb{Z} \\
+%     %
+%     & \int_0^T \sin(\frac{m2\pi x}{T})\sin(\frac{n2\pi x}{T})\,\dd{x} = 0 
+%         \quad \forall m,n \in \mathbb{Z}~|~m\neq \pm n \\
+%     %
+%     & \int_0^T \sin^2(\frac{m2\pi x}{T})\,\dd{x} = \frac{T}{2}
+%         \quad \forall m \in \mathbb{Z} \\
+%     %
+%     & \int_0^T \cos(\frac{m2\pi x}{T})\cos(\frac{n2\pi x}{T})\,\dd{x} = 0 
+%         \quad \forall m,n \in \mathbb{Z}~|~m\neq \pm n \\
+%     %
+%     & \int_0^T \cos^2(\frac{m2\pi x}{T})\,\dd{x} = \frac{T}{2}
+%         \quad \forall m \in \mathbb{Z^*} \\
+% \end{align*}
+
+\subsection{Regressione Lineare}
+Nel nuovo spazio Hermitiano possiamo definire la regressione lineare con il
+metodo dei minimi quadrati per una funzione continua. Inizialmente per\`o
+sar\`a mostrata una regressione con \(N\) termini ad una retta \(r\) di \(m
++1\) termini.
+
+Il metodo dei minimi quadrati trova i coefficienti della retta minimizzando il
+quadrato della differenza tra il punto della curva e la sua proiezione
+ortogonale sulla retta di regressione.
+
+\noindent Si ha dunque la retta di regressione
+\begin{equation}
+    r: y = a_0 + x\sum_{i=1}^{m}a_i
+\end{equation}
+e la differenza dei quadrati
+\begin{align}
+    E(a_0, \dots, a_{m}) = \sum_{k=0}^{N}\Big[r(x_k, a_0, \dots, a_m)  - y_k\Big]^2
+\end{align}
+impostando il gradiente di \(E\) a zero
+\begin{equation*}
+    \nabla E(a_0, \dots, a_{m}) = \Big (
+        \frac{\partial E}{\partial a_0},\,\dots,\,
+        \frac{\partial E}{\partial a_m}
+    \Big ) = \Big (0,\,\dots,\,0\Big)
+\end{equation*}
+si ottiene un sistema lineare risolvibile con delle matrici.
+\[
+    \nabla E = \mathbf{A}
+        \begin{bmatrix} a_0 \\ \vdots \\ a_m \end{bmatrix} + \mathbf{B} \iff
+    \begin{bmatrix} a_0 \\ \vdots \\ a_m \end{bmatrix} =
+        \mathbf{A}^{-1}(-\mathbf{B})
+\]
+dove \(\mathbf{A}\) \`e la matrice dei coefficienti e \(\mathbf{B}\) \`e 
+il vettore dei termini noti.
+
+\subsection{Regressione lineare di una funzione continua ad serie}
+Sia \(f: \mathbb{R}\to\mathbb{R}\) una funzione continua nell'intervallo
+\(\mathopen [\alpha;\beta\mathclose]\) e \(a: \mathbb{R} \to\mathbb{R} \)
+\[
+    v(x) = a(x)x + a_0 - f(x)
+\]
+si ha i minimi quadrati
+\[
+    E(a) = \int_{\alpha}^{\beta} \langle s,s\rangle\,\dd{x}
+\]
+minimizzando
+\begin{align*}
+    \nabla E &= \nabla \int_\alpha^\beta \langle v,v\rangle\,\dd{x} 
+\end{align*}
+
+
+
+\subsection{Serie di Fourier}
+La serie di Fourier, nominata tale in onore a Jean-Baptise Joseph Fourier, di
+una funzione \`e descritta nel modo seguente.
+\begin{equation} \label{eq:fourier-series}
+    f(x) = a_0 + \sum_{n=1}^{\infty}\Big [
+        a_n\cdot\cos(\frac{n2\pi x}{T}) +
+        b_n\cdot\sin(\frac{n2\pi x}{T}) \Big ]
+\end{equation}
+Con questa equazione Fourier ha teorizzato che \`e possibile rappresentare
+qualsiasi funzione come una combinazione lineare di armoniche di frequenze
+multiple di una frequenza di base. Con la seguente identi\`a trigonometrica
+\`e possibile anche descrivere la serie con una notazione pi\`u compatta.
+\begin{equation*}
+    a\cdot\cos(\alpha) + b\cdot\sin(\alpha) = A\cdot\cos(\alpha-\vartheta)
+\end{equation*}
+Per \(A = \sqrt{a^2+b^2}\), \(\cos(\vartheta)=\frac{b}{A}\) e
+\(\sin(\vartheta)=\frac{b}{A}\). Dunque
+\begin{align}
+    f(x) &= a_0 + \sum_{n=1}^{\infty} 
+        A_n\cdot\cos(\frac{n2\pi x}{T} - \vartheta_n) \\
+    f(x) &= a_0 + \sum_{n=1}^{\infty} 
+        A_n\cdot\sin(\frac{n2\pi x}{T} + \varphi_n)
+\end{align}
+
+\section{Trasformata di Fourier discreta}
+
+\section{Trasformata di Fourier}
+
+\section{Fast Fourier Transform}
+\subsection{Motivazioni}
+\subsection{Complessit\`a temporale}
+\subsection{Propriet\`a dei numeri complessi}
+

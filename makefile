@@ -1,6 +1,12 @@
 # tools
+ifeq ($(shell lsb_release -si),Debian)
+QMAKE := QT_SELECT=qt5 qmake
+else
+QMAKE := qmake-qt5 
+endif
+
 GIT := git
-QMAKE := qmake-qt5 -makefile -o Makefile -Wall "CONFIG+=debug" "CONFIG+=qml_debug"
+QMAKE_ARGS := -makefile -o Makefile -Wall "CONFIG+=debug" "CONFIG+=qml_debug"
 
 # targets
 all: desktop
@@ -11,7 +17,7 @@ run: desktop
 .PHONY: desktop
 desktop: src-desktop serial qcustomplot
 	mkdir -p build-desktop
-	$(QMAKE) -o build-desktop/ src-desktop
+	$(QMAKE) $(QMAKE_ARGS) -o build-desktop/ src-desktop
 	$(MAKE) -C build-desktop
 	cp lib/build-serial/libserial.so* build-desktop
 
@@ -24,7 +30,7 @@ clean:
 .PHONY: serial
 serial: lib/serial/src
 	mkdir -p lib/build-serial
-	$(QMAKE) -o lib/build-serial/ lib/serial
+	$(QMAKE) $(QMAKE_ARGS) -o lib/build-serial/ lib/serial
 	$(MAKE) -C lib/build-serial/
 
 .PHONY: qcustomplot
