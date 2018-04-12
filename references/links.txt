@@ -1,0 +1,7 @@
+https://www.waitingforfriday.com/?p=325
+
+https://hackaday.com/2011/01/08/pic-spectrum-analyzer-uses-fast-fourier-transform-routine/
+
+https://stackoverflow.com/questions/8312725/how-to-create-executable-file-for-a-qt-application
+
+https://gitlab.com/DerManu/QCustomPlot/blob/master/examples/interactions/mainwindow.cpp
