@@ -2,4 +2,6 @@
 **/*.pro.user
 **/*.swp
 
+**/Thumbs.db
+
 lib/qcustomplot-win
