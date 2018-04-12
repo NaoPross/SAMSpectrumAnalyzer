@@ -1,7 +1,18 @@
+# build files
 **/build*
+src/build
+src/debug
+src/dist
+src/nbproject/*
+!src/nbproject/project.xml
+!src/nbproject/configurations.xml
+
+# editor files
 **/*.pro.user
 **/*.swp
 
+# OS stuff
 **/Thumbs.db
 
+# other
 lib/qcustomplot-win
