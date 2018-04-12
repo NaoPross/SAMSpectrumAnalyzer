@@ -1,0 +1,113 @@
+\documentclass[a4paper]{article}
+
+% metadata
+% ------------------------------------------------------------------------------
+
+\newcommand{\name}{Naoki Pross}
+\newcommand{\instructor}{Rinaldo Geiler, Daniele Kamm}
+\newcommand{\project}{Spectrum Analyzer}
+\newcommand{\projstart}{12.04.2018}
+\newcommand{\projend}{15.04.2018}
+
+% auto
+\newcommand{\projperiod}{\projstart{} -- \projend{}}
+
+% preable
+% ------------------------------------------------------------------------------
+
+% tables
+\usepackage{tabularx}
+\usepackage{booktabs}
+\usepackage{array}
+\usepackage{multirow}
+\usepackage{ltablex}
+\keepXColumns
+
+% colors
+\usepackage[table]{xcolor}
+\usepackage{graphicx}
+
+% font
+% \usepackage[sfdefault]{noto}
+% \usepackage{lmodern}
+\renewcommand{\familydefault}{\sfdefault}
+
+% layout
+\usepackage[left=2cm, right=2cm, top=3cm, bottom=3cm]{geometry}
+\usepackage{fancyhdr}
+
+% header and footer
+\pagestyle{fancy}
+\fancyhead[L]{CAM-SAM}
+\fancyhead[C]{Elettronico}
+\fancyhead[R]{22.02.2018}
+\fancyfoot[L]{\jobname.tex}
+\fancyfoot[C]{\name}
+\fancyfoot[R]{\thepage}
+
+\renewcommand\arraystretch{1.5}
+\renewcommand\tabcolsep{5pt}
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{1em}
+
+% macros
+\newcommand{\journalentry}[5]{%
+    #1 & #2 & #3 & #4 & #5 \\\hline
+}
+
+% document
+% ------------------------------------------------------------------------------
+
+\begin{document}
+    \begin{center}
+        \bf \LARGE DIARIO GIORNALIERO
+    \end{center}
+    
+    \vspace{5mm}
+
+    \begin{tabularx}{\textwidth}{| lX | lX |}
+        \hline
+        \bfseries Candidato: & \name &
+        \bfseries Progetto: & \project
+        \\\hline
+        \bfseries Formatore: & \instructor &
+        \bfseries Periodo: & \projperiod
+        \\\hline
+    \end{tabularx}
+   
+    \vspace{5mm}
+    
+    \begin{tabularx}{\textwidth}{| c | c | c | p{.4\textwidth} | X |}
+        \hline    
+        \rowcolor{gray!30}
+        \bfseries Giorno &
+        \bfseries Data & 
+        \bfseries Ore &
+        \bfseries Descrizione attivit\`a &
+        \bfseries Osservazioni
+        \\
+        \rowcolor{gray!30}
+        & & &
+        (Attivit\`a eseguite, metodi adottati, decisioni prese,
+        dimostrazioni effettuate, ecc.) & 
+        \\\hline
+
+%% journal
+% ------------------------------------------------------------------------------
+        
+        \iffalse
+        \journalentry{Giorno}{Data}{Ore}{
+            Descrizione
+        }{
+            Osservazioni
+        }
+        \fi
+
+        \journalentry{Gio}{12.04.2018}{2}{
+            Preparazione della documentazione, della pianifica ed organizzazione
+            generale del progetto
+        }{}
+        
+% ------------------------------------------------------------------------------
+    \end{tabularx}
+\end{document}

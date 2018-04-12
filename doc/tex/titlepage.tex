@@ -1,0 +1,66 @@
+\begin{titlepage}
+\thispagestyle{empty}
+\newgeometry{margin=3cm}
+\renewcommand{\arraystretch}{1.5}
+
+\begin{tikzpicture}[remember picture,overlay]
+    \node[anchor=north west, inner sep=0pt] 
+        at ($(current page.north west)+(3cm, -3cm)$) {
+            \includegraphics[height=2.25cm]{figures/logo/LOGO_SAM}
+        };
+\end{tikzpicture}
+
+\begin{flushright}
+    \LARGE \bfseries
+    Anno scolastico \projectyear \\
+    Lavoro Professionale Individuale
+\end{flushright}
+
+\large
+\begin{tabularx}{\textwidth}{l X}
+    \midrule
+    Nome Cognome: & \textbf{\name} \\
+
+    \midrule
+    Professione: & \textbf{Elettronico} \\
+
+    \midrule
+    Titolo del progetto: & \textbf{\project} \\
+
+    \midrule
+\end{tabularx}
+\vfill
+
+% immagine opizonale
+% \includegraphics[\height=]{figures}
+
+\vfill
+\begin{tabularx}{\textwidth}{l X l X}
+    \midrule
+    Azienda: & \multicolumn{3}{l}{\parbox{5cm}{
+        \textbf{CPT Bellinzona} \\
+        Centro d'arti e mestieri \\
+        Viale S. Franscini 25 \\
+        6500 Bellinzona%
+    }} \\
+
+    \midrule
+    Formazione approfondita: & \multicolumn{3}{l}{\textbf{\specialization}} \\
+
+    \midrule
+    Formatore: & \multicolumn{3}{l}{\textbf{\instructor}} \\
+
+    \midrule
+    Data d'inizio: & \textbf{\projstart} & Ore a disposizione: & \textbf{\plannedtime}\\
+
+    \midrule
+    Data file lavoro: & \textbf{\projend} & Ore effettive: &  \textbf{\actualtime} \\
+
+    % \midrule
+    % Data di compilazione & \textbf{\today} \\
+
+    \midrule
+\end{tabularx}
+
+\restoregeometry
+\end{titlepage}
