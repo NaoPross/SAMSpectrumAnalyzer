@@ -7,6 +7,11 @@ src/nbproject/*
 !src/nbproject/project.xml
 !src/nbproject/configurations.xml
 
+# hardware 
+hw/__Previews
+hw/History
+hw/debug.log
+
 # editor files
 **/*.pro.user
 **/*.swp
