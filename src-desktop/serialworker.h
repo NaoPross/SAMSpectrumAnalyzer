@@ -2,6 +2,8 @@
 #define SERIALWORKER_H
 
 #include <QObject>
+#include <QThread>
+
 #include "serial/serial.h"
 
 class SerialWorker : public QThread
@@ -13,12 +15,13 @@ public:
     ~SerialWorker();
 
     void run() override;
+    void stop();
 
 signals:
     void receivedData(QString &data);
 
 private:
-    bool running;
+    volatile bool _running;
     serial::Serial &_serial;
 };
 
