@@ -3,6 +3,7 @@
 
 #include <QObject>
 #include <QThread>
+#include <QMutex>
 
 #include "serial/serial.h"
 
@@ -23,6 +24,7 @@ signals:
 private:
     volatile bool _running;
     serial::Serial &_serial;
+    QMutex _mutex;
 };
 
 #endif // SERIALWORKER_H

@@ -56,6 +56,9 @@ void MainWindow::on_serialBtn_clicked()
         _serialWorker.start();
 
         serialLog("Serial device opened");
+
+        // change text
+        _ui->serialBtn->setText("Close");
     } catch (const serial::IOException &e) {
         serialLog("Failed to open serial device");
         serialLog("IOException:");
@@ -64,7 +67,4 @@ void MainWindow::on_serialBtn_clicked()
         serialLog("Exception:");
         serialLog(e.what());
     }
-
-    // change text
-    _ui->serialBtn->setText("Close");
 }
