@@ -1,8 +1,9 @@
 /* 
- * File:   hwconfig.h
- * Author: _prossn
+ * File:    hwconfig.h
+ * Author:  Naoki Pross
+ * Project: SAM Spectrum Analyzer
  *
- * Created on 16. aprile 2018, 11:56
+ * Created on 16.04.2018
  */
 
 #ifndef HWCONFIG_H

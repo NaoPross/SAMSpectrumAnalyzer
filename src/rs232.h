@@ -1,8 +1,8 @@
 /* 
  * File:   rs232.h
- * Author: _prossn
+ * Author: Naoki Pross
  *
- * Created on 7. dicembre 2017, 15:07
+ * Created on 7.12.2017
  */
 
 #ifndef RS232_H
