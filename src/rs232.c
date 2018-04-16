@@ -1,6 +1,16 @@
 #include "rs232.h"
 #include <xc.h>
 
+#ifdef EUSART_1_PRINTF
+void putch(char c) {
+#if EUSART_1_PRINTF
+    eusart1_putch(c);
+#else
+    eusart2_putch(c);
+#endif
+}
+#endif
+
 void eusart1_init(void)
 {
     // set Async and 8 bits frame
