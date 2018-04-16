@@ -16,23 +16,33 @@
 #include <stdio.h>
 #include <stdbool.h>
 #include <stdint.h>
+#include <string.h>
 
 // number of samples to collect
 #define SAMPLES_SIZE 64
 
 
 
-volatile uint8_t sample_count = 0;
-volatile uint16_t samples[SAMPLES_SIZE] = {0};
+volatile uint8_t samples_count;
+volatile uint16_t samples[SAMPLES_SIZE];
 
 
 interrupt void isr(void)
 {
-#ifdef DEBUG
-    PORTDbits.RD1 = 0;
-#endif
     
-    if (PIR1bits.TMR2IF) {    
+    if (PIR1bits.TMR2IF && samples_count < SAMPLES_SIZE) {
+#ifdef DEBUG
+        PORTDbits.RD1 = 0;
+        // __delay_us(5);
+#endif
+        
+        ADCON0bits.GO = 1;
+        
+        while (ADCON0bits.nDONE);
+        
+        samples[samples_count] = ADRESH<<8 | ADRESL;         
+        samples_count++;
+        
         // reset interrupt flag
         PIR1bits.TMR2IF = 0;
     }
@@ -93,11 +103,12 @@ void init_hw()
     
     /* interrupts initialization */
     // timer 2 comp value
-    PR2 = 128;
-    // postscaler 1:2
-    T2CONbits.T2OUTPS = 0b0001;
-    // prescaler 1:2
-    T2CONbits.T2CKPS = 0b01;
+    // with post 1:1 and pre 1:16, 1 unit is 1 us
+    PR2 = 50;
+    // postscaler 1:1
+    T2CONbits.T2OUTPS = 0b0000;
+    // prescaler 1:16
+    T2CONbits.T2CKPS = 0b11;
     // start timer
     T2CONbits.TMR2ON = 1;
     // timer 2 interrupts
@@ -109,18 +120,35 @@ void init_hw()
     /* initialize serial devices */
     eusart1_init();
     eusart2_init();
-    
-    // enable interrupts
-    ei(); 
 }
 
 
 void main(void)
-{        
+{
+    int i = 0;
+    
     init_hw();
     
+    memset(samples, 0, SAMPLES_SIZE * sizeof(uint16_t));
+    
     while (true) {
+        // reset samples count
+        samples_count = 0;
+        // start sampling
+        ei();
+        while (samples_count < SAMPLES_SIZE);
+        di();
         
+        // print the data
+        printf("\n\rSamples dump:\n\r");
+        for (i = 0; i < SAMPLES_SIZE; i++) {
+            printf("%d\n\r", samples[i]);
+        }
+        
+#ifdef DEBUG
+        // wait
+        __delay_ms(1000);
+#endif
     }
     
     return;
