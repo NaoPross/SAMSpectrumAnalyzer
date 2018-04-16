@@ -12,7 +12,7 @@
 % auto
 \newcommand{\projperiod}{\projstart{} -- \projend{}}
 
-% preable
+% preamble
 % ------------------------------------------------------------------------------
 
 % tables
@@ -31,6 +31,9 @@
 % \usepackage[sfdefault]{noto}
 % \usepackage{lmodern}
 \renewcommand{\familydefault}{\sfdefault}
+
+% urls
+\usepackage[colorlinks=true, urlcolor=blue]{hyperref}
 
 % layout
 \usepackage[left=2cm, right=2cm, top=3cm, bottom=3cm]{geometry}
@@ -164,12 +167,39 @@
         	D. Kamm.
         }
 
-        \journalentry{Lu}{16.04.2018}{1}{
+        \journalentry{Lu}{16.04.2018}{2}{
         	Corretto il circuito di amplificazione e risolto imperfezioni minori.
         }{
         	L'amplificatore combinato con il filtro \`e stato separato in due
         	stadi, di amplificazione e di filtraggio.
     	}
+
+        \journalentry{Lu}{16.04.2018}{1}{
+        	Corretto il montaggio sulla piastra sperimentale.
+        }{
+        	Il filtro attivo non \`e presente sulla tavola perch\'e si deve
+        	aspettare la comanda del componente.
+        }
+
+        \journalentry{Lu}{16.04.2018}{5}{
+        	Implementato il codice del microcontroller per configurare l'ADC ed
+        	un timer per un campionamento regolare.
+        }{
+        	Si possono osservare i dettagli su Git nei seguenti commit:
+        	\href{https://github.com/NaoPross/SAMSpectrumAnalyzer/commit/7730a96426eaaac0f8d34749fef92434039ebbb2}{\texttt{7730a96}},
+        	\href{https://github.com/NaoPross/SAMSpectrumAnalyzer/commit/b8366383b158ed3b41452af06d46b3a86c631cb5}{\texttt{b836638}},
+        	\href{https://github.com/NaoPross/SAMSpectrumAnalyzer/commit/b482c7e0997037336937ff862645ea9d92b0f4a3}{\texttt{b482c7e}},
+        	\href{https://github.com/NaoPross/SAMSpectrumAnalyzer/commit/aa19054b009ff2d4be4fb319efeab62fda09737d}{\texttt{aa19054}},
+        	\href{https://github.com/NaoPross/SAMSpectrumAnalyzer/commit/2996f6549ad660b89e5f148bdf1339d195e49639}{\texttt{2996f65}}.
+        }
+
+        \journalentry{Lu}{16.04.2018}{1}{
+        	Riordinato lo schema elettrico. Aggiunto il ciruito di regolazione
+        	della tensione in entrata con un MC7805.
+        }{
+        	Manca ancora il connettore principale dell'alimentazione, rimane da
+        	decidere se utilizzare dei morsetti o un power jack.
+        }
 
 % ------------------------------------------------------------------------------
     \end{tabularx}
