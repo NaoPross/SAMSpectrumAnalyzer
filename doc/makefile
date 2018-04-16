@@ -1,6 +1,6 @@
 # Documents
 JOURNAL := journal.tex
-DOCUMENTATION := project.tex
+DOCUMENTATION := spectrum-analyzer.tex
 
 # LaTeX compiler settings
 BUILD_DIR := build
