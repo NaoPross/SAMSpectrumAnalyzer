@@ -19,8 +19,8 @@ MainWindow::MainWindow(QWidget *parent) :
     );
 
     connect(
-        &_serialWorker, SIGNAL(receivedData(QString &data)),
-        this, SLOT(serialLog(const QString &data))
+        &_serialWorker, SIGNAL(receivedData(const QString &)),
+        this, SLOT(serialDataReceiver(const QString &))
     );
 }
 
@@ -34,10 +34,16 @@ void MainWindow::serialLog(const QString &text)
     _ui->serialDisplay->append(text);
 }
 
+void MainWindow::serialDataReceiver(const QString &data)
+{
+    serialLog(data);
+}
+
 void MainWindow::on_serialBtn_clicked()
 {
     if (_serial.isOpen()) {
-        _serialWorker.stop();
+        _serialWorker.quit();
+        while (_serialWorker.isRunning());
 
         _serial.close();
         serialLog("Serial device closed");

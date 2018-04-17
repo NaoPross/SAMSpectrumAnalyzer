@@ -22,6 +22,7 @@ public:
     void serialLog(const QString &text);
 
 private slots:
+    void serialDataReceiver(const QString &data);
     void on_serialBtn_clicked();
 
 private:

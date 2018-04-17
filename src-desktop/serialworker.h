@@ -16,15 +16,13 @@ public:
     ~SerialWorker();
 
     void run() override;
-    void stop();
 
 signals:
-    void receivedData(QString &data);
+    void receivedData(const QString &data);
 
 private:
-    volatile bool _running;
-    serial::Serial &_serial;
     QMutex _mutex;
+    serial::Serial &_serial;
 };
 
 #endif // SERIALWORKER_H
