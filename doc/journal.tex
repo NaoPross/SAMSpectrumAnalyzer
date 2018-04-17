@@ -151,7 +151,7 @@
 
         \journalentry{Ve}{13.04.2018}{2}{
         	Studiato il concetto matematico della Fourier transform con il 
-        	professor Eduardo Cima.
+        	professor Edoardo Cima.
         }{
         	L'attivit\`a non era programmata poich\`e la disponibilit\`a
         	dei docenti \`e limitata.
@@ -199,6 +199,34 @@
         }{
         	Manca ancora il connettore principale dell'alimentazione, rimane da
         	decidere se utilizzare dei morsetti o un power jack.
+        }
+
+        \journalentry{Ma}{17.04.2018}{2}{
+        	Diviso lo schema elettrico su pi\`u fogli per dendere il tutto pi\`u
+        	ordinato. Preparato il footprint del Jack Audio.
+        }{}
+
+        \journalentry{Ma}{17.04.2018}{1}{
+        	Analizzato un problema inerente alla programmazione dell'interfaccia
+        	software per il computer con il professor Emidio Planamente.
+        	\`E presente un errore nella gestione delle risorse nel thread
+        	parallelo di gestione del seriale. Il thread della classe 
+        	\texttt{SerialWorker} deve essere terminato per rilasciare la
+        	risorsa \texttt{MainWindow::\_serial}, ma ci\`o non accade e il 
+        	programma crasha. Il problema \`e ancora irrisolto.
+
+        	Riportato lo stato e discusso del progetto con Marco Bertoz (Perito).
+        }{
+        	Dettagli tecnici:
+        	\href{https://github.com/NaoPross/SAMSpectrumAnalyzer/commit/8ba16b0f28e1724b825c14b6c3788319a617a718}{\texttt{8ba16b0}}
+        }
+
+        \journalentry{Ma}{17.04.2018}{2}{
+        	Terminato lo schema elettrico e controllato tutti i footprints.
+        	Richiesto una revisione al professor Rinaldo Geiler prima di 
+        	procedere al PCB.
+        }{
+        	Se non vi sono errori si potr\`a iniziare il design del PCB.
         }
 
 % ------------------------------------------------------------------------------
