@@ -112,122 +112,145 @@
         }{}
 
         \journalentry{Gio}{12.04.2018}{5}{
-        	Analisi e studio del concetto matematico.
+            Analisi e studio del concetto matematico.
         }{}
 
         \journalentry{Gio}{12.04.2018}{1}{
-        	Raccolto informazioni e librerie software per i componenti utilizzati
-        	dal progetto. Inoltre \`e stata preparata una struttura per la
-        	documentazione.
+            Raccolto informazioni e librerie software per i componenti utilizzati
+            dal progetto. Inoltre \`e stata preparata una struttura per la
+            documentazione.
         }{}
 
         \journalentry{Ve}{13.04.2018}{2}{
-        	Scelto i componenti analogici e passivi e preparato una BOM (Bill Of 
-        	Materials). Progettato uno schema elettrico.
+            Scelto i componenti analogici e passivi e preparato una BOM (Bill Of 
+            Materials). Progettato uno schema elettrico.
 
         }{
-   			\`E stato scelto di utilizzare un unico amplificatore di qualit\`a 
-   			migliore (per audio) con un multiplexer invece di un package con pi\`u
-   			amplificatori di precisione inferiore.
+            \`E stato scelto di utilizzare un unico amplificatore di qualit\`a 
+            migliore (per audio) con un multiplexer invece di un package con pi\`u
+            amplificatori di precisione inferiore.
         }
 
         \journalentry{Ve}{13.04.2018}{3}{
-        	Realizzato la parte centrale dello schema elettrico in formato ECAD
-        	(Altium Designer). Ossia i circuiti di multiplexing, di adattamento
-        	del segnale e di filtraggio delle frequenze indesiderate.
+            Realizzato la parte centrale dello schema elettrico in formato ECAD
+            (Altium Designer). Ossia i circuiti di multiplexing, di adattamento
+            del segnale e di filtraggio delle frequenze indesiderate.
         }{
-       		Manca il jack di alimentazione (non ancora necessaria su tavola 
-       		sperimentale) e il circuito di adattamento di tensione da 12\,V a 5\,V.
+            Manca il jack di alimentazione (non ancora necessaria su tavola 
+            sperimentale) e il circuito di adattamento di tensione da 12\,V a 5\,V.
         }
 
         \journalentry{Ve}{13.04.2018}{2}{
-        	Modificato il circuito progettato per utilizzare un filtro attivo
-        	anzich\`e passivo dopo aver osservato sperimentalmente
-        	l'attenuazione dal filtro passivo.
+            Modificato il circuito progettato per utilizzare un filtro attivo
+            anzich\`e passivo dopo aver osservato sperimentalmente
+            l'attenuazione dal filtro passivo.
         }{
-        	Il circuto su piastra sperimentale non \`e ancora funzionante
-        	per sviluppare i primi programmi di test.
+            Il circuto su piastra sperimentale non \`e ancora funzionante
+            per sviluppare i primi programmi di test.
         }
 
         \journalentry{Ve}{13.04.2018}{2}{
-        	Studiato il concetto matematico della Fourier transform con il 
-        	professor Edoardo Cima.
+            Studiato il concetto matematico della Fourier transform con il 
+            professor Edoardo Cima.
         }{
-        	L'attivit\`a non era programmata poich\`e la disponibilit\`a
-        	dei docenti \`e limitata.
+            L'attivit\`a non era programmata poich\`e la disponibilit\`a
+            dei docenti \`e limitata.
         }
 
         \journalentry{Lu}{16.04.2018}{1}{
-        	Realizzato un circuito di prova su piastra sperimentale.
+            Realizzato un circuito di prova su piastra sperimentale.
         }{
-        	Si \`e osservato che il circuito progettato non era idoneo.
-        	L'amplificatore scelto in precedenta (TL071) non \`e in grado di
-        	lavorare come necessario nel margine da 0\,V a 5\,V. Dunque \`e
-        	stato cambiato in un OPAMP Rail-to-Rail AD820 sotto consiglio di
-        	D. Kamm.
+            Si \`e osservato che il circuito progettato non era idoneo.
+            L'amplificatore scelto in precedenta (TL071) non \`e in grado di
+            lavorare come necessario nel margine da 0\,V a 5\,V. Dunque \`e
+            stato cambiato in un OPAMP Rail-to-Rail AD820 sotto consiglio di
+            D. Kamm.
         }
 
         \journalentry{Lu}{16.04.2018}{2}{
-        	Corretto il circuito di amplificazione e risolto imperfezioni minori.
+            Corretto il circuito di amplificazione e risolto imperfezioni minori.
         }{
-        	L'amplificatore combinato con il filtro \`e stato separato in due
-        	stadi, di amplificazione e di filtraggio.
-    	}
+            L'amplificatore combinato con il filtro \`e stato separato in due
+            stadi, di amplificazione e di filtraggio.
+        }
 
         \journalentry{Lu}{16.04.2018}{1}{
-        	Corretto il montaggio sulla piastra sperimentale.
+            Corretto il montaggio sulla piastra sperimentale.
         }{
-        	Il filtro attivo non \`e presente sulla tavola perch\'e si deve
-        	aspettare la comanda del componente.
+            Il filtro attivo non \`e presente sulla tavola perch\'e si deve
+            aspettare la comanda del componente.
         }
 
         \journalentry{Lu}{16.04.2018}{5}{
-        	Implementato il codice del microcontroller per configurare l'ADC ed
-        	un timer per un campionamento regolare.
+            Implementato il codice del microcontroller per configurare l'ADC ed
+            un timer per un campionamento regolare.
         }{
-        	Si possono osservare i dettagli su Git nei seguenti commit:
-        	\href{https://github.com/NaoPross/SAMSpectrumAnalyzer/commit/7730a96426eaaac0f8d34749fef92434039ebbb2}{\texttt{7730a96}},
-        	\href{https://github.com/NaoPross/SAMSpectrumAnalyzer/commit/b8366383b158ed3b41452af06d46b3a86c631cb5}{\texttt{b836638}},
-        	\href{https://github.com/NaoPross/SAMSpectrumAnalyzer/commit/b482c7e0997037336937ff862645ea9d92b0f4a3}{\texttt{b482c7e}},
-        	\href{https://github.com/NaoPross/SAMSpectrumAnalyzer/commit/aa19054b009ff2d4be4fb319efeab62fda09737d}{\texttt{aa19054}},
-        	\href{https://github.com/NaoPross/SAMSpectrumAnalyzer/commit/2996f6549ad660b89e5f148bdf1339d195e49639}{\texttt{2996f65}}.
+            Si possono osservare i dettagli su Git nei seguenti commit:
+            \href{https://github.com/NaoPross/SAMSpectrumAnalyzer/commit/7730a96426eaaac0f8d34749fef92434039ebbb2}{\texttt{7730a96}},
+            \href{https://github.com/NaoPross/SAMSpectrumAnalyzer/commit/b8366383b158ed3b41452af06d46b3a86c631cb5}{\texttt{b836638}},
+            \href{https://github.com/NaoPross/SAMSpectrumAnalyzer/commit/b482c7e0997037336937ff862645ea9d92b0f4a3}{\texttt{b482c7e}},
+            \href{https://github.com/NaoPross/SAMSpectrumAnalyzer/commit/aa19054b009ff2d4be4fb319efeab62fda09737d}{\texttt{aa19054}},
+            \href{https://github.com/NaoPross/SAMSpectrumAnalyzer/commit/2996f6549ad660b89e5f148bdf1339d195e49639}{\texttt{2996f65}}.
         }
 
         \journalentry{Lu}{16.04.2018}{1}{
-        	Riordinato lo schema elettrico. Aggiunto il ciruito di regolazione
-        	della tensione in entrata con un MC7805.
+            Riordinato lo schema elettrico. Aggiunto il ciruito di regolazione
+            della tensione in entrata con un MC7805.
         }{
-        	Manca ancora il connettore principale dell'alimentazione, rimane da
-        	decidere se utilizzare dei morsetti o un power jack.
+            Manca ancora il connettore principale dell'alimentazione, rimane da
+            decidere se utilizzare dei morsetti o un power jack.
         }
 
         \journalentry{Ma}{17.04.2018}{2}{
-        	Diviso lo schema elettrico su pi\`u fogli per dendere il tutto pi\`u
-        	ordinato. Preparato il footprint del Jack Audio.
+            Diviso lo schema elettrico su pi\`u fogli per dendere il tutto pi\`u
+            ordinato. Preparato il footprint del Jack Audio.
         }{}
 
         \journalentry{Ma}{17.04.2018}{1}{
-        	Analizzato un problema inerente alla programmazione dell'interfaccia
-        	software per il computer con il professor Emidio Planamente.
-        	\`E presente un errore nella gestione delle risorse nel thread
-        	parallelo di gestione del seriale. Il thread della classe 
-        	\texttt{SerialWorker} deve essere terminato per rilasciare la
-        	risorsa \texttt{MainWindow::\_serial}, ma ci\`o non accade e il 
-        	programma crasha. Il problema \`e ancora irrisolto.
+            Analizzato un problema inerente alla programmazione dell'interfaccia
+            software per il computer con il professor Emidio Planamente.
+            \`E presente un errore nella gestione delle risorse nel thread
+            parallelo di gestione del seriale. Il thread della classe 
+            \texttt{SerialWorker} deve essere terminato per rilasciare la
+            risorsa \texttt{MainWindow::\_serial}, ma ci\`o non accade e il 
+            programma crasha. Il problema \`e ancora irrisolto.
 
-        	Riportato lo stato e discusso del progetto con Marco Bertoz (Perito).
+            Riportato lo stato e discusso del progetto con Marco Bertoz (Perito).
         }{
-        	Dettagli tecnici:
-        	\href{https://github.com/NaoPross/SAMSpectrumAnalyzer/commit/8ba16b0f28e1724b825c14b6c3788319a617a718}{\texttt{8ba16b0}}
+            Dettagli tecnici:
+            \href{https://github.com/NaoPross/SAMSpectrumAnalyzer/commit/8ba16b0f28e1724b825c14b6c3788319a617a718}{\texttt{8ba16b0}}
         }
 
         \journalentry{Ma}{17.04.2018}{2}{
-        	Terminato lo schema elettrico e controllato tutti i footprints.
-        	Richiesto una revisione al professor Rinaldo Geiler prima di 
-        	procedere al PCB.
+            Terminato lo schema elettrico e controllato tutti i footprints.
+            Richiesto una revisione al professor Rinaldo Geiler prima di 
+            procedere al PCB.
         }{
-        	Se non vi sono errori si potr\`a iniziare il design del PCB.
+            Se non vi sono errori si potr\`a iniziare il design del PCB.
         }
+
+
+        \journalentry{Gio}{26.04.2018}{4}{
+            Integrato dei consigli dal feedback da Geiler, ossia correzioni
+            miniori e l'aggiunta di un bottone di reset manuale.
+            Iniziato il design del PCB.
+        }{
+            Presentato il progetto al capo perito.
+        }
+
+        \journalentry{Gio}{26.04.2018}{4}{
+            Risolto un il bug dell'interfaccia software desktop con il professor
+            E. Planamente. Il thread di lettura del seriale adesso viene chiuso
+            correttamente.
+
+            Implementato la rappresentazione grafica dei segnali campionati
+            dal microcontroller ricevuti attraverso la seriale RS232.
+        }{
+            Vedi
+            \href{https://github.com/NaoPross/SAMSpectrumAnalyzer/commit/69d5d425552a9eecee7f168bfa8912061e4dd876}{\texttt{69d5d42}},
+            \href{https://github.com/NaoPross/SAMSpectrumAnalyzer/commit/2791cdd30ab13738704171205abc46ea239e9e02}{\texttt{2791cdd}}
+        }
+
 
 % ------------------------------------------------------------------------------
     \end{tabularx}
