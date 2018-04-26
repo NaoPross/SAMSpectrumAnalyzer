@@ -1,6 +1,7 @@
 #include "serialworker.h"
 
 #include <QMutexLocker>
+#include <string>
 
 SerialWorker::SerialWorker(serial::Serial &serial) :
     _mutex(), _serial(serial)
@@ -15,12 +16,17 @@ SerialWorker::~SerialWorker()
 
 void SerialWorker::run()
 {
-    while (isRunning()) {
+    while (!isInterruptionRequested()) {
         QMutexLocker locker(&_mutex);
-        while (!_serial.available() && isRunning());
+        while (!_serial.available() && !isInterruptionRequested());
 
-        QString data = QString::fromStdString(_serial.readline());
-        emit receivedData(data);
+        for (std::string line : _serial.readlines()) {
+            QString data = QString::fromStdString(line);
+            emit receivedData(data);
+        }
+
+        // QString data = QString::fromStdString(_serial.readline());
+        // emit receivedData(data);
         _serial.flushOutput();
     }
 }

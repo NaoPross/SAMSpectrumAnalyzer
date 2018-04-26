@@ -42,8 +42,12 @@ void MainWindow::serialDataReceiver(const QString &data)
 void MainWindow::on_serialBtn_clicked()
 {
     if (_serial.isOpen()) {
-        _serialWorker.quit();
-        while (_serialWorker.isRunning());
+        // _serialWorker.quit();
+        // while (_serialWorker.isRunning());
+        if (_serialWorker.isRunning()) {
+            _serialWorker.requestInterruption();
+            _serialWorker.wait();
+        }
 
         _serial.close();
         serialLog("Serial device closed");

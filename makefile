@@ -11,11 +11,17 @@ QMAKE_ARGS := -makefile -o Makefile -Wall "CONFIG+=debug" "CONFIG+=qml_debug"
 # targets
 all: desktop
 
+.PHONY: run
 run: desktop
 	LD_LIBRARY_PATH=build-desktop ./build-desktop/SpectrumAnalyzer
+	
+.PHONY: debug
+debug: desktop
+	LD_LIBRARY_PATH=build-desktop gdb ./build-desktop/SpectrumAnalyzer
+	
 
 .PHONY: desktop
-desktop: src-desktop serial qcustomplot
+desktop: src-desktop
 	mkdir -p build-desktop
 	$(QMAKE) $(QMAKE_ARGS) -o build-desktop/ src-desktop
 	$(MAKE) -C build-desktop
@@ -25,6 +31,9 @@ desktop: src-desktop serial qcustomplot
 clean:
 	rm -rf build-desktop
 	rm -rf lib/build-serial
+
+.PHONY: build-deps
+build-deps: serial qcustomplot
 
 # libraries
 .PHONY: serial
