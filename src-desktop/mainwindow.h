@@ -3,6 +3,8 @@
 
 #include <QMainWindow>
 #include <QThread>
+#include <QVector>
+
 
 #include "serialworker.h"
 #include "serial/serial.h"
@@ -30,6 +32,8 @@ private:
     serial::Serial _serial;
 
     SerialWorker _serialWorker;
+    QVector<double> _xsamples;
+    QVector<double> _ysamples;
 };
 
 #endif // MAINWINDOW_H

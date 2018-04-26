@@ -18,6 +18,14 @@ MainWindow::MainWindow(QWidget *parent) :
 #endif
     );
 
+    _ui->plot->addGraph();
+
+    _ui->plot->xAxis->setLabel("t");
+    _ui->plot->yAxis->setLabel("u(t)");
+
+    _ui->plot->xAxis->setRange(0, 64);
+    _ui->plot->yAxis->setRange(0, 5);
+
     connect(
         &_serialWorker, SIGNAL(receivedData(const QString &)),
         this, SLOT(serialDataReceiver(const QString &))
@@ -26,6 +34,15 @@ MainWindow::MainWindow(QWidget *parent) :
 
 MainWindow::~MainWindow()
 {
+    if (_serialWorker.isRunning()) {
+        _serialWorker.requestInterruption();
+        _serialWorker.wait();
+    }
+
+    if (_serial.isOpen()) {
+        _serial.close();
+    }
+
     delete _ui;
 }
 
@@ -36,14 +53,38 @@ void MainWindow::serialLog(const QString &text)
 
 void MainWindow::serialDataReceiver(const QString &data)
 {
-    serialLog(data);
+    bool isnumber;
+    unsigned int value = data.toInt(&isnumber);
+    const double convert = 5.0/1024.0;
+
+
+    if (!isnumber) {
+        _xsamples.clear();
+        _ysamples.clear();
+        return;
+    }
+
+    // add data to plot
+    _ysamples.append(static_cast<double>(value * convert));
+    _xsamples.append(static_cast<double>(_ysamples.size()));
+
+    // log data
+    serialLog(QString::number(value));
+
+    // plot data
+    _ui->plot->graph(0)->setData(_xsamples, _ysamples, true);
+    _ui->plot->replot();
 }
 
 void MainWindow::on_serialBtn_clicked()
 {
     if (_serial.isOpen()) {
-        _serialWorker.quit();
-        while (_serialWorker.isRunning());
+        // _serialWorker.quit();
+        // while (_serialWorker.isRunning());
+        if (_serialWorker.isRunning()) {
+            _serialWorker.requestInterruption();
+            _serialWorker.wait();
+        }
 
         _serial.close();
         serialLog("Serial device closed");
