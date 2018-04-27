@@ -18,22 +18,36 @@ void SerialWorker::run()
 {
     while (!isInterruptionRequested()) {
         QMutexLocker locker(&_mutex);
-        QString data;
+        
+        uint8_t header[2];
+        sdt::frame data;
 
-        try {
-            // TODO: implement a protocol
-            while ((_serial.available() <= 8)&& !isInterruptionRequested());
-            // _serial.waitReadable();
-
-            data = QString::fromStdString(_serial.readline(65536, "\n\r"));
-        } catch (serial::IOException e) {
-            // TODO: handle error on the GUI
-            emit receivedData("IOException");
-            break;
+        // TODO: add try / catch with ui altert
+        while (!_serial.available()) {
+            if (isInterruptionRequested())
+                return;
         }
 
-        emit receivedData(data);
+        do {
+            _serial.read(header, 2);
 
-        // _serial.flushOutput();
+            if (isInterruptionRequested())
+                return;
+        } while (*reinterpret_cast<uint16_t *>(header) != sdt::SDT_HEADER);
+
+        data.header = sdt::SDT_HEADER;
+        data.length = *reinterpret_cast<const uint16_t *>(_serial.read(sizeof(uint16_t)).data());
+
+        if (!data.alloc())
+            continue;
+
+        std::memcpy(data.samples,
+            reinterpret_cast<const sdt::complex_uint16_t *>(
+                _serial.read(data.length * sizeof(sdt::complex_uint16_t)).data()),
+            data.length
+        );
+
+
+        emit receivedData(data);
     }
 }

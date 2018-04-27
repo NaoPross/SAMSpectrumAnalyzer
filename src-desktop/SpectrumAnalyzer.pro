@@ -45,6 +45,7 @@ SOURCES += \
 
 HEADERS += \
     ../lib/qcustomplot/qcustomplot.h \
+    ../src-common/stdproto.hpp \
     mainwindow.h \
     serialworker.h
 

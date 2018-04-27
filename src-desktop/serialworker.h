@@ -7,6 +7,8 @@
 
 #include "serial/serial.h"
 
+#include "../src-common/sdtproto.hpp"
+
 class SerialWorker : public QThread
 {
     Q_OBJECT
@@ -18,7 +20,7 @@ public:
     void run() override;
 
 signals:
-    void receivedData(const QString &data);
+    void receivedData(const sdt::frame &data);
 
 private:
     QMutex _mutex;

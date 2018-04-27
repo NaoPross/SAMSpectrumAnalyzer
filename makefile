@@ -18,7 +18,7 @@ run: desktop
 .PHONY: debug
 debug: desktop
 	LD_LIBRARY_PATH=build-desktop gdb ./build-desktop/SpectrumAnalyzer
-	
+
 
 .PHONY: desktop
 desktop: src-desktop

@@ -1,6 +1,8 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
 
+#include <QMetaType>
+
 #include <exception>
 
 MainWindow::MainWindow(QWidget *parent) :
@@ -48,9 +50,11 @@ MainWindow::MainWindow(QWidget *parent) :
     _ui->plot->yAxis2->setVisible(true);
 
 
+    qRegisterMetaType<sdt::frame>("sdt::frame");
+
     connect(
-        &_serialWorker, SIGNAL(receivedData(const QString &)),
-        this, SLOT(serialDataReceiver(const QString &))
+        &_serialWorker, SIGNAL(receivedData(const sdt::frame &)),
+        this, SLOT(serialDataReceiver(const sdt::frame &))
     );
 }
 
@@ -73,27 +77,22 @@ void MainWindow::serialLog(const QString &text)
     _ui->serialDisplay->append(text);
 }
 
-void MainWindow::serialDataReceiver(const QString &data)
+void MainWindow::serialDataReceiver(const sdt::frame &data)
 {
-    bool isnumber;
-    unsigned int value = data.toInt(&isnumber);
     const double convert = 5.0/1024.0;
 
-    // TODO: implement a protocol
-    if (!isnumber) {
-        serialLog("received non number: " + data);
-
-        _xsamples.clear();
-        _ysamples.clear();
-        return;
-    }
-
-    // log data
-    serialLog(QString::number(value));
+    // reset data
+    _xsamples.clear();
+    _ysamples.clear();
 
     // add data to plot
-    _ysamples.append(static_cast<double>(value * convert));
-    _xsamples.append(static_cast<double>(_ysamples.size()));
+    for (int i = 0; i < data.length; i++) {
+        // log data
+        serialLog(QString::number(data.samples[i].real));
+
+        _ysamples.append(static_cast<double>(data.samples[i].real * convert));
+        _xsamples.append(static_cast<double>(_ysamples.size()));
+    }
 
     // plot data
     _ui->plot->graph(0)->setData(_xsamples, _ysamples, true);

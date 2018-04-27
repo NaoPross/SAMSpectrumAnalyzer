@@ -5,9 +5,10 @@
 #include <QThread>
 #include <QVector>
 
-
 #include "serialworker.h"
 #include "serial/serial.h"
+
+#include "../src-common/sdtproto.hpp"
 
 namespace Ui {
 class MainWindow;
@@ -24,7 +25,7 @@ public:
     void serialLog(const QString &text);
 
 private slots:
-    void serialDataReceiver(const QString &data);
+    void serialDataReceiver(const sdt::frame &data);
     void on_serialBtn_clicked();
 
 private:

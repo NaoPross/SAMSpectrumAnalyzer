@@ -10,7 +10,7 @@
 
 #include "complex.h"
 
-#define SDT_HEADER 0xFFFF;
+const uint16_t SDT_HEADER = 0xF00D;
 
 struct sdt_frame
 {
