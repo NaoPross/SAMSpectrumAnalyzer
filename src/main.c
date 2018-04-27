@@ -115,14 +115,14 @@ inline void init_hw()
 
 void main(void)
 {
-    int i;
+    unsigned int i;
     struct sdt_frame frame;
     complex_uint16_t samples[SAMPLES_SIZE];
     
     // setup data frame
     frame.header = SDT_HEADER;
     frame.length = SAMPLES_SIZE;
-    frame.samples = &samples;
+    frame.samples = samples;
     
     // set samples to zero
     memset(samples, 0, SAMPLES_SIZE * sizeof(complex_uint16_t));
@@ -147,7 +147,7 @@ void main(void)
             ADCON0bits.GO = 1;   
             while (ADCON0bits.nDONE);
 
-            samples[samples_count].real = ADRESH<<8 | ADRESL;         
+            samples[samples_count].real = (uint16_t) ADRESH<<8 | ADRESL;         
             samples_count++;
             
             start_sample = false;
@@ -159,11 +159,19 @@ void main(void)
 #endif
         
         // send data
-        while (i++) {
-            eusart1_putch(&frame + i);
+        eusart1_write(&frame.header, 2);
+        eusart1_write(&frame.length, 2);
+        for (i = 0; i < frame.length; i++) {
+            eusart1_write(&frame.samples[i], sizeof(complex_uint16_t));
         }
+
         
 #ifdef DEBUG
+                
+        for (i = 0; i < 100; i++) {
+            eusart1_putch(0xff);
+        }
+        
         // wait
         __delay_ms(1000);
 #endif
