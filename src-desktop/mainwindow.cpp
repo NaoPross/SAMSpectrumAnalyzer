@@ -18,13 +18,35 @@ MainWindow::MainWindow(QWidget *parent) :
 #endif
     );
 
-    _ui->plot->addGraph();
+    // graph 0 on bottom and left axis
+    _ui->plot->addGraph(_ui->plot->xAxis, _ui->plot->yAxis);
+    // graph 1 on top and right axis
+    _ui->plot->addGraph(_ui->plot->xAxis2, _ui->plot->yAxis2);
 
-    _ui->plot->xAxis->setLabel("t");
-    _ui->plot->yAxis->setLabel("u(t)");
-
+    // main axis
+    _ui->plot->xAxis->setLabel("time");
+    _ui->plot->yAxis->setLabel("voltage");
     _ui->plot->xAxis->setRange(0, 64);
     _ui->plot->yAxis->setRange(0, 5);
+
+    // secondary axis
+    _ui->plot->xAxis2->setLabel("frequency");
+    _ui->plot->yAxis2->setLabel("amplitude");
+
+    // set seconday axis to log
+    QSharedPointer<QCPAxisTickerLog> logTicker(new QCPAxisTickerLog);
+    _ui->plot->xAxis2->setTicker(logTicker);
+    _ui->plot->xAxis2->setScaleType(QCPAxis::stLogarithmic);
+    _ui->plot->xAxis2->setNumberPrecision(0);
+    _ui->plot->xAxis2->setNumberFormat("ebc");
+
+    _ui->plot->xAxis2->setRange(0, 1000);
+    _ui->plot->yAxis2->setRange(0, 5);
+
+    // show seconday axis
+    _ui->plot->xAxis2->setVisible(true);
+    _ui->plot->yAxis2->setVisible(true);
+
 
     connect(
         &_serialWorker, SIGNAL(receivedData(const QString &)),
@@ -57,19 +79,19 @@ void MainWindow::serialDataReceiver(const QString &data)
     unsigned int value = data.toInt(&isnumber);
     const double convert = 5.0/1024.0;
 
-
+    // TODO: implement a protocol
     if (!isnumber) {
         _xsamples.clear();
         _ysamples.clear();
         return;
     }
 
+    // log data
+    serialLog(QString::number(value));
+
     // add data to plot
     _ysamples.append(static_cast<double>(value * convert));
     _xsamples.append(static_cast<double>(_ysamples.size()));
-
-    // log data
-    serialLog(QString::number(value));
 
     // plot data
     _ui->plot->graph(0)->setData(_xsamples, _ysamples, true);
@@ -79,13 +101,13 @@ void MainWindow::serialDataReceiver(const QString &data)
 void MainWindow::on_serialBtn_clicked()
 {
     if (_serial.isOpen()) {
-        // _serialWorker.quit();
-        // while (_serialWorker.isRunning());
+        // close serial thread
         if (_serialWorker.isRunning()) {
             _serialWorker.requestInterruption();
             _serialWorker.wait();
         }
 
+        // close serial device
         _serial.close();
         serialLog("Serial device closed");
 
