@@ -251,6 +251,27 @@
             \href{https://github.com/NaoPross/SAMSpectrumAnalyzer/commit/2791cdd30ab13738704171205abc46ea239e9e02}{\texttt{2791cdd}}
         }
 
+        \journalentry{Ve}{27.04.2018}{5}{
+            Terminato il routing del PCB.
+            Risolto i problemi indicati dal DRC.
+        }{
+            Il footprint del potenziometro R14 \`e sbagliato.
+            Il footprint del connettore RCA non pu\`o essere controllato poich\`e
+            il componente non \`e ancora arrivato. Le correzioni del componente
+            R14 e di eventuali altri saranno eseguite una volta ottenuti tutti
+            i componenti prima della stampa.
+        }
+
+        \journalentry{Ve}{27.04.2018}{4}{
+            Iniziato ad implementare un protocollo migliore per mandare i dati dal
+            microcontroller al PC.
+            Risolto un bug minore dell'applicativo desktop che causava un malfunzionamento
+            sotto Windows. In dettaglio: la funzione \texttt{\_serial.waitReadable();}
+            emetteva un \texttt{IOException} causando la chiusura del thread
+            di lettura del seriale.
+        }{
+
+        }
 
 % ------------------------------------------------------------------------------
     \end{tabularx}
