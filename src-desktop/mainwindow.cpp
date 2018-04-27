@@ -34,11 +34,11 @@ MainWindow::MainWindow(QWidget *parent) :
     _ui->plot->yAxis2->setLabel("amplitude");
 
     // set seconday axis to log
-    QSharedPointer<QCPAxisTickerLog> logTicker(new QCPAxisTickerLog);
-    _ui->plot->xAxis2->setTicker(logTicker);
-    _ui->plot->xAxis2->setScaleType(QCPAxis::stLogarithmic);
-    _ui->plot->xAxis2->setNumberPrecision(0);
-    _ui->plot->xAxis2->setNumberFormat("ebc");
+    // QSharedPointer<QCPAxisTickerLog> logTicker(new QCPAxisTickerLog);
+    // _ui->plot->xAxis2->setTicker(logTicker);
+    // _ui->plot->xAxis2->setScaleType(QCPAxis::stLogarithmic);
+    // _ui->plot->xAxis2->setNumberPrecision(0);
+    // _ui->plot->xAxis2->setNumberFormat("ebc");
 
     _ui->plot->xAxis2->setRange(0, 1000);
     _ui->plot->yAxis2->setRange(0, 5);
@@ -81,6 +81,8 @@ void MainWindow::serialDataReceiver(const QString &data)
 
     // TODO: implement a protocol
     if (!isnumber) {
+        serialLog("received non number: " + data);
+
         _xsamples.clear();
         _ysamples.clear();
         return;

@@ -23,11 +23,12 @@ void SerialWorker::run()
         try {
             // TODO: implement a protocol
             while ((_serial.available() <= 8)&& !isInterruptionRequested());
-            _serial.waitReadable();
+            // _serial.waitReadable();
 
             data = QString::fromStdString(_serial.readline(65536, "\n\r"));
         } catch (serial::IOException e) {
             // TODO: handle error on the GUI
+            emit receivedData("IOException");
             break;
         }
 
