@@ -12,6 +12,10 @@
 #include "rs232.h"
 #include "ht1632.h"
 
+#include "../src-common/complex.h"
+#include "../src-common/sdtproto.h"
+#include "fft.h"
+
 #include <xc.h>
 #include <stdio.h>
 #include <stdbool.h>
@@ -24,37 +28,23 @@
 
 
 volatile uint8_t samples_count;
-volatile uint16_t samples[SAMPLES_SIZE];
+volatile bool start_sample;
 
 
 interrupt void isr(void)
 {
-    
-    if (PIR1bits.TMR2IF && samples_count < SAMPLES_SIZE) {
-#ifdef DEBUG
-        PORTDbits.RD1 = 0;
-        // __delay_us(5);
-#endif
-        
-        ADCON0bits.GO = 1;
-        
-        while (ADCON0bits.nDONE);
-        
-        samples[samples_count] = ADRESH<<8 | ADRESL;         
-        samples_count++;
+    if (PIR1bits.TMR2IF && samples_count < SAMPLES_SIZE) {        
+        // start sampling
+        start_sample = true;
         
         // reset interrupt flag
         PIR1bits.TMR2IF = 0;
     }
-    
-#ifdef DEBUG
-    PORTDbits.RD1 = 1;
-#endif
 }
 
 
 /* hardware initialization routine */
-void init_hw()
+inline void init_hw()
 {
     // disable interrupts
     di();
@@ -125,24 +115,52 @@ void init_hw()
 
 void main(void)
 {
-    int i = 0;
+    int i;
+    struct sdt_frame frame;
+    complex_uint16_t samples[SAMPLES_SIZE];
     
+    // setup data frame
+    frame.header = SDT_HEADER;
+    frame.length = SAMPLES_SIZE;
+    frame.samples = &samples;
+    
+    // set samples to zero
+    memset(samples, 0, SAMPLES_SIZE * sizeof(complex_uint16_t));
+
+    // initialize hardware
     init_hw();
-    
-    memset(samples, 0, SAMPLES_SIZE * sizeof(uint16_t));
     
     while (true) {
         // reset samples count
         samples_count = 0;
-        // start sampling
-        ei();
-        while (samples_count < SAMPLES_SIZE);
+        start_sample = false;
+
+#ifdef DEBUG
+        PORTDbits.RD1 = 0;
+#endif
+
+        // sample signal
+        ei();        
+        while (samples_count < SAMPLES_SIZE){
+            while (!start_sample);
+
+            ADCON0bits.GO = 1;   
+            while (ADCON0bits.nDONE);
+
+            samples[samples_count].real = ADRESH<<8 | ADRESL;         
+            samples_count++;
+            
+            start_sample = false;
+        }
         di();
         
-        // print the data
-        printf("\n\rSamples dump:\n\r");
-        for (i = 0; i < SAMPLES_SIZE; i++) {
-            printf("%d\n\r", samples[i]);
+#ifdef DEBUG
+        PORTDbits.RD1 = 1;
+#endif
+        
+        // send data
+        while (i++) {
+            eusart1_putch(&frame + i);
         }
         
 #ifdef DEBUG
