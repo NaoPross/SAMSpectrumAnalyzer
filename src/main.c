@@ -12,7 +12,6 @@
 #include "rs232.h"
 #include "ht1632.h"
 
-#include "../src-common/complex.h"
 #include "fft.h"
 
 #include <xc.h>
@@ -22,7 +21,8 @@
 #include <string.h>
 
 // number of samples to collect
-#define SAMPLES_SIZE 64
+#define SAMPLES_SIZE_POW    6
+#define SAMPLES_SIZE        (1<<SAMPLES_SIZE_POW)
 
 
 
@@ -115,10 +115,14 @@ inline void init_hw()
 void main(void)
 {
     unsigned int i;
-    complex_uint16_t samples[SAMPLES_SIZE];
+    
+    short real[SAMPLES_SIZE];
+    short imag[SAMPLES_SIZE];
     
     // set samples to zero
-    memset(samples, 0u, SAMPLES_SIZE * sizeof(complex_uint16_t));
+    memset(real, 0u, SAMPLES_SIZE * sizeof(real[0]));
+    memset(imag, 0u, SAMPLES_SIZE * sizeof(imag[0]));
+
 
     // initialize hardware
     init_hw();
@@ -140,9 +144,9 @@ void main(void)
             ADCON0bits.GO = 1;   
             while (ADCON0bits.nDONE);
 
-            samples[samples_count].real = (uint16_t) ADRESH<<8 | ADRESL;         
-            samples_count++;
+            real[samples_count] = ADRESH<<8 | ADRESL;
             
+            samples_count++;
             start_sample = false;
         }
         di();
@@ -150,19 +154,21 @@ void main(void)
 #ifdef DEBUG
         PORTDbits.RD1 = 1;
 #endif
-        
+        // compute FFT
+        fix_fft(real, imag, SAMPLES_SIZE_POW);
+
+        // send data
         printf("S\n\r");
-        
         for (i = 0; i < SAMPLES_SIZE; i++) {
-            printf("%04ui%04u\n\r", samples[i].real, samples[i].imag);
+            printf("%04di%04d\n\r", real[i], imag[i]);
+
         }
-        
         printf("E\n\r");
 
         
 #ifdef DEBUG        
         // wait
-        __delay_ms(500);
+        // __delay_ms(500);
 #endif
     }
     
