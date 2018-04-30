@@ -21,7 +21,7 @@
 #include <string.h>
 
 // number of samples to collect
-#define SAMPLES_SIZE_POW    6
+#define SAMPLES_SIZE_POW    7
 #define SAMPLES_SIZE        (1<<SAMPLES_SIZE_POW)
 
 

@@ -20,7 +20,8 @@ void eusart1_init(void)
     
     // baud prescaler
     RCSTA1bits.SPEN = 1;
-    SPBRG1 = 103;       // 9600 bps
+    // SPBRG1 = 103;       // 9600 bps
+    SPBRG1 = 16;       // 57600 bps
     SPBRGH1 = 0;
     TXSTA1bits.BRGH = 0;
     BAUDCON1bits.BRG16 = 0;
