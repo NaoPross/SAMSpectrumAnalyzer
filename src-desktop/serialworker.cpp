@@ -3,7 +3,7 @@
 #include <QMutexLocker>
 
 #include <string>
-#include <iostream> // debug
+#include <complex>
 
 
 SerialWorker::SerialWorker(serial::Serial &serial) :
@@ -21,11 +21,11 @@ void SerialWorker::run()
 {
     while (!isInterruptionRequested()) {
         QMutexLocker locker(&_mutex);
-        QVector<sam::complex_uint16_t> data;
+        QVector<std::complex<int>> data;
 
         while (!isInterruptionRequested()) {
             // wait for serial buffer to accumulate at least 12 bytes
-            while (_serial.available() < 12) {
+            while (_serial.available() < 14) {
                 if (isInterruptionRequested())
                     return;
             }
@@ -43,20 +43,15 @@ void SerialWorker::run()
             }
             // data
             else {
-                bool isUInt;
+                bool isInt;
                 QStringList valueStr = str.trimmed().split('i');
-                sam::complex_uint16_t value;
+                std::complex<int> value;
 
                 if (valueStr.size() < 2)
                     continue;
 
-                value.real = valueStr.at(0).toUInt(&isUInt);
-                if (!isUInt)
-                    continue;
-
-                value.imag = valueStr.at(1).toUInt(&isUInt);
-                if (!isUInt)
-                    continue;
+                value.real(valueStr.at(0).toInt(&isInt));
+                value.imag(valueStr.at(1).toInt(&isInt));
 
                 data.push_back(value);
             }

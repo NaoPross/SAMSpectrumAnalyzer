@@ -5,9 +5,10 @@
 #include <QThread>
 #include <QVector>
 
+#include <complex>
+
 #include "serialworker.h"
 #include "serial/serial.h"
-#include "../src-common/complex.hpp"
 
 namespace Ui {
 class MainWindow;
@@ -24,7 +25,7 @@ public:
     void serialLog(const QString &text);
 
 private slots:
-    void serialDataReceiver(QVector<sam::complex_uint16_t> data);
+    void serialDataReceiver(QVector<std::complex<int>> data);
     void on_serialBtn_clicked();
 
 private:

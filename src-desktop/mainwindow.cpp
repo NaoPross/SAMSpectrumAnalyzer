@@ -4,6 +4,7 @@
 #include <QMetaType>
 
 #include <exception>
+#include <algorithm>
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
@@ -26,14 +27,15 @@ MainWindow::MainWindow(QWidget *parent) :
     _ui->plot->addGraph(_ui->plot->xAxis2, _ui->plot->yAxis2);
 
     // main axis
-    _ui->plot->xAxis->setLabel("time");
-    _ui->plot->yAxis->setLabel("voltage");
-    _ui->plot->xAxis->setRange(0, 64);
-    _ui->plot->yAxis->setRange(0, 5);
+    _ui->plot->xAxis->setLabel("Frequency");
+    _ui->plot->yAxis->setLabel("Amplitude");
+
+    _ui->plot->xAxis->setRange(0, 10000);
+    _ui->plot->yAxis->setRange(-5, 5);
 
     // secondary axis
-    _ui->plot->xAxis2->setLabel("frequency");
-    _ui->plot->yAxis2->setLabel("amplitude");
+    _ui->plot->xAxis2->setLabel("");
+    _ui->plot->yAxis2->setLabel("");
 
     // set seconday axis to log
     // QSharedPointer<QCPAxisTickerLog> logTicker(new QCPAxisTickerLog);
@@ -46,15 +48,15 @@ MainWindow::MainWindow(QWidget *parent) :
     _ui->plot->yAxis2->setRange(0, 5);
 
     // show seconday axis
-    _ui->plot->xAxis2->setVisible(true);
-    _ui->plot->yAxis2->setVisible(true);
+    // _ui->plot->xAxis2->setVisible(true);
+    // _ui->plot->yAxis2->setVisible(true);
 
 
-    qRegisterMetaType<QVector<sam::complex_uint16_t>>("QVector<sam::complex_uint16_t>");
+    qRegisterMetaType<QVector<std::complex<int>>>("QVector<std::complex<int>>");
 
     connect(
-        &_serialWorker, SIGNAL(receivedData(QVector<sam::complex_uint16_t>)),
-        this, SLOT(serialDataReceiver(QVector<sam::complex_uint16_t>))
+        &_serialWorker, SIGNAL(receivedData(QVector<std::complex<int>>)),
+        this, SLOT(serialDataReceiver(QVector<std::complex<int>>))
     );
 }
 
@@ -77,24 +79,28 @@ void MainWindow::serialLog(const QString &text)
     _ui->serialDisplay->append(text);
 }
 
-void MainWindow::serialDataReceiver(QVector<sam::complex_uint16_t> data)
+void MainWindow::serialDataReceiver(QVector<std::complex<int>> data)
 {
-    const double convert = 5.0/1024.0;
+    const double yconvert = 5.0/1024.0;
+    const double xconvert = 20000.0/128.0;
 
     // reset data
     _xsamples.clear();
     _ysamples.clear();
 
     // add data to plot
-    for (int i = 0; i < data.size(); i++) {
+    // the first frequency bucket cannot be used
+    for (int i = 1; i < data.size(); i++) {
         // log data
-        serialLog(QString::number(data[i].real) 
-                    + " + i" + QString::number(data[i].imag));
+        // serialLog(QString::number(data[i].real) + "i" + QString::number(data[i].imag));
 
-        // write only real part (for now)
-        _ysamples.append(static_cast<double>(data[i].real * convert));
-        _xsamples.append(static_cast<double>(_ysamples.size()));
+        _ysamples.append(static_cast<double>(std::abs(data[i]) * yconvert));
+        _xsamples.append(static_cast<double>((_ysamples.size() + 1) * xconvert));
     }
+
+    // set scale axis
+    _ui->plot->yAxis->setRangeLower((*std::min_element(_ysamples.begin(), _ysamples.end())) * 1.1);
+    _ui->plot->yAxis->setRangeUpper((*std::max_element(_ysamples.begin(), _ysamples.end())) * 1.1);
 
     // plot data
     _ui->plot->graph(0)->setData(_xsamples, _ysamples, true);

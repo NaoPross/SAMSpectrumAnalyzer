@@ -6,8 +6,9 @@
 #include <QMutex>
 #include <QVector>
 
+#include <complex>
+
 #include "serial/serial.h"
-#include "../src-common/complex.hpp"
 
 class SerialWorker : public QThread
 {
@@ -20,7 +21,7 @@ public:
     void run() override;
 
 signals:
-    void receivedData(QVector<sam::complex_uint16_t> data);
+    void receivedData(QVector<std::complex<int>> data);
 
 private:
     QMutex _mutex;
