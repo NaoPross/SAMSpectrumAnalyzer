@@ -26,6 +26,7 @@ extern char eusart1_getche(void);
 extern char eusart2_getche(void);
 
 extern void eusart1_write(void *data, size_t len);
+extern void eusart2_write(void *data, size_t len);
 
 
 #endif	/* RS232_H */

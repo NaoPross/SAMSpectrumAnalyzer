@@ -8,6 +8,7 @@
       <itemPath>ht1632.h</itemPath>
       <itemPath>hwconfig.h</itemPath>
       <itemPath>fft.h</itemPath>
+      <itemPath>../src-common/complex.h</itemPath>
     </logicalFolder>
     <logicalFolder name="LinkerScript"
                    displayName="Linker Files"
@@ -26,8 +27,6 @@
                    projectFiles="false">
       <itemPath>Makefile</itemPath>
     </logicalFolder>
-    <itemPath>../src-common/complex.h</itemPath>
-    <itemPath>../src-common/sdtproto.h</itemPath>
   </logicalFolder>
   <sourceRootList>
     <Elem>.</Elem>

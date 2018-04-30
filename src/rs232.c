@@ -102,3 +102,12 @@ void eusart1_write(void *data, size_t len)
         eusart1_putch(*(dptr++));
     }
 }
+
+void eusart2_write(void *data, size_t len)
+{
+    char *dptr = (char *) data;
+    
+    while (len--) {
+        eusart2_putch(*(dptr++));
+    }
+}

@@ -13,7 +13,6 @@
 #include "ht1632.h"
 
 #include "../src-common/complex.h"
-#include "../src-common/sdtproto.h"
 #include "fft.h"
 
 #include <xc.h>
@@ -116,16 +115,10 @@ inline void init_hw()
 void main(void)
 {
     unsigned int i;
-    struct sdt_frame frame;
     complex_uint16_t samples[SAMPLES_SIZE];
     
-    // setup data frame
-    frame.header = SDT_HEADER;
-    frame.length = SAMPLES_SIZE;
-    frame.samples = samples;
-    
     // set samples to zero
-    memset(samples, 0, SAMPLES_SIZE * sizeof(complex_uint16_t));
+    memset(samples, 0u, SAMPLES_SIZE * sizeof(complex_uint16_t));
 
     // initialize hardware
     init_hw();
@@ -158,22 +151,18 @@ void main(void)
         PORTDbits.RD1 = 1;
 #endif
         
-        // send data
-        eusart1_write(&frame.header, 2);
-        eusart1_write(&frame.length, 2);
-        for (i = 0; i < frame.length; i++) {
-            eusart1_write(&frame.samples[i], sizeof(complex_uint16_t));
+        printf("S\n\r");
+        
+        for (i = 0; i < SAMPLES_SIZE; i++) {
+            printf("%04ui%04u\n\r", samples[i].real, samples[i].imag);
         }
+        
+        printf("E\n\r");
 
         
-#ifdef DEBUG
-                
-        for (i = 0; i < 100; i++) {
-            eusart1_putch(0xff);
-        }
-        
+#ifdef DEBUG        
         // wait
-        __delay_ms(1000);
+        __delay_ms(500);
 #endif
     }
     
