@@ -16,7 +16,28 @@ sia eseguito da un microcontroller della Microchip, collegato a due
 altri dispositivi quali, una display e ad un computer in RS232, per poter
 visualizzare lo spettrogramma computato.
 
-\section{Concetto matematico}
+\section{Concetti matematici}
+Il circuito realizzato si appoggia sul concetto matematico di importanza
+fondamentale nelle discipline come la fisica e l'elettrotecnica della
+\emph{Trasformata di Fourier}. Questa operazione matematica \`e fondata su su
+un principio dimostrato da Joseph Fourier che asserisce che \`e possibile
+rappresentare una qualsiasi funzione periodica, in alcuni casi anche non
+periodica, con una serie di sinusoidi di frequenze multiple ad una di base.
+L'operazione di \emph{Trasformata} dunque \`e uno strumento per osservare
+le frequenze di queste armoniche, esso trasforma una funzione in funzione del
+tempo \(f(t)\) in una funzione rispetto alla frequenza o alla pulsazione
+\(\hat f(\omega)\).
 
+Secondariamente, il progetto usufruisce anche di un altro strumento chiamato
+\emph{Fast Fourier Transform} (FFT) scoperto inizialmente nel 1965 dai
+matematici J. Cooley e J. Tukey. La FFT \`e un algoritmo con molte
+implementazioni che riduce la complessit\`a computazionale della trasformata
+di fourier discreta da \(\mathcal{O}(n^2)\) a \(\mathcal{O}(n \log n)\).
+Questo \`e necessario perch\`e le operazioni matematiche da eseguire sono dei
+prodotti tra numeri complessi, i quali causerebbero dei severi cali di
+performance.
+
+Tutti i concetti descritti saranno approfonditi nei capitoli seguenti.
 
 \section{Norme di progetto}
+
