@@ -1,7 +1,9 @@
 #include "serialworker.h"
 
 #include <QMutexLocker>
+
 #include <string>
+
 
 SerialWorker::SerialWorker(serial::Serial &serial) :
     _mutex(), _serial(serial)
@@ -28,19 +30,24 @@ void SerialWorker::run()
                 return;
         }
 
+        // wait for header
         do {
             _serial.read(header, 2);
 
             if (isInterruptionRequested())
                 return;
-        } while (*reinterpret_cast<uint16_t *>(header) != sdt::SDT_HEADER);
 
+        } while ((header[0]<<8 | header[1]) != sdt::SDT_HEADER);
+
+        // 
         data.header = sdt::SDT_HEADER;
         data.length = *reinterpret_cast<const uint16_t *>(_serial.read(sizeof(uint16_t)).data());
 
-        if (!data.alloc())
+        // allocate data.length
+        if (!data.realloc())
             continue;
 
+        // read the samples
         std::memcpy(data.samples,
             reinterpret_cast<const sdt::complex_uint16_t *>(
                 _serial.read(data.length * sizeof(sdt::complex_uint16_t)).data()),

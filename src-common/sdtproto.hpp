@@ -4,13 +4,16 @@
 
 namespace sdt
 {
-#include "sdtproto.h"
+
+    #include "sdtproto.h"
 
     struct frame : public sdt_frame
     {
     public:
         frame()
         {
+            static_assert(sizeof(frame) == sizeof(sdt_frame));
+
             header = 0;
             length = 0;
             samples = nullptr;
@@ -18,24 +21,33 @@ namespace sdt
 
         ~frame()
         {
+            dealloc();
+        }
 
-            if (_alloc)
-                delete samples;
+        inline bool realloc()
+        {
+            dealloc();
+            return alloc();
         }
 
         bool alloc()
         {
-            if (_alloc)
+            if (samples != nullptr)
                 return false;
 
             samples = new complex_uint16_t[length];
-            _alloc = true;
-
             return true;
         }
 
-    private:
-        bool _alloc = false;
+        bool dealloc()
+        {
+            if (samples == nullptr)
+                return false;
+
+            delete samples;
+            samples = nullptr;
+            return true;
+        }
     };
 };
 

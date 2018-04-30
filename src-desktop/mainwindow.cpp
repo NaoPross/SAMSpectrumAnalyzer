@@ -88,8 +88,10 @@ void MainWindow::serialDataReceiver(const sdt::frame &data)
     // add data to plot
     for (int i = 0; i < data.length; i++) {
         // log data
-        serialLog(QString::number(data.samples[i].real));
+        serialLog(QString::number(data.samples[i].real) 
+                    + " + i" + QString::number(data.samples[i].imag));
 
+        // write only real part (for now)
         _ysamples.append(static_cast<double>(data.samples[i].real * convert));
         _xsamples.append(static_cast<double>(_ysamples.size()));
     }

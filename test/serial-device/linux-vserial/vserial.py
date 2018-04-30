@@ -4,8 +4,10 @@ import sys
 import time
 import random
 
-VSERIAL_CMD = 'socat -d -d pty,raw,echo=0 pty,raw,echo=0'
-VSERIAL_DEVICE = '/dev/pts/2'
+# VSERIAL_CMD = 'socat -d -d pty,raw,echo=0 pty,raw,echo=0'
+# VSERIAL_DEVICE = '/dev/pts/2'
+
+VSERIAL_DEVICE = sys.argv[1]
 
 # number of samples
 SAMPLES_SIZE = 64
@@ -31,8 +33,7 @@ pkt = pkt_header + pkt_length + pkt_data
 print("packet:")
 print(':'.join("{:02x}".format(c) for c in pkt))
 
-f = open(VSERIAL_DEVICE, 'wb')
 # send packet
+f = open(VSERIAL_DEVICE, 'wb')
 f.write(pkt)
-time.sleep(1)
 f.close()
