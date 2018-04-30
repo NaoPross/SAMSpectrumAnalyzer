@@ -8,7 +8,7 @@ QT       += core gui
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets printsupport
 
-CONFIG += c++11
+CONFIG += c++11 static
 
 TARGET = SpectrumAnalyzer
 TEMPLATE = app
@@ -33,6 +33,10 @@ win32:LIBS += -L../lib/build-serial/debug
 
 LIBS += -lserial
 
+# statically link libraries on windows
+win32:LIBS += -static -static-libgcc -static-libstdc++
+
+
 # qcustomplot library
 INCLUDEPATH += ../lib/qcustomplot
 
@@ -45,7 +49,6 @@ SOURCES += \
 
 HEADERS += \
     ../lib/qcustomplot/qcustomplot.h \
-    ../src-common/stdproto.hpp \
     mainwindow.h \
     serialworker.h
 
