@@ -7,7 +7,7 @@
 
 #include "serialworker.h"
 #include "serial/serial.h"
-#include "../src-common/signals.hpp"
+#include "../src-common/complex.hpp"
 
 namespace Ui {
 class MainWindow;

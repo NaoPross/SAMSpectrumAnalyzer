@@ -7,7 +7,7 @@
 #include <QVector>
 
 #include "serial/serial.h"
-#include "../src-common/signals.hpp"
+#include "../src-common/complex.hpp"
 
 class SerialWorker : public QThread
 {

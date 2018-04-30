@@ -22,7 +22,6 @@ void SerialWorker::run()
     while (!isInterruptionRequested()) {
         QMutexLocker locker(&_mutex);
         QVector<sam::complex_uint16_t> data;
-        data.clear();
 
         while (!isInterruptionRequested()) {
             // wait for serial buffer to accumulate at least 12 bytes
@@ -36,7 +35,7 @@ void SerialWorker::run()
                 
             // start of data
             if (str.trimmed() == "S") {
-                continue;
+                data.clear();
             }
             // end of data
             else if (str.trimmed() == "E") {
