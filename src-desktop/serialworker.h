@@ -4,10 +4,10 @@
 #include <QObject>
 #include <QThread>
 #include <QMutex>
+#include <QVector>
 
 #include "serial/serial.h"
-
-#include "../src-common/sdtproto.hpp"
+#include "../src-common/signals.hpp"
 
 class SerialWorker : public QThread
 {
@@ -20,7 +20,7 @@ public:
     void run() override;
 
 signals:
-    void receivedData(const sdt::frame &data);
+    void receivedData(QVector<sam::complex_uint16_t> data);
 
 private:
     QMutex _mutex;

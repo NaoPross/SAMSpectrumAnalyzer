@@ -7,8 +7,7 @@
 
 #include "serialworker.h"
 #include "serial/serial.h"
-
-#include "../src-common/sdtproto.hpp"
+#include "../src-common/signals.hpp"
 
 namespace Ui {
 class MainWindow;
@@ -25,7 +24,7 @@ public:
     void serialLog(const QString &text);
 
 private slots:
-    void serialDataReceiver(const sdt::frame &data);
+    void serialDataReceiver(QVector<sam::complex_uint16_t> data);
     void on_serialBtn_clicked();
 
 private:

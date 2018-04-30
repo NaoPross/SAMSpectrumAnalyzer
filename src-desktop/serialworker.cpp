@@ -3,6 +3,7 @@
 #include <QMutexLocker>
 
 #include <string>
+#include <iostream> // debug
 
 
 SerialWorker::SerialWorker(serial::Serial &serial) :
@@ -20,40 +21,47 @@ void SerialWorker::run()
 {
     while (!isInterruptionRequested()) {
         QMutexLocker locker(&_mutex);
-        
-        uint8_t header[2];
-        sdt::frame data;
+        QVector<sam::complex_uint16_t> data;
+        data.clear();
 
-        // TODO: add try / catch with ui altert
-        while (!_serial.available()) {
-            if (isInterruptionRequested())
-                return;
+        while (!isInterruptionRequested()) {
+            // wait for serial buffer to accumulate at least 12 bytes
+            while (_serial.available() < 12) {
+                if (isInterruptionRequested())
+                    return;
+            }
+
+            // read data
+            QString str = QString::fromStdString(_serial.readline());
+                
+            // start of data
+            if (str.trimmed() == "S") {
+                continue;
+            }
+            // end of data
+            else if (str.trimmed() == "E") {
+                break;
+            }
+            // data
+            else {
+                bool isUInt;
+                QStringList valueStr = str.trimmed().split('i');
+                sam::complex_uint16_t value;
+
+                if (valueStr.size() < 2)
+                    continue;
+
+                value.real = valueStr.at(0).toUInt(&isUInt);
+                if (!isUInt)
+                    continue;
+
+                value.imag = valueStr.at(1).toUInt(&isUInt);
+                if (!isUInt)
+                    continue;
+
+                data.push_back(value);
+            }
         }
-
-        // wait for header
-        do {
-            _serial.read(header, 2);
-
-            if (isInterruptionRequested())
-                return;
-
-        } while ((header[0]<<8 | header[1]) != sdt::SDT_HEADER);
-
-        // 
-        data.header = sdt::SDT_HEADER;
-        data.length = *reinterpret_cast<const uint16_t *>(_serial.read(sizeof(uint16_t)).data());
-
-        // allocate data.length
-        if (!data.realloc())
-            continue;
-
-        // read the samples
-        std::memcpy(data.samples,
-            reinterpret_cast<const sdt::complex_uint16_t *>(
-                _serial.read(data.length * sizeof(sdt::complex_uint16_t)).data()),
-            data.length
-        );
-
 
         emit receivedData(data);
     }

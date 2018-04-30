@@ -50,11 +50,11 @@ MainWindow::MainWindow(QWidget *parent) :
     _ui->plot->yAxis2->setVisible(true);
 
 
-    qRegisterMetaType<sdt::frame>("sdt::frame");
+    qRegisterMetaType<QVector<sam::complex_uint16_t>>("QVector<sam::complex_uint16_t>");
 
     connect(
-        &_serialWorker, SIGNAL(receivedData(const sdt::frame &)),
-        this, SLOT(serialDataReceiver(const sdt::frame &))
+        &_serialWorker, SIGNAL(receivedData(QVector<sam::complex_uint16_t>)),
+        this, SLOT(serialDataReceiver(QVector<sam::complex_uint16_t>))
     );
 }
 
@@ -77,7 +77,7 @@ void MainWindow::serialLog(const QString &text)
     _ui->serialDisplay->append(text);
 }
 
-void MainWindow::serialDataReceiver(const sdt::frame &data)
+void MainWindow::serialDataReceiver(QVector<sam::complex_uint16_t> data)
 {
     const double convert = 5.0/1024.0;
 
@@ -86,13 +86,13 @@ void MainWindow::serialDataReceiver(const sdt::frame &data)
     _ysamples.clear();
 
     // add data to plot
-    for (int i = 0; i < data.length; i++) {
+    for (int i = 0; i < data.size(); i++) {
         // log data
-        serialLog(QString::number(data.samples[i].real) 
-                    + " + i" + QString::number(data.samples[i].imag));
+        serialLog(QString::number(data[i].real) 
+                    + " + i" + QString::number(data[i].imag));
 
         // write only real part (for now)
-        _ysamples.append(static_cast<double>(data.samples[i].real * convert));
+        _ysamples.append(static_cast<double>(data[i].real * convert));
         _xsamples.append(static_cast<double>(_ysamples.size()));
     }
 
