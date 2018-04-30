@@ -273,6 +273,43 @@
 
         }
 
+        \journalentry{Lu}{30.04.2018}{2}{
+            Terminato l'implementazione del protocollo per mandare i dati.
+            \`E ora possibile mandare numeri complessi interi sia positivi
+            che negativi.
+        }{}
+
+        \journalentry{Lu}{30.04.2018}{4}{
+            Implementato il calcolo della FFT sul microcontroller e la 
+            corrispondente visualizzazione sul PC.
+        }{
+            Commits: 
+            \href{https://github.com/NaoPross/SAMSpectrumAnalyzer/commit/8adeaa8dc5a6355d08012a096ec995c56b4011a1}{\texttt{8adeaa8}},
+            \href{https://github.com/NaoPross/SAMSpectrumAnalyzer/commit/bec418507b056d6dede4e62c8676ca9d6e3582da}{\texttt{bec4185}},
+            \href{https://github.com/NaoPross/SAMSpectrumAnalyzer/commit/dd19e0d7e2feadcebe527d0460fbf45567f5de80}{\texttt{dd19e0d}}
+        }
+
+        \journalentry{Lu}{30.04.2018}{1}{
+            Corretto i footprints, preparato i lucidi per la stampa.
+        }{}
+
+        \journalentry{Lu}{30.04.2018}{2}{
+            Cambiato il baudrate della trasmissione a 57.6\,k e raddoppiato
+            il numero di campioni. Modificato l'implementazione del PC per
+            utilizzare le strutture \texttt{std::complex} invece della mia
+            implementazione \texttt{sam::complex\_int16\_t} poich\`e sono
+            standard ed hanno gi\`a tutte le operazioni matematiche definite.
+        }{
+            Commits:
+            \href{https://github.com/NaoPross/SAMSpectrumAnalyzer/commit/d34ffc6e650fcaf95d45dda8759bc1b01d7c51e2}{\texttt{d34ffc6}},
+            \href{https://github.com/NaoPross/SAMSpectrumAnalyzer/commit/41dae5e697ad2ab06d51ca150320824e97ada254}{\texttt{41dae5e}}
+        }
+
+        \journalentry{Lu}{30.04.2018}{1}{
+            Continuato la documentazione.
+        }{}
+
+
 % ------------------------------------------------------------------------------
     \end{tabularx}
 \end{document}
