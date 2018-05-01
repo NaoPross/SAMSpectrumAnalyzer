@@ -1,23 +1,34 @@
-# tools
+# build options
+RELEASE := 0
+
+# git
+GIT := git
+
+# qmake
 ifeq ($(shell lsb_release -si),Debian)
 QMAKE := QT_SELECT=qt5 qmake
 else
 QMAKE := qmake-qt5 
 endif
+QMAKE_ARGS := -makefile -o Makefile -Wall 
 
-GIT := git
-QMAKE_ARGS := -makefile -o Makefile -Wall "CONFIG+=debug" "CONFIG+=qml_debug"
+ifeq ($(RELEASE),1)
+	QMAKE_ARGS += "CONFIG+=release"
+else
+	QMAKE_ARGS += "CONFIG+=debug" "CONFIG+=qml_debug"
+endif
+
 
 # targets
 all: desktop
 
 .PHONY: run
 run: desktop
-	LD_LIBRARY_PATH=build-desktop ./build-desktop/SpectrumAnalyzer
+	./build-desktop/SpectrumAnalyzer
 	
 .PHONY: debug
 debug: desktop
-	LD_LIBRARY_PATH=build-desktop gdb ./build-desktop/SpectrumAnalyzer
+	gdb ./build-desktop/SpectrumAnalyzer
 
 
 .PHONY: desktop
@@ -25,7 +36,6 @@ desktop: src-desktop
 	mkdir -p build-desktop
 	$(QMAKE) $(QMAKE_ARGS) -o build-desktop/ src-desktop
 	$(MAKE) -C build-desktop
-	cp lib/build-serial/libserial.so* build-desktop
 
 .PHONY: clean
 clean:
