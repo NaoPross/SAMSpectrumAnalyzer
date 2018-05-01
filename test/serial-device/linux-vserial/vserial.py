@@ -10,28 +10,24 @@ import random
 VSERIAL_DEVICE = sys.argv[1]
 
 # number of samples
-SAMPLES_SIZE = 64
-
-# size of a complex value in bytes
-COMPLEX_VALUE_SIZE = 2 
+SAMPLES_SIZE = 128
 
 # packet parts
-pkt_header = bytes(b'\xf0\x0d')
-pkt_length = (SAMPLES_SIZE * COMPLEX_VALUE_SIZE).to_bytes(2, 'little') # little endian
-pkt_data   = b''
+pkt_header = "S\n\r"
+pkt_data   = ""
+pkt_footer = "E\n\r"
 
 for i in range(SAMPLES_SIZE):
     # real value
-    pkt_data += random.randint(0,1024).to_bytes(2, 'little')
-    # complex value
-    pkt_data += random.randint(0,1024).to_bytes(2, 'little')
+    pkt_data += "%04di%04d\n\r" % (random.randint(0, 1024), random.randint(0,1024))
 
 # build packet
-pkt = pkt_header + pkt_length + pkt_data
+pkt = bytes(pkt_header + pkt_data + pkt_footer, "ascii")
 
 # show packet
 print("packet:")
-print(':'.join("{:02x}".format(c) for c in pkt))
+#print(':'.join("{:02x}".format(c) for c in pkt))
+print(pkt_header + pkt_data + pkt_footer)
 
 # send packet
 f = open(VSERIAL_DEVICE, 'wb')
