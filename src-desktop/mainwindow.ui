@@ -14,7 +14,67 @@
    <string>Spectrum Analyzer</string>
   </property>
   <widget class="QWidget" name="centralWidget">
-   <layout class="QVBoxLayout" name="verticalLayout" stretch="3,0,1">
+   <layout class="QVBoxLayout" name="verticalLayout" stretch="0,4,0,1">
+    <item>
+     <layout class="QHBoxLayout" name="plotTypeHLayout" stretch="0,0,0,1">
+      <item>
+       <widget class="QCheckBox" name="adjustAxisCheckBox">
+        <property name="text">
+         <string>Auto adjust axis</string>
+        </property>
+        <property name="checked">
+         <bool>false</bool>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QPushButton" name="setAxisBtn">
+        <property name="enabled">
+         <bool>true</bool>
+        </property>
+        <property name="text">
+         <string>Set Axis</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QLabel" name="plotTypeSelLabel">
+        <property name="text">
+         <string>Plot Type</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QComboBox" name="plotTypeSelCombo">
+        <item>
+         <property name="text">
+          <string>Amplitude</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>Phase</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>Complex</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>Real</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>Imaginary</string>
+         </property>
+        </item>
+       </widget>
+      </item>
+     </layout>
+    </item>
     <item>
      <widget class="QCustomPlot" name="plot" native="true">
       <property name="sizePolicy">
@@ -26,7 +86,7 @@
      </widget>
     </item>
     <item>
-     <layout class="QHBoxLayout" name="horizontalLayout">
+     <layout class="QHBoxLayout" name="serialDeviceHLayout">
       <item>
        <widget class="QLabel" name="deviceLabel">
         <property name="text">
@@ -123,7 +183,7 @@
      <x>0</x>
      <y>0</y>
      <width>500</width>
-     <height>21</height>
+     <height>20</height>
     </rect>
    </property>
   </widget>

@@ -26,7 +26,10 @@ public:
 
 private slots:
     void serialDataReceiver(QVector<std::complex<int>> data);
+
     void on_serialBtn_clicked();
+    void on_adjustAxisCheckBox_toggled(bool value);
+    void on_plotTypeSelCombo_currentIndexChanged(int index);
 
 private:
     Ui::MainWindow *_ui;

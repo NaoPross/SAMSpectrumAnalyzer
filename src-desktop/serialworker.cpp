@@ -25,10 +25,9 @@ void SerialWorker::run()
 
         while (!isInterruptionRequested()) {
             // wait for serial buffer to accumulate at least 12 bytes
-            while (_serial.available() < 14) {
+            while (_serial.available() < 14)
                 if (isInterruptionRequested())
                     return;
-            }
 
             // read data
             QString str = QString::fromStdString(_serial.readline());
@@ -43,15 +42,18 @@ void SerialWorker::run()
             }
             // data
             else {
-                bool isInt;
                 QStringList valueStr = str.trimmed().split('i');
-                std::complex<int> value;
-
                 if (valueStr.size() < 2)
                     continue;
 
-                value.real(valueStr.at(0).toInt(&isInt));
-                value.imag(valueStr.at(1).toInt(&isInt));
+                bool isInt[2];
+                std::complex<int> value(
+                    valueStr.at(0).toInt(&isInt[0]),
+                    valueStr.at(1).toInt(&isInt[1])
+                );
+
+                // if (!isInt[0] || !isInt[1])
+                //     continue
 
                 data.push_back(value);
             }
