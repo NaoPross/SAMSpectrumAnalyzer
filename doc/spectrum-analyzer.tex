@@ -43,12 +43,20 @@
 
 % language
 \usepackage[italian]{babel}
+
+% quotes
+\usepackage{csquotes}
+\usepackage{fancyvrb}
+
 % sans serif font
 \renewcommand{\familydefault}{\sfdefault}
 
 % urls
-\usepackage{url}
-\urlstyle{tt}
+\usepackage[
+    colorlinks=true,
+    linkcolor=.,
+    urlcolor=blue
+]{hyperref}
 
 % maths
 \usepackage{amsmath}
@@ -68,6 +76,7 @@
 \usepackage{tikz}
 \usepackage[european]{circuitikz}
 \usepackage{tikz-timing}
+\usepackage{tikzscale}
 
 % code
 \usepackage{xcolor}
@@ -94,7 +103,6 @@
 }
 \lstset{escapechar=`, style=cc}
 
-
 % ---------------------------------------------------------------------------
 \numberwithin{equation}{subsection}
 \newcommand{\dd}[1]{\mathrm{d}#1}
@@ -111,7 +119,7 @@
 	\include{tex/introduzione}
 	\include{tex/hardware}
 	\include{tex/software}
-	\include{tex/conclusioni}
+	\include{tex/problemi}
     \input{tex/bibliography}
 
 	% allegati
