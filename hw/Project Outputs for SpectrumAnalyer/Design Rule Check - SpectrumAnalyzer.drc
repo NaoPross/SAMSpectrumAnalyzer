@@ -1,9 +1,9 @@
 Protel Design System Design Rule Check
 PCB File : Z:\SAMB_4\projects\SAMSpectrumAnalyzer\hw\SpectrumAnalyzer.PcbDoc
-Date     : 27.04.2018
-Time     : 10:47:06
+Date     : 03.05.2018
+Time     : 09:40:14
 
-Processing Rule : Clearance Constraint (Gap=10mil) (All),(All)
+Processing Rule : Clearance Constraint (Gap=20mil) (All),(All)
 Rule Violations :0
 
 Processing Rule : Short-Circuit Constraint (Allowed=No) (All),(All)
@@ -28,8 +28,8 @@ Processing Rule : Hole To Hole Clearance (Gap=10mil) (All),(All)
 Rule Violations :0
 
 Processing Rule : Minimum Solder Mask Sliver (Gap=5mil) (All),(All)
-   Violation between Minimum Solder Mask Sliver Constraint: (0.74mil < 5mil) Between Pad J2-3B(1363.386mil,3127.362mil) on Multi-Layer And Pad J2-3A(1284.646mil,3127.362mil) on Multi-Layer [Top Solder] Mask Sliver [0.74mil] / [Bottom Solder] Mask Sliver [0.74mil]
-   Violation between Minimum Solder Mask Sliver Constraint: (0.74mil < 5mil) Between Pad J2-2A(1205.906mil,3284.843mil) on Multi-Layer And Pad J2-2B(1205.906mil,3363.583mil) on Multi-Layer [Top Solder] Mask Sliver [0.74mil] / [Bottom Solder] Mask Sliver [0.74mil]
+   Violation between Minimum Solder Mask Sliver Constraint: (0.74mil < 5mil) Between Pad J2-2B(1205.906mil,3363.583mil) on Multi-Layer And Pad J2-2A(1205.906mil,3284.843mil) on Multi-Layer [Top Solder] Mask Sliver [0.74mil] / [Bottom Solder] Mask Sliver [0.74mil]
+   Violation between Minimum Solder Mask Sliver Constraint: (0.74mil < 5mil) Between Pad J2-3A(1284.646mil,3127.362mil) on Multi-Layer And Pad J2-3B(1363.386mil,3127.362mil) on Multi-Layer [Top Solder] Mask Sliver [0.74mil] / [Bottom Solder] Mask Sliver [0.74mil]
 Rule Violations :2
 
 Processing Rule : Silk To Solder Mask (Clearance=0mil) (IsPad),(All)
