@@ -62,63 +62,105 @@ possiamo riscrivere \(f(x)\) nei seguenti modi
 
 \subsection{Propriet\`a di ortogonalit\`a del seno e del coseno}
 Per avere delle fondamenta solide prima dell'introduzione dell'argomento
-principale, sar\`a dimostrata l'ortogonalit\`a delle due funzioni
-trigonometriche mediante alcune verit\`a matematiche su degli integrali
-definiti.  Per tutti i casi seguenti definiamo \(T\) come il periodo della
-funzione periodica.
+principale, saranno dimostrate le propriet\`a di ortogonalit\`a del seno e
+coseno. Considerando il periodo \(T\), dunque di frequenza \(2\pi /\,T\).
 
-\begin{align*}
-    & \int_0^T \sin(\frac{m2\pi x}{T})\,\dd{x} = 0
+\paragraph{Intuizione geometrica}
+
+\paragraph{Dimostrzioni algebriche }
+\begin{enumerate}
+\item {
+    \begin{align*}
+        \int_0^T \sin(\frac{m2\pi x}{T})\,\dd{x} &= 0
         \quad \forall m \in \mathbb{Z} \\
-    %
-    & \int_0^T \cos(\frac{m2\pi x}{T})\,\dd{x} = 0
-        \quad \forall m \in \mathbb{Z^*} \\
-    %
-    & \int_0^T \sin(\frac{m2\pi x}{T})\cos(\frac{n2\pi x}{T})\,\dd{x} = 0
-        \quad \forall m,n \in \mathbb{Z} \\
-    %
-    & \int_0^T \sin(\frac{m2\pi x}{T})\sin(\frac{n2\pi x}{T})\,\dd{x} = 0 
-        \quad \forall m,n \in \mathbb{Z}~|~m\neq \pm n \\
-    %
-    & \int_0^T \sin^2(\frac{m2\pi x}{T})\,\dd{x} = \frac{T}{2}
-        \quad \forall m \in \mathbb{Z} \\
-    %
-    & \int_0^T \cos(\frac{m2\pi x}{T})\cos(\frac{n2\pi x}{T})\,\dd{x} = 0 
-        \quad \forall m,n \in \mathbb{Z}~|~m\neq \pm n \\
-    %
-    & \int_0^T \cos^2(\frac{m2\pi x}{T})\,\dd{x} = \frac{T}{2}
-        \quad \forall m \in \mathbb{Z^*} \\
-\end{align*}
+        %
+        \int_0^T \sin(\frac{m2\pi x}{T})\,\dd{x}
+        &= \bigg [-\frac{T}{2\pi m }\cdot\cos\big(\frac{2\pi}{T}mx\big)\bigg]^T_0 \\
+        &= -\frac{T}{2\pi m}\cdot\cos\big(2\pi m\big) 
+            +\frac{T}{2\pi m}\cdot\cos\big(0\big) \\
+        &= 0
+    \end{align*}
+}
 
-\subsubsection{Dimostrazioni}
+\item {
+    \begin{align*}
+        \int_0^T \cos(\frac{m2\pi x}{T})\,\dd{x} &= 0
+        \quad \forall m \in \mathbb{Z}^* \\
+        %
+        \int_0^T \cos(\frac{m2\pi x}{T})\,\dd{x}
+        &= \bigg [\frac{T}{2\pi m}\cdot\sin\big(\frac{2\pi}{T}mx\big)\bigg]^T_0 \\
+        &= \frac{T}{2\pi m}\cdot\sin\big(2\pi m\big) 
+            +\frac{T}{2\pi m}\cdot\sin\big(0\big) \\
+        &= 0
+    \end{align*}
+    Nota: Se \(m = 0\) 
+    \[\int_0^T \cos(\frac{m2\pi x}{T})\,\dd{x} = T\]
+}
 
+\item {
+}
+\end{enumerate}
+
+% \begin{align*}
+%     & \int_0^T \sin(\frac{m2\pi x}{T})\,\dd{x} = 0
+%         \quad \forall m \in \mathbb{Z} \\
+%     %
+%     & \int_0^T \cos(\frac{m2\pi x}{T})\,\dd{x} = 0
+%         \quad \forall m \in \mathbb{Z^*} \\
+%     %
+%     & \int_0^T \sin(\frac{m2\pi x}{T})\cos(\frac{n2\pi x}{T})\,\dd{x} = 0
+%         \quad \forall m,n \in \mathbb{Z} \\
+%     %
+%     & \int_0^T \sin(\frac{m2\pi x}{T})\sin(\frac{n2\pi x}{T})\,\dd{x} = 0 
+%         \quad \forall m,n \in \mathbb{Z}~|~m\neq \pm n \\
+%     %
+%     & \int_0^T \sin^2(\frac{m2\pi x}{T})\,\dd{x} = \frac{T}{2}
+%         \quad \forall m \in \mathbb{Z} \\
+%     %
+%     & \int_0^T \cos(\frac{m2\pi x}{T})\cos(\frac{n2\pi x}{T})\,\dd{x} = 0 
+%         \quad \forall m,n \in \mathbb{Z}~|~m\neq \pm n \\
+%     %
+%     & \int_0^T \cos^2(\frac{m2\pi x}{T})\,\dd{x} = \frac{T}{2}
+%         \quad \forall m \in \mathbb{Z^*} \\
+% \end{align*}
 
 \section{Polinomio Trigonometrico}
+Analogamente a come \`e definito un polinomio \(P\) ``normale'' di grado
+\(N\), \`e possibile definire anche un polinomio trigonometrico \(T\).
+\[
+    P_N(x) = \sum_{n=0}^N a_n x^n \qquad a_n \in \mathbb{R},~ a_N \neq 0
+\]
+\[
+    T_N(x) = \sum_{n=0}^N c_n e^{i\omega nx} 
+        \qquad c_n \in\mathbb{C},~\omega\in\mathbb{R}, ~ c_N \neq 0
+\]
+Questo polinomio \`e detto \emph{trigonometrico} perch\`e utilizzando la
+formula di eulero \(e^{i\varphi} = \cos(\varphi) + i\sin(\varphi)\) si pu\`o
+espandere nel seguente modo.
+\[
+    T_N(x) = \sum_{n=0}^N\big [a_n\cdot\cos(\omega nx) + ib_n\cdot\sin(\omega nx)]
+    \qquad a_n, b_n \in \mathbb{C}
+\]
+\`E definito inoltre il polinomio trogonometrico \emph{reale} come
+\[
+    T_N(x) = \sum_{n=0}^N\big [a_n\cdot\cos(\omega nx) + b_n\cdot\sin(\omega nx)]
+    \qquad a_n, b_n \in \mathbb{R}
+\]
+Quest'ultimo mediante delle identit\`a trigonometriche pu\`o essere riscritto
+anche nel modo seguente.
+\[
+    T_N(x) = \sum_{n=0}^N A_n\cdot\cos(\omega nx - \varphi)
+\]
+
+In tutti i casi possiamo osservare che il polinomio trogonometrico \`e una
+somma di sinusoidi di frequenze multiple ad una base \(\omega = 2\pi f\).
+Se descritto mediante la terminologia dell'algebra lineare, si pu\`o anche
+osservare che un polinomio trigonometrico \`e una combinazione lineare nello
+spazio funzionale ortonormato dalle basi \(\sin(\omega nx)\) e \(\cos(\omega
+nx)\).
 
 
 \section{Serie di Fourier}
-La serie di Fourier, nominata tale in onore a Jean-Baptise Joseph Fourier, di
-una funzione \`e descritta nel modo seguente.
-\begin{equation} \label{eq:fourier-series}
-    f(x) = a_0 + \sum_{n=1}^{\infty}\Big [
-        a_n\cdot\cos(\frac{n2\pi x}{T}) +
-        b_n\cdot\sin(\frac{n2\pi x}{T}) \Big ]
-\end{equation}
-Con questa equazione Fourier ha teorizzato che \`e possibile rappresentare
-qualsiasi funzione come una combinazione lineare di armoniche di frequenze
-multiple di una frequenza di base. Con la seguente identi\`a trigonometrica
-\`e possibile anche descrivere la serie con una notazione pi\`u compatta.
-\begin{equation*}
-    a\cdot\cos(\alpha) + b\cdot\sin(\alpha) = A\cdot\cos(\alpha-\vartheta)
-\end{equation*}
-Per \(A = \sqrt{a^2+b^2}\), \(\cos(\vartheta)=\frac{b}{A}\) e
-\(\sin(\vartheta)=\frac{b}{A}\). Dunque
-\begin{align}
-    f(x) &= a_0 + \sum_{n=1}^{\infty} 
-        A_n\cdot\cos(\frac{n2\pi x}{T} - \vartheta_n) \\
-    f(x) &= a_0 + \sum_{n=1}^{\infty} 
-        A_n\cdot\sin(\frac{n2\pi x}{T} + \varphi_n)
-\end{align}
 
 \section{Trasformata di Fourier discreta}
 
