@@ -165,11 +165,51 @@ Nella cartella \texttt{build-desktop} sar\`a pronto l'eseguibile con tutte le
 librerie dinamiche (DLL) necessarie.
 
 \subsection{Architettura}
+Il programma desktop \`e programmato per agire ad eventi asincroni dati dalla
+porta seriale del sistema operativo e dalle interazioni dell'utente.
+La gestione degli eventi grafici \`e gestita interamente da Qt, perci\`o sono
+stati scritti solamente i metodi che vengono attivati in funzione degli eventi
+dall'utente.
+
+Per la porta seriale invece il compito della gestione \`e stato delegato ad una
+classe \texttt{SerialWorker} che ha un rapporto di \emph{composizione} con la
+classe \texttt{MainWindow} in quanto essa esiste unicamente quando esiste
+\texttt{MainWindow}. Nella figura \ref{fig:desktop-sequence} \`e mostrato un
+diagramma delle sequenze che mostra il flusso dei dati attraverso le
+componenti del programma.
+
 \begin{figure}[H] \centering
-    \includegraphics[width=.8\linewidth]{figures/uml/desktop-sequence}
+    \includegraphics[width=.6\textwidth]{figures/uml/desktop-sequence}
     \caption{Diagramma delle sequenze \label{fig:desktop-sequence}}
 \end{figure}
 
+Per l'implementazione nella figura \ref{fig:desktop-classes} \`e possibile
+osservare il diagramma UML delle classi. \`E importante notare che Qt 
+introduce dei nuovi tipi di membri chiamati \emph{slots} e \emph{signals}.
+Gli slots sono dei normali metodi che rispondo ai signals. I signals invece
+sono delle funzioni prive di implementazione che possono essere \emph{emesse}.
+
+Quando viene realizzato un modello ad oggetti in Qt \`e possibile collegare
+degli slots a dei segnali per poter gestire delle azioni asincrone.  Nel
+progetto dello SpectrumAnalyzer il segnale \texttt{receivedData} della classe
+\texttt{SerialWorker} viene messo quando sono stati ricevuti dei dati validi
+dalla seriale. Il segnale ha come argomento un vettore di numeri complessi
+interi.
+
+Nella classe \texttt{MainWindow} il segnale di \texttt{receivedData} \`e
+associato allo slot \texttt{serialDataReceiver} con argomento uguale al
+segnale, dunque un vettore di numeri complessi interi, che processa i dati e li
+mostra nell'interfaccia utente.
+
+\begin{figure}[H] \centering
+    \includegraphics[width=\textwidth]{figures/uml/desktop-classes}
+    \caption{Diagramma delle classi \label{fig:desktop-classes}}
+\end{figure}
+
+\subsection{Interfaccia utente}
+\begin{figure}[H] \centering
+	\includegraphics[width=.5\textwidth]{figures/screenshots/desktop-debian-empty}
+\end{figure}
 
 \section{Interfaccia al Display}
 

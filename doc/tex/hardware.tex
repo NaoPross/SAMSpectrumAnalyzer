@@ -32,7 +32,10 @@ digitale), ed \`e conosciuto anche come circuito di filtraggio
 
 \begin{figure}[H] \centering
     \includegraphics[width=.8\linewidth]{figures/circuits/filter-ampl.pdf}
-    \caption{Circuito di adattamento del segnale in entrata \label{fig:filter-ampl}}
+    \caption[Circuito di adattamento del segnale]{
+        Circuito di adattamento del segnale in entrata.
+        \label{fig:filter-ampl}
+    }
 \end{figure}
 
 \`E importante notare che per questa applicazione si \`e scelto utilizzare
@@ -50,7 +53,7 @@ alternata ignorando l'offset del segnale, perci\`o di \emph{non} utilizzare
 un'alimentazione simmetrica \(\pm\)5\,V.
 
 L'amplificazione di questo amplificatore \`e comunque data dal rapporto
-\(1+R14/R13\) che permette un un guadagno fino a 6 oppure 15,5\,dB.
+\(1+R_{14}/R_{13}\) che permette un un guadagno fino a 6 oppure 15,5\,dB.
 
 
 \paragraph{Filtro.} A destra della figura \ref{fig:filter-ampl} vi \`e il
@@ -59,6 +62,11 @@ attivo di primo ordine. Esso \`e dimensionato con una frequenza di taglio di
 10\,kHz poich\`e quest'ultimo \`e il limite di Nyquist, conosciuto anche dal
 teorema di Shannon, il quale stata che la frequenza di campionamento deve
 essere almeno doppia della frequenza dell'armonica di frequenza maggiore.
+
+Anche il filtro essendo non invertente ha un rapporto di amplificazione dato
+da \(1+R_{12}/R_{11}\). Nella figura il valore della resistenza \(R_{11}\) \`e
+\textbf{incorretto} (Vedi sezione \ref{sec:err-filter}). Dopo la correzzione
+il filtro ha un amplificazione approssimativamente unitaria.
 
 \section{Microcontroller}
 

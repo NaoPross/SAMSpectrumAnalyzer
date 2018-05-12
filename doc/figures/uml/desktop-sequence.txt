@@ -1,7 +1,26 @@
 @startuml
 skinparam monochrome true
 
-OS -> SerialWorker: Received from serial
-SerialWorker -> MainWindow: Received data (as vector)
-MainWindow -> MainWindow: Display data
+actor User
+
+OS -> SerialWorker: Received Data
+activate SerialWorker
+
+SerialWorker -> MainWindow: Processed Data
+activate MainWindow
+
+MainWindow -> MainWindow: Display
+
+MainWindow --> SerialWorker: Done
+deactivate MainWindow
+
+SerialWorker --> OS: Done
+deactivate SerialWorker
+
+User -> MainWindow: Action
+activate MainWindow 
+
+MainWindow --> User: Done
+deactivate MainWindow
+
 @enduml

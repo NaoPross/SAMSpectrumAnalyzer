@@ -7,16 +7,15 @@ La regressione lineare \`e un'approssimazione di una serie di dati ad una
 funzione lineare. Questa retta di approssimazione pu\`o essere calcolata in
 molteplici modi, per questo progetto \`e di interesse utilizzare il
 \emph{metodo dei minimi quadrati}.  Sar\`a dunque esplicato come trovare i
-coefficienti di una retta a \(m+1\) termini partendo da \(N\) punti di
-riferimento.
+coefficienti di una retta a \(m+1\) termini interpolando \(N\) punti.
 \begin{equation}
     r(x, a_0, \dots, a_m) = a_0 + x\sum_{i=1}^{m}a_i
 \end{equation}
 Consideriamo di avere gli insiemi \(X\) e \(Y\) entrambi con \(N\) termini di
-cui si prende le coppie ordinate di valori \((x_k, y_k)~ x_k\in X,\,y_k\in
-Y\), ossia i punti dato di cui eseguire la regressione.  Il metodo dei minimi
-quadrati trova i coefficienti della retta minimizzando il quadrato della
-differenza tra il valore stimato dalla retta \(r(x_k)\) e il valore reale
+cui si prende le coppie ordinate di valori, ossia i punti da interopolare.  Il
+metodo dei minimi quadrati trova i coefficienti della retta minimizzando il
+quadrato della differenza tra il valore stimato dalla retta \(y = r(x_k)\) e il
+valore reale
 \(y_k\).
 \begin{equation*}
     \min((r(x_k) - y_k)^2)\quad \forall x_k\in X,\, y_k\in Y
@@ -46,19 +45,19 @@ noti \(\vec{u}\)
 Una funzione armonica, sinusoidale, pu\`o essere descritta in molteplici modi.
 Iniziamo dunque osservando le forme pi\`u semplici, ossia la forma
 trigonometrica.
-\begin{align} \label{eq:harmonics-trig}
+\begin{align*}
     f(x) &= a\cdot\sin (\omega x + \varphi) \\
     f(x) &= b\cdot\cos(\omega x + \vartheta)
-\end{align}
-Conoscendo la formula di Eulero \eqref{eq:euler}
-\begin{equation} \label{eq:euler}
+\end{align*}
+Conoscendo la formula di Eulero 
+\[
     e^{i\varphi} = \cos(\varphi) + i\cdot\sin(\varphi)
-\end{equation}
+\]
 possiamo riscrivere \(f(x)\) nei seguenti modi
-\begin{align} \label{eq:harmonics-complex}
+\begin{align*}
     f(x) &= \frac{a}{2i}\cdot(e^{i(x\omega + \varphi)} - e^{-i(x\omega + \varphi)}) \\
     f(x) &= \frac{b}{2}\cdot(e^{i(x\omega + \vartheta)} + e^{-i(x\omega + \vartheta)})
-\end{align}
+\end{align*}
 
 \subsection{Propriet\`a di ortogonalit\`a del seno e del coseno}
 Per avere delle fondamenta solide prima dell'introduzione dell'argomento
@@ -66,6 +65,8 @@ principale, saranno dimostrate le propriet\`a di ortogonalit\`a del seno e
 coseno. Considerando il periodo \(T\), dunque di frequenza \(2\pi /\,T\).
 
 \paragraph{Intuizione geometrica}
+
+
 
 \paragraph{Dimostrzioni algebriche }
 \begin{enumerate}
@@ -125,8 +126,9 @@ coseno. Considerando il periodo \(T\), dunque di frequenza \(2\pi /\,T\).
 % \end{align*}
 
 \section{Polinomio Trigonometrico}
-Analogamente a come \`e definito un polinomio \(P\) ``normale'' di grado
-\(N\), \`e possibile definire anche un polinomio trigonometrico \(T\).
+Analogamente a come \`e definito un polinomio \(P\) ``normale'', una somma di
+termini dal grado 0 fino al grado \(N\), \`e possibile definire anche un
+polinomio trigonometrico \(T\).
 \[
     P_N(x) = \sum_{n=0}^N a_n x^n \qquad a_n \in \mathbb{R},~ a_N \neq 0
 \]
@@ -153,7 +155,7 @@ anche nel modo seguente.
 \]
 
 In tutti i casi possiamo osservare che il polinomio trogonometrico \`e una
-somma di sinusoidi di frequenze multiple ad una base \(\omega = 2\pi f\).
+somma di sinusoidi di frequenze multiple ad una base \(f = \omega/2\pi\).
 Se descritto mediante la terminologia dell'algebra lineare, si pu\`o anche
 osservare che un polinomio trigonometrico \`e una combinazione lineare nello
 spazio funzionale ortonormato dalle basi \(\sin(\omega nx)\) e \(\cos(\omega

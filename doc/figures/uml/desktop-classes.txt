@@ -1,0 +1,42 @@
+@startuml
+skinparam monochrome true
+skinparam defaultFontName DejaVu Sans Mono
+
+class QMainWindow {
+}
+
+class MainWindow {
+    - serial::Serial  _serial;
+    - SerialWorker _serialWorker;
+
+    --
+    + void serialLog(const QString &text);
+
+    .. slots ..
+    - void serialDataReceiver(QVector<std::complex<int> > data);
+    - void on_serialBtn_clicked();
+    - void on_adjustAxisCheckBox_toggled();
+    - void on_plotTypeSelCombo_currentIndexChanged(int index);
+}
+
+class QThread {
+}
+
+class SerialWorker {
+    - QMutex _mutex
+    - serial::Serial &_serial
+
+    --
+    + void run()
+
+    .. signals ..
+    + void receivedData(QVector<std::complex<int> > data)
+}
+
+
+QMainWindow <|-- MainWindow
+QThread <|-- SerialWorker
+MainWindow *-- SerialWorker
+MainWindow o-- Serial
+
+@enduml

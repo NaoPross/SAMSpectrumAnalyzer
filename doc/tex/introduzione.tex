@@ -34,10 +34,68 @@ matematici J. Cooley e J. Tukey. La FFT \`e un algoritmo con molte
 implementazioni che riduce la complessit\`a computazionale della trasformata
 di fourier discreta da \(\mathcal{O}(n^2)\) a \(\mathcal{O}(n \log n)\).
 Questo \`e necessario perch\`e le operazioni matematiche da eseguire sono dei
-prodotti tra numeri complessi, i quali causerebbero dei severi cali di
-performance.
+prodotti tra numeri complessi, le quali impiegano molto tempo per
+essere computate.
 
 Tutti i concetti descritti saranno approfonditi nei capitoli seguenti.
 
 \section{Norme di progetto}
+\subsection{Software}
+{\renewcommand\arraystretch{1.2}
+\begin{table}[H] \centering
+    \begin{tabularx}{\textwidth}{X l}
+        \toprule
+        \bfseries Componente & \bfseries Software \\
+        \midrule
+        Version control  & Git \\
+        Documentazione   & \textrm{\LaTeX} \\
+        Diario di lavoro & \textrm{\LaTeX} \\
+        Pianificazione   & MS Excel 2016 \\
+        \midrule
+        \textrm{\LaTeX} engine & \textrm{\XeLaTeX} \\
+        ECAD                   & Altium Designer 2017 \\
+        Embedded toolchain     & Microchip XC, MPLabX \\
+        Desktop Toolchain      & QtCreator, g++, MinGW \\
+        \bottomrule
+    \end{tabularx}
+\end{table}
+}
 
+\subsection{Hardware}
+{\renewcommand\arraystretch{1.2}
+\begin{table}[H] \centering
+    \begin{tabularx}{\textwidth}{X r l}
+        \toprule
+        \bfseries Regola & \bfseries Valore & \bfseries Unit\`a \\
+        \midrule
+        Number of Layers        &   2 & -- \\
+        Silkscreen / Overlay    &  No & -- \\ 
+        Minimum trace width     &  30 & mil \\
+        Maximum trace width     &  60 & mil \\
+        Minimum trace clearance &  20 & mil \\
+        Minimum power rail width & 50 & mil \\
+        \bottomrule
+    \end{tabularx}
+\end{table}
+}
+
+\subsection{Programmazione}
+\begin{table}[H] \centering
+    \begin{tabularx}{\textwidth}{X l}
+        \toprule
+        \bfseries Regole per programmazione embedded & \\
+        \midrule
+        Paradigma & Imperativo sequenziale \\
+        Convenzione per i nomi & \texttt{snake\_case}, sempre minuscolo \\
+        Tabulatore & 4 spazi \\
+        Tabulato con gli spazi & S\`i \\
+        \midrule
+        \bfseries Regole per programmazione desktop & \\
+        \midrule
+        Paradigma  & Imperativo ad oggetti (OOP) \\
+        Convenzione per i nomi & Convenzioni di Qt \\
+        Tabulatore & 4 spazi \\
+        Tabulato con gli spazi & S\`i \\
+        \bottomrule
+    \end{tabularx}
+\end{table}

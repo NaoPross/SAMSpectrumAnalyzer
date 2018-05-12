@@ -1,7 +1,7 @@
-all: desktop-sequence.pdf
+all: desktop-sequence.pdf desktop-classes.pdf
 
 %.pdf: %.txt
-	plantuml $< -tpdf $@
+	plantuml $< -pdf $@
 
 %.latex: %.txt
 	plantuml $< -tlatex:nopreamble $@
