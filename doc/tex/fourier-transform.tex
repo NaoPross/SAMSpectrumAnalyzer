@@ -62,8 +62,7 @@ possiamo riscrivere \(f(x)\) nei seguenti modi
 \subsection{Propriet\`a di ortogonalit\`a del seno e del coseno}
 Per avere delle fondamenta solide prima dell'introduzione dell'argomento
 principale, saranno dimostrate le propriet\`a di ortogonalit\`a del seno e
-coseno. Considerando il periodo \(T\), dunque di frequenza \(2\pi /\,T\)
-in uno spazio euclideo.
+coseno considerando il periodo \(T\) in uno spazio euclideo.
 
 \subsubsection{Intuizione geometrica}
 
@@ -76,11 +75,12 @@ in uno spazio euclideo.
             axis y line = center,
             xlabel = {\(x\)},
             xlabel style = {right},
-            ylabel = {\(y(x)\)},
+            ylabel = {\(y\)},
             ylabel style = {above},
             grid=both,
             grid style = dotted,
             % axis equal,
+            xticklabels = \empty,
             extra x ticks = {-10,-9,...,10},
             extra x tick labels= \empty,
             extra y ticks = {-10,-9,...,10},
@@ -110,9 +110,9 @@ in uno spazio euclideo.
             height = .5\textwidth,
             axis x line = center,
             axis y line = center,
-            xlabel = {\(x(t)\)},
+            xlabel = {\(\cos(t)\)},
             xlabel style = {right},
-            ylabel = {\(y(t)\)},
+            ylabel = {\(\sin(t)\)},
             ylabel style = {above},
             grid=both,
             grid style = dotted,
@@ -135,10 +135,18 @@ in uno spazio euclideo.
 
             \coordinate (a) at (\ax,\ay);
             \coordinate (o) at (0,0);
+            \coordinate (z) at (1,0);
+
+            \pic[draw, ->, "\(t\)", angle eccentricity=1.5] {
+                angle = z--o--a
+            };
+
             \draw[thick, violet] (0,0) -- (a);
             \draw[thick, red] (a) -- (a |- o);
             \draw[thick, blue] (o) -- (a |- o);
+
         \end{axis}
+
     \end{tikzpicture}
 
     \caption{Funzioni \(\sin\) e \(\cos\) \label{fig:sin-cos-orth-plot}}
@@ -156,6 +164,7 @@ di un periodo \`e sempre nulla.
     \begin{align*}
         \int_0^T \sin(\frac{m2\pi x}{T})\,\dd{x} &= 0
         \quad \forall m \in \mathbb{Z} \\
+        \\
         %
         \int_0^T \sin(\frac{m2\pi x}{T})\,\dd{x}
         &= \bigg [-\frac{T}{2\pi m }\cdot\cos\big(\frac{2\pi}{T}mx\big)\bigg]^T_0 \\
@@ -170,6 +179,7 @@ di un periodo \`e sempre nulla.
     \begin{align*}
         \int_0^T \cos(\frac{m2\pi x}{T})\,\dd{x} &= 0
         \quad \forall m \in \mathbb{Z}^* \\
+        \\
         %
         \int_0^T \cos(\frac{m2\pi x}{T})\,\dd{x}
         &= \bigg [\frac{T}{2\pi m}\cdot\sin\big(\frac{2\pi}{T}mx\big)\bigg]^T_0 \\
@@ -187,6 +197,7 @@ di un periodo \`e sempre nulla.
     \begin{align*}
         \int_0^T \sin(\frac{m2\pi x}{T})\cos(\frac{n2\pi x}{T})\,\dd{x} &= 0
         \quad \forall m,n \in \mathbb{Z} \\
+        \\
         %
         \int_0^T \sin(\frac{m2\pi x}{T})\cos(\frac{n2\pi x}{T})\,\dd{x} &=
         \underbrace{\frac{1}{2}\int_0^T\sin\bigg[\frac{2\pi}{T}(n+m)x\bigg]\,\dd{x}}_{0} - 
@@ -201,6 +212,7 @@ di un periodo \`e sempre nulla.
     \begin{align*}
         \int_0^T \sin(\frac{m2\pi x}{T})\sin(\frac{n2\pi x}{T})\,\dd{x} &= 0 
         \quad \forall m,n \in \mathbb{Z}~|~m\neq \pm n \\
+        \\
         %
         \int_0^T \sin(\frac{m2\pi x}{T})\sin(\frac{n2\pi x}{T})\,\dd{x} &= 
         \underbrace{\frac{1}{2}\int_0^T\cos\bigg[\frac{2\pi}{T}(n-m)x\bigg]\,\dd{x}}_{m-n~\neq~0\implies 0} -
@@ -219,6 +231,7 @@ di un periodo \`e sempre nulla.
     \begin{align*}
         \int_0^T \cos(\frac{m2\pi x}{T})\cos(\frac{n2\pi x}{T})\,\dd{x} &= 0 
         \quad \forall m,n \in \mathbb{Z}^*~|~m\neq \pm n \\
+        \\
         %
         \int_0^T \cos(\frac{m2\pi x}{T})\cos(\frac{n2\pi x}{T})\,\dd{x} &= 
         \underbrace{\frac{1}{2}\int_0^T\cos\bigg[\frac{2\pi}{T}(n+m)x\bigg]\,\dd{x}}_{m+n~\neq~0\implies 0} +
@@ -236,6 +249,7 @@ di un periodo \`e sempre nulla.
     \begin{align*}
         \int_0^T e^{i2\pi kx/T}\,\dd{x} &= 0
         \quad \forall k \in \mathbb{Z}^* \\
+        \\
         %
         \int_0^T e^{i2\pi kx/T}\,\dd{x} &=
         \underbrace{\int_0^T\cos(\frac{2\pi}{T} kx)\,\dd{x}}_{k\neq 0 \implies 0} + 
@@ -249,30 +263,8 @@ di un periodo \`e sempre nulla.
 }
 \end{enumerate}
 
-% \begin{align*}
-%     & \int_0^T \sin(\frac{m2\pi x}{T})\,\dd{x} = 0
-%         \quad \forall m \in \mathbb{Z} \\
-%     %
-%     & \int_0^T \cos(\frac{m2\pi x}{T})\,\dd{x} = 0
-%         \quad \forall m \in \mathbb{Z^*} \\
-%     %
-%     & \int_0^T \sin(\frac{m2\pi x}{T})\cos(\frac{n2\pi x}{T})\,\dd{x} = 0
-%         \quad \forall m,n \in \mathbb{Z} \\
-%     %
-%     & \int_0^T \sin(\frac{m2\pi x}{T})\sin(\frac{n2\pi x}{T})\,\dd{x} = 0 
-%         \quad \forall m,n \in \mathbb{Z}~|~m\neq \pm n \\
-%     %
-%     & \int_0^T \sin^2(\frac{m2\pi x}{T})\,\dd{x} = \frac{T}{2}
-%         \quad \forall m \in \mathbb{Z} \\
-%     %
-%     & \int_0^T \cos(\frac{m2\pi x}{T})\cos(\frac{n2\pi x}{T})\,\dd{x} = 0 
-%         \quad \forall m,n \in \mathbb{Z}~|~m\neq \pm n \\
-%     %
-%     & \int_0^T \cos^2(\frac{m2\pi x}{T})\,\dd{x} = \frac{T}{2}
-%         \quad \forall m \in \mathbb{Z^*} \\
-% \end{align*}
-
 \section{Polinomio Trigonometrico}
+\subsection{Polinomio Trigonometrico}
 Analogamente a come \`e definito un polinomio \(P\) ``normale'', una somma di
 termini dal grado 0 fino al grado \(N\), \`e possibile definire anche un
 polinomio trigonometrico \(T\).
@@ -290,15 +282,26 @@ espandere nel seguente modo.
     T_N(x) = \sum_{n=0}^N\big [a_n\cdot\cos(\omega nx) + ib_n\cdot\sin(\omega nx)]
     \qquad a_n, b_n \in \mathbb{C}
 \]
+
+\subsection{Polinomio Trigonometrico Reale} \label{sec:real-trig}
 \`E definito inoltre il polinomio trogonometrico \emph{reale} come
 \[
     T_N(x) = \sum_{n=0}^N\big [a_n\cdot\cos(\omega nx) + b_n\cdot\sin(\omega nx)]
     \qquad a_n, b_n \in \mathbb{R}
 \]
-Quest'ultimo mediante delle identit\`a trigonometriche pu\`o essere riscritto
-anche nel modo seguente.
+Mediante delle identit\`a trigonometriche pu\`o essere riscritto anche nel
+modo seguente.
 \[
     T_N(x) = \sum_{n=0}^N A_n\cdot\cos(\omega nx - \varphi)
+\]
+Oppure nella sua forma complessa in cui \(c_k = \dfrac{a_k}{2} + \dfrac{b_k}{2i}\).
+\[
+    T_N(x) = \sum_{n=0}^N c_n\,e^{i\omega nx} + \bar{c_n}\,e^{-i\omega nx}
+    \qquad c_n \in \mathbb{C}
+\]
+Definendo \(c_{-n} = \bar{c_n}\) \`e possibile ridurre la notazione.
+\[
+    T_N(x) = \sum_{n=-N}^N c_n\,e^{i\omega nx}
 \]
 
 In tutti i casi possiamo osservare che il polinomio trogonometrico \`e una
@@ -312,6 +315,50 @@ x)\).
 \section{Serie di Fourier}
 
 \section{Trasformata di Fourier discreta}
+\begin{figure}[H] \centering
+	\begin{tikzpicture}
+		\begin{axis}[
+			width=\linewidth,
+			set layers=standard,
+			domain=0:10,
+			samples y=1,
+			view={40}{20},
+			hide axis,
+			unit vector ratio*=1 2 1,
+			xtick=\empty, ytick=\empty, ztick=\empty,
+			clip=false
+		]
+			\def\sumcurve{0}
+			\pgfplotsinvokeforeach{0.5,1.5,...,5.5}{
+				\draw [on layer=background, gray!20] (axis cs:0,#1,0) -- (axis cs:10,#1,0);
+
+				\addplot3 [on layer=main, blue!30, smooth, samples=101]
+				  (x,#1,{sin(#1*x*(157))/(#1*2)});
+
+				\addplot3 [on layer=axis foreground, thick, blue, ycomb, samples=2]
+				  (10.5,#1,{1/(#1*2)});
+
+				\xdef\sumcurve{\sumcurve + sin(#1*x*(157))/(#1*2)}
+			}
+
+			\draw (10.5,0.5,0) node [below right] {\(|c_0|\)};
+			\draw (10.5,1.5,0) node [below right] {\(|c_1|\)};
+			\draw (10.5,2.5,0) node [below right] {\(|c_2|\)};
+
+			\draw (10.5,4.5,0) node [below right] {\(|c_k|\)};
+
+			\addplot3 [red, only marks, mark=*, mark size=0.5, samples=120] (x,0,{\sumcurve});
+			\addplot3 [red!30, samples=120] (x,0,{\sumcurve});
+
+			\draw [on layer=axis foreground]  (axis cs:0,0,0) -- (axis cs:10,0,0);
+			\draw (axis cs:10.5,0.25,0) -- (axis cs:10.5,5.5,0);
+		\end{axis}
+	\end{tikzpicture}
+	\caption{
+		Rappresentazione grafica della transformata di Fourier discreta \cite{ftplot}
+		\label{fig:dftplot}
+	}
+\end{figure}
 La Trasformata di Fouerier Discreta (DFT) \`e l'operazione matematica che
 permette di trovare i coefficienti della serie di Fourier o di un polinomio
 trigonometrico, per approssimare al meglio una funzione. Se presa a sestante
@@ -321,8 +368,13 @@ spettrale ottenuta dalla DFT \`e dipende dalla frequenza di base scelta e nel
 caso di un polinomio trigonometrico, anche dal numero di termini di
 quest'ultimo.
 \[
-    \hat{f_k} = \frac{1}{T}\int_0^T f(x)\cdot e^{-ik2\pi fx}\,\dd{x}
+    c_k = \frac{1}{T}\int_0^T f(x)\cdot e^{-ik2\pi fx}\,\dd{x}
 \]
+
+Nella figura \ref{fig:dftplot}, possiamo osservare sul grafico \(x-z\) in rosso la
+funzione campionata, ed il suo spettro discretto sull'asse \(y-z\) in blu.
+Pi\`u lo spettro \`e denso, ossia pi\`u campioni, pi\`u \`e precisa
+l'approssimazione.
 
 \subsection{Derivazione della DFT}
 Per trovare la DFT, supponiamo di voler approssimare una funzione \(f\),
@@ -341,30 +393,80 @@ una funzione \(\varepsilon\) da minimizzare con il metodo dei minimi quadrati.
 \[
     \varepsilon = \int_0^T\big[T_N(x) - f(x)\big]^2\,\dd{x}
 \]
-
 Per generalizzare sar\`a dimostrato come trovare il \(k\)-esimo termine.
-\[
-    \frac{\partial\varepsilon}{\partial a_k} =
-    \frac{\partial}{\partial a_k} \int_0^T\big[T_N(x) - f(x)\big]^2\,\dd{x}
-    = 0
-\]
-\[
-    \frac{\partial\varepsilon}{\partial b_k} =
-    \frac{\partial}{\partial b_k} \int_0^T\big[T_N(x) - f(x)\big]^2\,\dd{x}
-    = 0
-\]
 
 \subsubsection{Termini dei coseni}
+I termini dei coseni \(a_k\) sono computati nel modo seguente.
 \begin{align*}
-    \frac{\partial\varepsilon}{\partial a_k} =
+    \frac{\partial\varepsilon}{\partial a_k} = 0 &= 
     \frac{\partial}{\partial a_k} \int_0^T\big[T_N(x) - f(x)\big]^2\,\dd{x}
-    &= 0 \\
+    \\
+    0 &= \int_0^T \frac{\partial}{\partial a_k} \bigg[
+            \sum_{n=0}^N a_n\cos(\omega nx) +  b_n\sin(\omega nx) - f(x)
+        \bigg]^2\,\dd{x}
+    \\
+    0 &= \int_0^T 2\bigg[
+            \sum_{n=0}^N a_n\cos(\omega nx) +  b_n\sin(\omega nx) - f(x)
+        \bigg]\cdot a_k\cos(\omega kx)\,\dd{x}
+    \\
+    0 &=
+        \underbrace{\int_0^T \cos(\omega kx)\sum_{n=0}^N a_n\cos(\omega nx) \,\dd{x}}_{k \neq n \implies 0} + 
+        \underbrace{\int_0^T \cos(\omega kx)\sum_{n=0}^N b_n\sin(\omega nx) \,\dd{x}}_{0} - 
+        \int_0^T \cos(\omega kx)\cdot f(x) \,\dd{x}
+    \\
+    0 &= a_k\cdot\frac{T}{2} - \int_0^T\cos(\omega kx)\cdot f(x)\,\dd{x}
+    \\
+    \\
+    \frac{a_k}{2} &= \frac{1}{T}\int_0^T\cos(\omega kx)\cdot f(x)\,\dd{x}
 \end{align*}
+
 \subsubsection{Termini dei seni}
+I termini dei seni \(a_k\) sono computati nel modo seguente.
+\begin{align*}
+    \frac{\partial\varepsilon}{\partial b_k} = 0 &= 
+    \frac{\partial}{\partial b_k} \int_0^T\big[T_N(x) - f(x)\big]^2\,\dd{x}
+    \\
+    0 &= \int_0^T \frac{\partial}{\partial b_k} \bigg[
+            \sum_{n=0}^N a_n\cos(\omega nx) +  b_n\sin(\omega nx) - f(x)
+        \bigg]^2\,\dd{x}
+    \\
+    0 &= \int_0^T 2\bigg[
+            \sum_{n=0}^N a_n\cos(\omega nx) +  b_n\sin(\omega nx) - f(x)
+        \bigg]\cdot b_k\sin(\omega kx)\,\dd{x}
+    \\
+    0 &=
+        \underbrace{\int_0^T \sin(\omega kx)\sum_{n=0}^N a_n\cos(\omega nx) \,\dd{x}}_{0} + 
+        \underbrace{\int_0^T \sin(\omega kx)\sum_{n=0}^N b_n\sin(\omega nx) \,\dd{x}}_{k \neq n \implies 0} - 
+        \int_0^T \sin(\omega kx)\cdot f(x) \,\dd{x}
+    \\
+    0 &= b_k\cdot\frac{T}{2} - \int_0^T\sin(\omega kx)\cdot f(x)\,\dd{x}
+    \\
+    \\
+    \frac{b_k}{2} &= \frac{1}{T}\int_0^T\sin(\omega kx)\cdot f(x)\,\dd{x}
+\end{align*}
+
+\subsubsection{Termine complesso}
+A questo punto \`e possibile raggurppare i termini \(a_k\) e \(b_k\) in un
+unico valore complesso \(c_k\), come descritto nella sezione
+\ref{sec:real-trig}.
+\begin{align*}
+    c_k &= \frac{a_k}{2} + \frac{b_k}{2i}
+    \\
+    c_k &= 
+    \frac{1}{T}\int_0^T\cos(\omega kx)\cdot f(x)\,\dd{x} + 
+    \frac{1}{Ti}\int_0^T\sin(\omega kx)\cdot f(x)\,\dd{x}
+    \\
+    c_k &= \frac{1}{T}\int_0^T f(x)\cdot\big[\cos(\omega kx) -i\sin(\omega kx)\big]\,\dd{x}
+    \\
+    \\
+    c_k &= \frac{1}{T}\int_0^T f(x)\cdot e^{-i\omega kx}\,\dd{x}
+\end{align*}
+
 
 \section{Trasformata di Fourier}
-
 \section{Interpretazione geometrica}
+\subsection{Spazi funzionali}
+\subsection{Prodotto interno}
 
 \section{Fast Fourier Transform}
 \subsection{Motivazioni e Complessit\`a temporale}

@@ -1,16 +1,68 @@
 \chapter{Software}
 \section{Campionamento}
+Per campionare il segnale \`e stato scelto di utilizzare il TIMER2, sia per la
+sua semplicit\`a che per la granulati\`a offerta dal registro di comparazione.
+Il campionamento \`e eseguito ad una frequenza di 20\,kHz, poco sotto al
+valore massimo possibile che si pu\`o ottenere considerando il tempo di
+conversione dell'ADC.
+
 \begin{figure}[H] \centering
     \includegraphics[width=.9\linewidth]{figures/timer2-block-diagram}
-    \caption{
+    \caption[Schema a blocchi del TIMER2]{
         Schema a blocchi del TIMER2. Fonte: Microchip PIC18F2X/4XK22 datasheet
         \label{fig:timer2-diagram}
     }
 \end{figure}
 
+Dallo schema a blocchi nella figura \ref{fig:timer2-diagram}, si pu\`o
+osservare che la frequenza degli interrupt, ossia di campionamento, \`e data
+dalla seguente relazione.
+\[
+    f = \frac{F_{osc}}{4}\cdot
+        \frac{1}{\textrm{prescaler}}\cdot
+        \frac{1}{\textrm{comparator}}\cdot
+        \frac{1}{\textrm{postscaler}}
+\]
+Per il questo progetto il PIC18F45K22 \`e configurato con un postscaler 1:1 ed
+un prescaler 1:16, per far corrispondere un unit\`a del comparatore ad 1
+microsecondo. Perci\`o il comparatore \`e impostato a 50, poich\`e
+\(1/50\,\mu\textrm{s} = 20\,\textrm{kHz}\).
+\[ 
+    f = \frac{64\,\textrm{MHz}}{4}\cdot
+        \frac{1}{1}\cdot
+        \frac{1}{\textrm{comparator}}\cdot
+        \frac{1}{16}
+      = \frac{1\,\textrm{MHz}}{\textrm{comparator}}
+\]
+
 \section{Trasferimento dei dati}
 Per trasferire i dati campionati era inizialmente stato scelto di utilizzare
-una struttura dati binaria. In seguito per\`o per 
+una struttura dati binaria. In seguito per\`o si \`e deciso di utilizzare un
+formato interamente ASCII per semplificare il debugging.
+
+\begin{figure}[H] \centering
+    \begin{tikzpicture}[
+            timing/yunit=5mm,
+            timing/xunit=4mm,
+            timing/text format={\Large \ttfamily},
+            timing/.style={black}
+        ]
+        \timing at (0,0) {
+            LL
+            3D{S\textbackslash n\textbackslash r}
+            4D{\(a_0\)}
+            1D{i}
+            4D{\(b_0\)}
+            2D{\textbackslash n\textbackslash r}
+            11D{...}
+            3D{E\textbackslash n\textbackslash r}
+            LL
+        };
+    \end{tikzpicture}
+    \caption{Protocollo di trasmissione dei dati \label{fig:proto}}
+\end{figure}
+Dunque i dati sono trasferiti con un semplicissimo protocollo, illustrato
+nella figura \ref{fig:proto}.
 
 \section{Interfaccia al Computer}
 Per preferenze principalmente personali \`e stato scelto di realizzare

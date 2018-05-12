@@ -55,6 +55,7 @@
 \usepackage[
     colorlinks=true,
     linkcolor=.,
+	citecolor=.,
     urlcolor=blue
 ]{hyperref}
 
@@ -79,6 +80,10 @@
 \pgfplotsset{compat=1.14}
 % diagrams
 \usepackage{tikz}
+\usetikzlibrary{calc}
+\usetikzlibrary{quotes}
+\usetikzlibrary{patterns}
+\usetikzlibrary{angles}
 \usepackage[european]{circuitikz}
 \usepackage{tikz-timing}
 \usepackage{tikzscale}
@@ -109,13 +114,20 @@
 \lstset{escapechar=`, style=cc}
 
 % ---------------------------------------------------------------------------
-\numberwithin{equation}{subsection}
 \newcommand{\dd}[1]{\mathrm{d}#1}
+
+\newcommand\blankpage{%
+    \null
+    \thispagestyle{empty}%
+    \addtocounter{page}{-1}%
+    \newpage
+}
 
 % ---------------------------------------------------------------------------
 \begin{document}
 
     \input{tex/titlepage}
+    \blankpage
     \tableofcontents
 
 	% spacing between paragraphs
