@@ -165,6 +165,55 @@ nx)\).
 \section{Serie di Fourier}
 
 \section{Trasformata di Fourier discreta}
+La Trasformata di Fouerier Discreta (DFT) \`e l'operazione matematica che
+permette di trovare i coefficienti della serie di Fourier o di un polinomio
+trigonometrico, per approssimare al meglio una funzione. Se presa a sestante
+per\`o essa essendo una \emph{trasformata} pu\`o essere osservata anche come
+una funzione che da uno spettro \emph{discreto} di una funzione. La densit\`a
+spettrale ottenuta dalla DFT \`e dipende dalla frequenza di base scelta e nel
+caso di un polinomio trigonometrico, anche dal numero di termini di
+quest'ultimo.
+\[
+    \hat{f_k} = \frac{1}{T}\int_0^T f(x)\cdot e^{-ik2\pi fx}\,\dd{x}
+\]
+
+\subsection{Derivazione della DFT}
+Per trovare la DFT, supponiamo di voler approssimare una funzione \(f\),
+utilizzando il metodo dei minimi quadrati, con un polinomio trigonometrico
+reale.
+\[
+    T_N(x) =  \sum_{n=0}^N A_n\cdot\cos(\omega nx -\varphi) \qquad \omega=2\pi f
+\]
+Sappiamo che questo pu\`o essere scritto anche nel seguente modo.
+\[
+    T_N(x) =  \sum_{n=0}^N a_n\cdot\cos(\omega nx)  + b_n\cdot\sin(\omega nx)
+\]
+
+Dunque per trovare i termini \(a_0,\dots,a_N\) e \(b_0,\dots,b_N\) definiamo
+una funzione \(\varepsilon\) da minimizzare con il metodo dei minimi quadrati.
+\[
+    \varepsilon = \int_0^T\big[T_N(x) - f(x)\big]^2\,\dd{x}
+\]
+
+Per generalizzare sar\`a dimostrato come trovare il \(k\)-esimo termine.
+\[
+    \frac{\partial\varepsilon}{\partial a_k} =
+    \frac{\partial}{\partial a_k} \int_0^T\big[T_N(x) - f(x)\big]^2\,\dd{x}
+    = 0
+\]
+\[
+    \frac{\partial\varepsilon}{\partial b_k} =
+    \frac{\partial}{\partial b_k} \int_0^T\big[T_N(x) - f(x)\big]^2\,\dd{x}
+    = 0
+\]
+
+\subsubsection{Termini dei coseni}
+\begin{align*}
+    \frac{\partial\varepsilon}{\partial a_k} =
+    \frac{\partial}{\partial a_k} \int_0^T\big[T_N(x) - f(x)\big]^2\,\dd{x}
+    &= 0 \\
+\end{align*}
+\subsubsection{Termini dei seni}
 
 \section{Trasformata di Fourier}
 
