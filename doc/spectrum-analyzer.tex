@@ -75,6 +75,8 @@
 \usepackage{tabularx}
 % plots
 \usepackage{pgfplots}
+\usepgfplotslibrary{fillbetween}
+\pgfplotsset{compat=1.14}
 % diagrams
 \usepackage{tikz}
 \usepackage[european]{circuitikz}
@@ -123,10 +125,9 @@
 	\include{tex/hardware}
 	\include{tex/software}
 	\include{tex/conclusioni}
-    \input{tex/bibliography}
 
-	% allegati
     %\appendix
     \include{tex/fourier-transform}
+    \input{tex/bibliography}
 
 \end{document}

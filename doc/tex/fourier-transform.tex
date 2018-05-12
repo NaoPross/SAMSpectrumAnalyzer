@@ -15,8 +15,7 @@ Consideriamo di avere gli insiemi \(X\) e \(Y\) entrambi con \(N\) termini di
 cui si prende le coppie ordinate di valori, ossia i punti da interopolare.  Il
 metodo dei minimi quadrati trova i coefficienti della retta minimizzando il
 quadrato della differenza tra il valore stimato dalla retta \(y = r(x_k)\) e il
-valore reale
-\(y_k\).
+valore reale\(y_k\).
 \begin{equation*}
     \min((r(x_k) - y_k)^2)\quad \forall x_k\in X,\, y_k\in Y
 \end{equation*}
@@ -25,11 +24,12 @@ Definiamo quindi la funzione da minimizzare \(\varepsilon\)
     \varepsilon(a_0, \dots, a_m) = \sum_{k=1}^{N}\Big[r(x_k, a_0, \dots, a_m)  - y_k\Big]^2
 \end{equation}
 Da cui si computa le derivati parziali rispetto ai coefficienti ricercati,
-ottenendo un sistema di equazioni lineare. Ci\`o corrisponde anche ad
-affermare che il \emph{gradiente} di \(\varepsilon\) \`e un vettore
+ottenendo un sistema di equazioni lineare poich\`e si cerca per ogni derivata
+quando essa equivale a 0. Ci\`o corrisponde anche ad affermare che il
+\emph{gradiente} di \(\varepsilon\) \`e un vettore
 \(\in\mathbb{R}^{m+1}\) con tutte le componenti a 0.
 \begin{equation*}
-    \nabla\varepsilon = \langle 0, \dots, 0 \rangle
+    \nabla\varepsilon = (0, \dots, 0 )
 \end{equation*}
 A questo punto si pu\`o procedere risolvendo il sistema con l'algebra lineare
 definendo la matrice di trasformazione \(\mathbf{A}\) e il vettore dei termini
@@ -62,15 +62,97 @@ possiamo riscrivere \(f(x)\) nei seguenti modi
 \subsection{Propriet\`a di ortogonalit\`a del seno e del coseno}
 Per avere delle fondamenta solide prima dell'introduzione dell'argomento
 principale, saranno dimostrate le propriet\`a di ortogonalit\`a del seno e
-coseno. Considerando il periodo \(T\), dunque di frequenza \(2\pi /\,T\).
+coseno. Considerando il periodo \(T\), dunque di frequenza \(2\pi /\,T\)
+in uno spazio euclideo.
 
-\paragraph{Intuizione geometrica}
+\subsubsection{Intuizione geometrica}
 
+\begin{figure}[H] \centering
+    \begin{tikzpicture}
+        \begin{axis}[
+            width = .5\textwidth,
+            height = .5\textwidth,
+            axis x line = center,
+            axis y line = center,
+            xlabel = {\(x\)},
+            xlabel style = {right},
+            ylabel = {\(y(x)\)},
+            ylabel style = {above},
+            grid=both,
+            grid style = dotted,
+            % axis equal,
+            extra x ticks = {-10,-9,...,10},
+            extra x tick labels= \empty,
+            extra y ticks = {-10,-9,...,10},
+            extra y tick labels= \empty,
+            samples = 200,
+            domain=0:2*pi,
+            ymin=-1.25, ymax=1.25,
+        ]
+            \path[name path=axis] (axis cs:0,0) -- (axis cs: 2*pi,0);
 
+            \addplot[red, name path=sin]{sin(deg(x))};
+            \addplot[red, opacity=.1] fill between [
+                of=sin and axis,
+                soft clip={domain=0:2*pi}
+            ];
 
-\paragraph{Dimostrzioni algebriche }
+            \addplot[blue, name path=cos]{cos(deg(x))};
+            \addplot[blue, opacity=.1] fill between [
+                of=cos and axis,
+                soft clip={domain=0:2*pi}
+            ];
+        \end{axis}
+    \end{tikzpicture}
+    \begin{tikzpicture}[>=latex]
+        \begin{axis}[
+            width = .5\textwidth,
+            height = .5\textwidth,
+            axis x line = center,
+            axis y line = center,
+            xlabel = {\(x(t)\)},
+            xlabel style = {right},
+            ylabel = {\(y(t)\)},
+            ylabel style = {above},
+            grid=both,
+            grid style = dotted,
+            axis equal,
+            xticklabels = \empty,
+            yticklabels = \empty,
+            extra x ticks = {-10,-9,...,10},
+            extra x tick labels= \empty,
+            extra y ticks = {-10,-9,...,10},
+            extra y tick labels= \empty,
+            xmin=-1.25, xmax=1.25,
+            ymin=-1.25, ymax=1.25,
+            samples=800,
+        ]
+            \addplot[mark=none,domain=0:360] ({cos(x)}, {sin(x)});
+
+            \def\angle{50}
+            \pgfmathsetmacro\ax{cos(\angle)}
+            \pgfmathsetmacro\ay{sin(\angle)}
+
+            \coordinate (a) at (\ax,\ay);
+            \coordinate (o) at (0,0);
+            \draw[thick, violet] (0,0) -- (a);
+            \draw[thick, red] (a) -- (a |- o);
+            \draw[thick, blue] (o) -- (a |- o);
+        \end{axis}
+    \end{tikzpicture}
+
+    \caption{Funzioni \(\sin\) e \(\cos\) \label{fig:sin-cos-orth-plot}}
+\end{figure}
+
+Si pu\`o osservare intuitivamente dal cerchio unitario nella figura
+\ref{fig:sin-cos-orth-plot} che le funzioni seno e coseno sono ortogonali tra
+loro. Dal grafico a sinistra possiamo inoltre osservare che l'area (integrale)
+di un periodo \`e sempre nulla.
+
+\subsubsection{Dimostrzioni algebriche}
 \begin{enumerate}
 \item {
+    Area di \(\sin\) in un periodo.
     \begin{align*}
         \int_0^T \sin(\frac{m2\pi x}{T})\,\dd{x} &= 0
         \quad \forall m \in \mathbb{Z} \\
@@ -84,6 +166,7 @@ coseno. Considerando il periodo \(T\), dunque di frequenza \(2\pi /\,T\).
 }
 
 \item {
+    Area di \(\cos\) in un periodo.
     \begin{align*}
         \int_0^T \cos(\frac{m2\pi x}{T})\,\dd{x} &= 0
         \quad \forall m \in \mathbb{Z}^* \\
@@ -92,13 +175,77 @@ coseno. Considerando il periodo \(T\), dunque di frequenza \(2\pi /\,T\).
         &= \bigg [\frac{T}{2\pi m}\cdot\sin\big(\frac{2\pi}{T}mx\big)\bigg]^T_0 \\
         &= \frac{T}{2\pi m}\cdot\sin\big(2\pi m\big) 
             +\frac{T}{2\pi m}\cdot\sin\big(0\big) \\
-        &= 0
+        &= \begin{cases}
+            0 & \iff m \neq 0 \\
+            T & \iff m = 0 
+        \end{cases}
     \end{align*}
-    Nota: Se \(m = 0\) 
-    \[\int_0^T \cos(\frac{m2\pi x}{T})\,\dd{x} = T\]
 }
 
 \item {
+    Prodotto tra \(\sin\) e \(\cos\).
+    \begin{align*}
+        \int_0^T \sin(\frac{m2\pi x}{T})\cos(\frac{n2\pi x}{T})\,\dd{x} &= 0
+        \quad \forall m,n \in \mathbb{Z} \\
+        %
+        \int_0^T \sin(\frac{m2\pi x}{T})\cos(\frac{n2\pi x}{T})\,\dd{x} &=
+        \underbrace{\frac{1}{2}\int_0^T\sin\bigg[\frac{2\pi}{T}(n+m)x\bigg]\,\dd{x}}_{0} - 
+        \underbrace{\frac{1}{2}\int_0^T\sin\bigg[\frac{2\pi}{T}(n-m)x\bigg]\,\dd{x}}_{0} \\
+        %
+        &= 0 \\
+    \end{align*}
+}
+
+\item {
+    Prodotto tra due \(\sin\) di frequenze diverse.
+    \begin{align*}
+        \int_0^T \sin(\frac{m2\pi x}{T})\sin(\frac{n2\pi x}{T})\,\dd{x} &= 0 
+        \quad \forall m,n \in \mathbb{Z}~|~m\neq \pm n \\
+        %
+        \int_0^T \sin(\frac{m2\pi x}{T})\sin(\frac{n2\pi x}{T})\,\dd{x} &= 
+        \underbrace{\frac{1}{2}\int_0^T\cos\bigg[\frac{2\pi}{T}(n-m)x\bigg]\,\dd{x}}_{m-n~\neq~0\implies 0} -
+        \underbrace{\frac{1}{2}\int_0^T\cos\bigg[\frac{2\pi}{T}(n+m)x\bigg]\,\dd{x}}_{m+n~\neq~0\implies 0} \\
+        %
+        &= \begin{cases}
+            0 & \iff n \neq \pm m \\
+            T/2 & \iff n = m \\
+            - T/2 & \iff n = - m \\
+        \end{cases}
+    \end{align*}
+}
+
+\item {
+    Prodotto tra due \(\cos\) di frequenze diverse.
+    \begin{align*}
+        \int_0^T \cos(\frac{m2\pi x}{T})\cos(\frac{n2\pi x}{T})\,\dd{x} &= 0 
+        \quad \forall m,n \in \mathbb{Z}^*~|~m\neq \pm n \\
+        %
+        \int_0^T \cos(\frac{m2\pi x}{T})\cos(\frac{n2\pi x}{T})\,\dd{x} &= 
+        \underbrace{\frac{1}{2}\int_0^T\cos\bigg[\frac{2\pi}{T}(n+m)x\bigg]\,\dd{x}}_{m+n~\neq~0\implies 0} +
+        \underbrace{\frac{1}{2}\int_0^T\cos\bigg[\frac{2\pi}{T}(n-m)x\bigg]\,\dd{x}}_{m-n~\neq~0\implies 0} \\
+        %
+        &= \begin{cases}
+            0 & \iff n \neq \pm m \\
+            T/2 & \iff n = \pm m \\
+        \end{cases}
+    \end{align*}
+}
+
+\item {
+    \(\sin\) e \(\cos\) raggruppate nella forma complessa con la formula di Eulero.
+    \begin{align*}
+        \int_0^T e^{i2\pi kx/T}\,\dd{x} &= 0
+        \quad \forall k \in \mathbb{Z}^* \\
+        %
+        \int_0^T e^{i2\pi kx/T}\,\dd{x} &=
+        \underbrace{\int_0^T\cos(\frac{2\pi}{T} kx)\,\dd{x}}_{k\neq 0 \implies 0} + 
+        \underbrace{i\int_0^T\sin(\frac{2\pi}{T} kx)\,\dd{x}}_{0}  \\
+        %
+        &= \begin{cases}
+            0 & \iff k \neq 0 \\
+            T & \iff k = 0
+        \end{cases}
+    \end{align*}
 }
 \end{enumerate}
 
@@ -155,11 +302,11 @@ anche nel modo seguente.
 \]
 
 In tutti i casi possiamo osservare che il polinomio trogonometrico \`e una
-somma di sinusoidi di frequenze multiple ad una base \(f = \omega/2\pi\).
-Se descritto mediante la terminologia dell'algebra lineare, si pu\`o anche
+somma di sinusoidi di frequenze multiple ad una base \(f = \omega/2\pi\).  Se
+descritto mediante la terminologia dell'algebra lineare, si pu\`o anche
 osservare che un polinomio trigonometrico \`e una combinazione lineare nello
-spazio funzionale ortonormato dalle basi \(\sin(\omega nx)\) e \(\cos(\omega
-nx)\).
+spazio funzionale ortonormato dalle basi \(\sin(\omega x)\) e \(\cos(\omega
+x)\).
 
 
 \section{Serie di Fourier}
@@ -217,8 +364,10 @@ Per generalizzare sar\`a dimostrato come trovare il \(k\)-esimo termine.
 
 \section{Trasformata di Fourier}
 
+\section{Interpretazione geometrica}
+
 \section{Fast Fourier Transform}
 \subsection{Motivazioni e Complessit\`a temporale}
 \subsection{Propriet\`a dei numeri complessi}
 
-
+% \section{}
