@@ -43,8 +43,6 @@ noti \(\vec{u}\)
 
 \subsection{Funzione armonica}
 Una funzione armonica, sinusoidale, pu\`o essere descritta in molteplici modi.
-Iniziamo dunque osservando le forme pi\`u semplici, ossia la forma
-trigonometrica.
 \begin{align*}
     f(x) &= a\cdot\sin (\omega x + \varphi) \\
     f(x) &= b\cdot\cos(\omega x + \vartheta)
@@ -53,7 +51,7 @@ Conoscendo la formula di Eulero
 \[
     e^{i\varphi} = \cos(\varphi) + i\cdot\sin(\varphi)
 \]
-possiamo riscrivere \(f(x)\) nei seguenti modi
+possiamo riscrivere \(f(x)\) utilizzando la forma complessa del seno e del coseno.
 \begin{align*}
     f(x) &= \frac{a}{2i}\cdot(e^{i(x\omega + \varphi)} - e^{-i(x\omega + \varphi)}) \\
     f(x) &= \frac{b}{2}\cdot(e^{i(x\omega + \vartheta)} + e^{-i(x\omega + \vartheta)})
@@ -308,11 +306,40 @@ In tutti i casi possiamo osservare che il polinomio trogonometrico \`e una
 somma di sinusoidi di frequenze multiple ad una base \(f = \omega/2\pi\).  Se
 descritto mediante la terminologia dell'algebra lineare, si pu\`o anche
 osservare che un polinomio trigonometrico \`e una combinazione lineare nello
-spazio funzionale ortonormato dalle basi \(\sin(\omega x)\) e \(\cos(\omega
-x)\).
+spazio funzionale ortonormato dalle basi \(\sqrt\frac{2}{T}\cdot\sin(\omega
+x)\) e \(\sqrt\frac{2}{T} \cos(\omega x)\).
 
 
 \section{Serie di Fourier}
+Un polinomio trigonometrico reale di infiniti termini \`e una serie di Fourier,
+in onore al matematico francese  J. B. Fourier.
+\[
+	S(x) = \sum_{n=-\infty}^\infty c_n\,e^{i\omega nx} 
+         = \sum_{n=0}^\infty a_n\cdot\cos(\omega nx) + b_n\cdot\sin(\omega nx)
+\]
+
+\subsection{Convergenza della serie}
+La convergenza puntuale della serie di Fourier \`e dimostrabile dalle
+condizioni del teorema di Dirichlet. Purtroppo questa dimostrazione richiede
+una grande quantit\`a di nozionistica matematica che non pu\`o essere riassunta
+in pochi paragrafi.  In allegato e nelle referenze sono presenti dei documenti
+che analizzano e dimostrano questa propriet\`a.
+
+% \[
+% 	S(x) = \sum_{n=-\infty}^\infty c_n\,e^{i\omega nx} 
+% 		 = \frac{1}{2}\big[\lim_{y\to x+}f(y) + \lim_{y\to x-}f(y)\big]
+% 		 \qquad \forall x
+% \]
+
+Da questo punto \`e da dare per assunto che \`e dimostrata la convergenza
+puntuale della serie di Fourier di una funzione reale a condizione che:
+\begin{enumerate}
+	\item \(|f(x)|\) (valore assoluto) \`e integrabile in un periodo.
+	\item La funzione deve essere di variazione limitata, ossia devono esserci
+		un numero finito di minimi e massimi in un qualsiasi intervallo.
+	\item La funzione deve avere un numero finito di discontinuti\`a in un
+		qualsiasi intervallo chiuso e le discontinuit\`a non devono essere infinite.
+\end{enumerate}
 
 \section{Trasformata di Fourier discreta}
 \begin{figure}[H] \centering
@@ -367,17 +394,18 @@ una funzione che da uno spettro \emph{discreto} di una funzione. La densit\`a
 spettrale ottenuta dalla DFT \`e dipende dalla frequenza di base scelta e nel
 caso di un polinomio trigonometrico, anche dal numero di termini di
 quest'ultimo.
-\[
-    c_k = \frac{1}{T}\int_0^T f(x)\cdot e^{-ik2\pi fx}\,\dd{x}
-\]
 
-Nella figura \ref{fig:dftplot}, possiamo osservare sul grafico \(x-z\) in rosso la
-funzione campionata, ed il suo spettro discretto sull'asse \(y-z\) in blu.
+\noindent\fbox{\begin{minipage}{\textwidth}\[
+    X_k = c_k \cdot T = \int_0^T f(x)\cdot e^{-ik2\pi fx}\,\dd{x}
+\]\end{minipage}}
+
+Nella figura \ref{fig:dftplot}, possiamo osservare sul grafico \(x\bot z\) in rosso la
+funzione campionata, ed il suo spettro discretto sull'asse \(y\bot z\) in blu.
 Pi\`u lo spettro \`e denso, ossia pi\`u campioni, pi\`u \`e precisa
 l'approssimazione.
 
 \subsection{Derivazione della DFT}
-Per trovare la DFT, supponiamo di voler approssimare una funzione \(f\),
+Per trovare la DFT, supponiamo di voler approssimare una funzione,
 utilizzando il metodo dei minimi quadrati, con un polinomio trigonometrico
 reale.
 \[
@@ -396,7 +424,8 @@ una funzione \(\varepsilon\) da minimizzare con il metodo dei minimi quadrati.
 Per generalizzare sar\`a dimostrato come trovare il \(k\)-esimo termine.
 
 \subsubsection{Termini dei coseni}
-I termini dei coseni \(a_k\) sono computati nel modo seguente.
+I termini dei coseni \(a_k\) sono ottenuti eguagliando la derivata parziale di
+\(\varepsilon\) a zero.
 \begin{align*}
     \frac{\partial\varepsilon}{\partial a_k} = 0 &= 
     \frac{\partial}{\partial a_k} \int_0^T\big[T_N(x) - f(x)\big]^2\,\dd{x}
@@ -421,7 +450,8 @@ I termini dei coseni \(a_k\) sono computati nel modo seguente.
 \end{align*}
 
 \subsubsection{Termini dei seni}
-I termini dei seni \(a_k\) sono computati nel modo seguente.
+I termini dei seni \(b_k\) sono ottenuti eguagliando la derivata parziale di
+\(\varepsilon\) a zero.
 \begin{align*}
     \frac{\partial\varepsilon}{\partial b_k} = 0 &= 
     \frac{\partial}{\partial b_k} \int_0^T\big[T_N(x) - f(x)\big]^2\,\dd{x}
@@ -462,11 +492,70 @@ unico valore complesso \(c_k\), come descritto nella sezione
     c_k &= \frac{1}{T}\int_0^T f(x)\cdot e^{-i\omega kx}\,\dd{x}
 \end{align*}
 
-
 \section{Trasformata di Fourier}
+Dalla DFT si \`e sviluppato lo strumento matematico per ottenere lo spettro
+discreto di una funzione. Il risultato della DFT per\`o \`e una funzione
+discontinua con valori spettrali unicamente multipli della base.
+
+La Trasformata di Fourier estende ulteriormente producendo una funzione di
+spettro \emph{continua}.  Un modo intuitivo per ottenere questo requisito, \`e
+di far tendere il limite della densit\`a spettrale, data dal periodo, verso
+l'infinito.  Per i seguenti passaggi sar\`a utilizzata la funzione \(s\) per
+indicare la funzione reale di cui si osserva lo spettro. Partendo
+dall'approssimazione data dalla DFT possiamo asserire che
+\[
+    s(x) \approx \sum_{n=-\infty}^\infty \frac{X_n}{T}
+        \cdot\,e^{i2\pi xn/T}
+\]
+\[
+    s(x) \approx \sum_{n=-\infty}^\infty
+        \frac{1}{T}\,
+        \underbrace{
+            \int_{-T/2}^{T/2} s(x)\cdot e^{-i2\pi xn/T}\,\dd{x}
+        }_{X_n =\,c_n\cdot T}
+        \cdot\,e^{i2\pi xn/T}
+\]
+
+
+\[
+    s(x) = \lim_{T\to\infty} \sum_{n=-\infty}^\infty
+        \frac{1}{T}\int_{-T/2}^{T/2} s(x)\cdot e^{-i2\pi xn/T}\,\dd{x}
+        \cdot\,e^{i2\pi xn/T}
+\]
+A questo punto osserviamo che
+\begin{align*}
+    \lim_{T\to\infty} \sum_{n=-\infty}^\infty \frac{1}{T} &= \int_{-\infty}^\infty \dd{f} &
+    \lim_{T\to\infty} \frac{n}{T} &= f \quad \text{(variabile continua)}
+\end{align*}
+Dunque otteniamo
+\[
+    s(x) = \int_{-\infty}^\infty \dd{f} 
+           \underbrace{
+               \int_{-\infty}^\infty s(x)\cdot e^{-i2\pi fx}\,\dd{x}
+           }_{\mathcal{F}\{s\}}
+           \cdot\,e^{i2\pi fx}
+\]
+Si nota a questo punto che il termine centrale \`e la trasformata di Fourier
+ed \`e una funzione dalla variabile continua \(f\) (frequenza).
+Si osservi inoltre che sono stati cambiati i limiti di integrazione del
+periodo.  Definendo entrambi i limiti in funzione di \(T\) e facendo tendere
+\(T\) all'infinito, si ottiene come conseguenza secondaria che la trasformata
+non \`e pi\`u limitata ad una funzione periodica.
+
+Formalmente dunque la Trasformata di Fourier, tipicamente notata con
+\(\mathcal{F}\) oppure con l'accento circonflesso \(\hat{f}\) sul nome della
+funzione, \`e definita come segue.
+
+\noindent\fbox{\begin{minipage}{\textwidth}\[
+    \mathcal{F}\{f\} = \hat{f}\,(\omega) 
+    = \int_{-\infty}^\infty f(x)\cdot e^{-i\omega x}\,\dd{x}
+\]\end{minipage}}
+
 \section{Interpretazione geometrica}
 \subsection{Spazi funzionali}
 \subsection{Prodotto interno}
+\subsection{Metodo dei minimi quadrati}
+
 
 \section{Fast Fourier Transform}
 \subsection{Motivazioni e Complessit\`a temporale}

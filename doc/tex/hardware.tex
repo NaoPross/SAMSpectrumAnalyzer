@@ -55,13 +55,12 @@ caratteristica dei cavi audio di 10\,k\(\Omega\).
 Il segnale di cui si analizza lo spettro, prima di essere campionato, viene
 adattato mediate un circuito di amplificazione e filtraggio. Esso \`e
 necessario per due ragioni. Il circuito di amplificazione \`e presente per
-ovvie ragioni, quali per poter adattare il circuito nel caso in cui si dovesse
-avere in entrata un segnale di ampiezza molto piccola. Il secondo circuito
-invece, di filtraggio, \`e necessario per rimuovere disturbi di alta frequenza
-che potrebbero compromettere la qualit\`a del campionamento. Questa \`e una
-tipica configurazione prima di un circuito di conversione AD (analogico -
-digitale), ed \`e conosciuto anche come circuito di filtraggio
-\emph{anti-alias}.
+poter regolare il circuito nel caso in cui si dovesse avere in entrata un
+segnale di ampiezza molto piccola. Il secondo circuito invece, di filtraggio,
+\`e necessario per rimuovere disturbi di alta frequenza che potrebbero
+introdurre disturbi nel campionamento. Questa \`e una tipica configurazione
+prima di un circuito di conversione AD (analogico - digitale), ed \`e
+conosciuto anche come circuito di filtraggio \emph{anti-alias}.
 
 \begin{figure}[H] \centering
     \includegraphics[width=.8\linewidth]{figures/circuits/filter-ampl.pdf}
@@ -72,10 +71,11 @@ digitale), ed \`e conosciuto anche come circuito di filtraggio
 \end{figure}
 
 \`E importante notare che per questa applicazione si \`e scelto utilizzare
-degli opamp \emph{rail to rail}, che hanno una tensione di saturazione vicina
-a quella di alimentazione. Essi sono necessari per poter raggiungere tensioni
-vicino allo 0\,V, che non sarebbero possibili con un opamp normale siccome
-l'alimentazione del circuito \`e asimmetrica tra 0 e 12\,V.
+degli opamp \emph{rail to rail}\footnote{Vedi sezione \ref{sec:err-opamp}},
+che hanno una tensione di saturazione vicina a quella di alimentazione. Essi
+sono necessari per poter raggiungere tensioni vicino allo 0\,V, che non
+sarebbero possibili con un opamp normale siccome l'alimentazione del circuito
+\`e asimmetrica tra 0 e 12\,V.
 
 \paragraph{Amplificatore.} Come si pu\`o notare a sinistra nella figura
 \ref{fig:filter-ampl}, il circuito di amplificazione non ha una configurazione
@@ -99,7 +99,7 @@ essere almeno doppia della frequenza dell'armonica di frequenza maggiore.
 Anche il filtro essendo non invertente ha un rapporto di amplificazione dato
 da \(1+R_{12}/R_{11}\). Nella figura il valore della resistenza \(R_{11}\) \`e
 \textbf{incorretto} (Vedi sezione \ref{sec:err-filter}). Dopo la correzzione
-(\(R_{11} \geq 910\,\textrm{k}\Omega\)) il filtro ha un amplificazione
+(\(R_{11} \geq 750\,\textrm{k}\Omega\)) il filtro ha un amplificazione
 approssimativamente unitaria (\(\approx 1.02\)).
 
 \section{Microcontroller}

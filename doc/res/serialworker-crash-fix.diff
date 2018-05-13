@@ -1,0 +1,53 @@
+diff --git a/src-desktop/mainwindow.cpp b/src-desktop/mainwindow.cpp
+index 73c416e..15c7d77 100644
+--- a/src-desktop/mainwindow.cpp
++++ b/src-desktop/mainwindow.cpp
+@@ -42,8 +42,12 @@ void MainWindow::serialDataReceiver(const QString &data)
+ void MainWindow::on_serialBtn_clicked()
+ {
+     if (_serial.isOpen()) {
+-        _serialWorker.quit();
+-        while (_serialWorker.isRunning());
++        // _serialWorker.quit();
++        // while (_serialWorker.isRunning());
++        if (_serialWorker.isRunning()) {
++            _serialWorker.requestInterruption();
++            _serialWorker.wait();
++        }
+ 
+         _serial.close();
+         serialLog("Serial device closed");
+diff --git a/src-desktop/serialworker.cpp b/src-desktop/serialworker.cpp
+index 15301cb..f70bce8 100644
+--- a/src-desktop/serialworker.cpp
++++ b/src-desktop/serialworker.cpp
+@@ -1,6 +1,7 @@
+ #include "serialworker.h"
+ 
+ #include <QMutexLocker>
++#include <string>
+ 
+ SerialWorker::SerialWorker(serial::Serial &serial) :
+     _mutex(), _serial(serial)
+@@ -15,12 +16,17 @@ SerialWorker::~SerialWorker()
+ 
+ void SerialWorker::run()
+ {
+-    while (isRunning()) {
++    while (!isInterruptionRequested()) {
+         QMutexLocker locker(&_mutex);
+-        while (!_serial.available() && isRunning());
++        while (!_serial.available() && !isInterruptionRequested());
+ 
+-        QString data = QString::fromStdString(_serial.readline());
+-        emit receivedData(data);
++        for (std::string line : _serial.readlines()) {
++            QString data = QString::fromStdString(line);
++            emit receivedData(data);
++        }
++
++        // QString data = QString::fromStdString(_serial.readline());
++        // emit receivedData(data);
+         _serial.flushOutput();
+     }
+ }
