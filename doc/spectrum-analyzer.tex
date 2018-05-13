@@ -88,6 +88,9 @@
 \usepackage{tikz-timing}
 \usepackage{tikzscale}
 
+% include PDFs
+\usepackage{pdfpages}
+
 % code
 \usepackage{xcolor}
 \usepackage{listings}
@@ -176,6 +179,27 @@
 }
 \lstset{escapechar=`, style=cc}
 
+\lstdefinestyle{smallcc}{
+    belowcaptionskip=1\baselineskip,
+    breaklines=true,
+    frame=none,
+    % margin
+    xleftmargin=\parindent,
+    % numbers
+    numbers=left,
+    numbersep=5pt,
+    numberstyle=\ttfamily\footnotesize\color{gray},
+    %
+    language=C,
+    showstringspaces=false,
+    % font
+    basicstyle=\ttfamily\small,
+    keywordstyle=\color{green!40!black},
+    commentstyle=\color{gray},
+    identifierstyle=\color{black},
+    stringstyle=\color{orange},
+}
+
 % ---------------------------------------------------------------------------
 \newcommand{\dd}[1]{\mathrm{d}#1}
 
@@ -204,5 +228,59 @@
     %\appendix
     \include{tex/fourier-transform}
     \input{tex/bibliography}
+
+    \afterpage{
+        \newgeometry{margin=1.5cm}
+        \pagestyle{empty}
+
+        %\chapter*{Allegati}
+        \addcontentsline{toc}{chapter}{Allegati}
+        \stepcounter{chapter}
+
+        \addcontentsline{toc}{section}{Pianificazione del progetto}
+        \includepdf[pages={-}, angle=90]{Pianificazione.pdf}
+
+        \addcontentsline{toc}{section}{Diario giornaliero}
+        \includepdf[pages={-}]{journal.pdf}
+
+        \addcontentsline{toc}{section}{Schema Elettrico}
+        \includepdf[pages=-, angle=90]{res/schematic.pdf}
+
+        \section*{Codice sorgente}
+        \subsection*{Codice del microcontroller}
+        \begin{figure}[H] \centering
+            \includegraphics{figures/uml/embedded-flowchart}
+            \caption{Diagramma di flusso del codice del microcontrollore}
+        \end{figure}
+
+        \lstinputlisting{../src/main.c}
+        \lstinputlisting{../src/hwconfig.h}
+
+        \subsubsection*{Fast Fourier Transform}
+        \lstinputlisting{../src/fft.h}
+        \lstinputlisting{../src/fft.c}
+
+        % \subsubsection*{Controllo del display}
+        % \lstinputlisting{../src/ht1632.h}
+        % \lstinputlisting{../src/ht1632.c}
+        
+        \subsubsection*{Libreria RS232}
+        \lstinputlisting{../src/rs232.h}
+        \lstinputlisting{../src/rs232.c}
+
+        \subsection*{Codice dell'applicativo desktop}
+        \lstinputlisting[language=c++]{../src-desktop/main.cpp}
+
+        \subsubsection*{Finestra principale}
+        \lstinputlisting[language=c++]{../src-desktop/mainwindow.h}
+        \lstinputlisting[language=c++]{../src-desktop/mainwindow.cpp}
+
+        \subsubsection*{Gestione della risorsa seriale}
+        \lstinputlisting[language=c++]{../src-desktop/serialworker.h}
+        \lstinputlisting[language=c++]{../src-desktop/serialworker.cpp}
+
+        \clearpage
+        \restoregeometry
+    }
 
 \end{document}
