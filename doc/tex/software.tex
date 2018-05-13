@@ -54,15 +54,25 @@ formato interamente ASCII per semplificare il debugging.
             1D{i}
             4D{\(b_0\)}
             2D{\textbackslash n\textbackslash r}
-            11D{...}
+            4D{\(a_1\)}
+            1D{i}
+            4D{...}
             3D{E\textbackslash n\textbackslash r}
             LL
         };
     \end{tikzpicture}
-    \caption{Protocollo di trasmissione dei dati \label{fig:proto}}
+    \caption[Protocollo di trasmissione dei dati]{
+        Protocollo di trasmissione dei dati, il primo dato mandato \`e
+        \(a_0+ib_0\)
+        \label{fig:proto}
+    }
 \end{figure}
-Dunque i dati sono trasferiti con un semplicissimo protocollo, illustrato
-nella figura \ref{fig:proto}.
+I dati sono trasferiti con un semplice protocollo illustrato nella figura
+\ref{fig:proto}. Un frame di dati incomincia con il carattere ASCII maiuscolo
+`S' seguito da un line break (\texttt{\textbackslash n\textbackslash r}). Ogni
+riga seguente \`e un numero complesso a 4 cifre con il carattere `i' come
+separatore tra la parte immaginaria e complessa (Es: \texttt{0140i0670}). Il
+frame termina con il carattere ASCII maiuscolo `E'.
 
 \section{Interfaccia al Computer}
 Per preferenze principalmente personali \`e stato scelto di realizzare
@@ -259,10 +269,20 @@ mostra nell'interfaccia utente.
 \end{figure}
 
 \subsection{Interfaccia utente}
+L'interfaccia utente, realizzata con Qt \`e molto semplice e non dovrebbe
+richiedere spiegazioni. 
 \begin{figure}[H] \centering
 	\includegraphics[width=.5\textwidth]{figures/screenshots/desktop-debian-empty}
+    \caption{L'applicativo sotto Debian 9.4 Stretch}
 \end{figure}
 
 \section{Interfaccia al Display}
 
 \section{Fast Fourier Transform}
+Il codice della FFT \`e stato preso dal dominio pubblico. Originalmente
+scritto da Tom Roberts (8.11.1989), successivamente adattato da Malcom Stanley
+(15.12.1994), Dimitrios P. Buras (14.6.2006) ed infine da Simon Inns
+(4.1.2011) \cite{waitingforfriday} non ha praticamente necessitato modifiche.
+L'algoritmo implementato \`e chiamato ``Fixed-Point in-place Fast Fourier''
+
+

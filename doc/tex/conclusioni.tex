@@ -12,7 +12,8 @@ del campionamento.
 
 Fortunatamente il pinout DIP8 degli operazionali dual package \`e standard,
 perci\`o non vi sono eccessive difficolt\`a nella sostituzione del componente.
-
+Purtroppo per\`o non sar\`a possibile acquistare in tempo un opamp
+sostitutivo.
 
 \subsection{Errore nel dimensionamento del filtro attivo}
 \label{sec:err-filter}
@@ -38,6 +39,7 @@ maggiori sono preferibili, infatti dopo aver rilevato il guasto a \(R_{11}\)
 \]
 
 \subsection{Sincronizzazione dei threads}
+\label{sec:err-sync}
 Durante lo sviluppo del software desktop \`e stato riscontrato un unico
 problema riguardante la sincronizzazione dei threads. La risorsa
 \texttt{serial::Serial MainWindow::\_serial}  come implica il nome \`e
@@ -59,10 +61,25 @@ framework di Qt si richiede un interruzione con
 \texttt{QThread::quit()}, che se non in condizioni particolari non chiude il
 processo parallelo.
 
-Il diff  sottostante mostra il commit in cui il problma viene risolto.
+Il diff  sottostante mostra il commit in cui il problema viene risolto.
 \lstinputlisting[language=diff]{res/serialworker-crash-fix.diff}
 
 \section{Commento}
+Personalmente ho trovato il progetto molto interessante e coinvolgente.
+Malgrado la complessit\`a dell'argomento trattato, grazie al supporto di
+docenti ed amici, sono riuscito ad avere una comprensione tutto sommato
+abbastanza completa del funzionamento del principio matematico dell'analisi
+spettrale.
+
+\section{Ringraziamenti}
+Vorrei ringraziare Eduardo Cima: professore di elettrotecnica alla SAM e
+Raffaele Ancarola: studente di fisica del primo anno al Politecnico Federale
+di Losanna (EPFL), per il grande supporto attraverso spiegazioni e chiarimenti
+degli strumenti matematici della trasformata di Fourier; ed infine vorrei
+ringraziare anche il professor Emidio Planamente per l'aiuto a risolvere il
+bug di sincronizzazione (\ref{sec:err-sync}).
+
+
 \section{Certificazione}
 Il sottoscritto dichiara di aver redatto e prodotto individualmente il lavoro
 di produzione.

@@ -6,17 +6,17 @@ class QMainWindow {
 }
 
 class MainWindow {
-    - serial::Serial  _serial;
-    - SerialWorker _serialWorker;
+    - serial::Serial  _serial
+    - SerialWorker _serialWorker
 
     --
-    + void serialLog(const QString &text);
+    + void serialLog(const QString &text)
 
     .. slots ..
-    - void serialDataReceiver(QVector<std::complex<int> > data);
-    - void on_serialBtn_clicked();
-    - void on_adjustAxisCheckBox_toggled();
-    - void on_plotTypeSelCombo_currentIndexChanged(int index);
+    - void serialDataReceiver(QVector<std::complex<int> > data)
+    - void on_serialBtn_clicked()
+    - void on_adjustAxisCheckBox_toggled()
+    - void on_plotTypeSelCombo_currentIndexChanged(int index)
 }
 
 class QThread {

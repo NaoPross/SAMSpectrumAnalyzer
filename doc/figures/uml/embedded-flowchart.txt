@@ -1,0 +1,19 @@
+@startuml
+skinparam monochrome true
+skinparam defaultFontName DejaVu Sans Mono
+
+start
+:Initialize hardware;
+while (Repeat forever) is (always)
+    :Enable interrupts;
+    while (Enough samples?) is (yes)
+        :Wait for interrupt;
+        :Sample data;
+    endwhile (no)
+    :Disable interrupts;
+    :Send data;
+    :Display data;
+endwhile (never)
+stop
+
+@enduml
