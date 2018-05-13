@@ -22,6 +22,7 @@ public:
 
 signals:
     void receivedData(QVector<std::complex<int>> data);
+    void exception();
 
 private:
     QMutex _mutex;

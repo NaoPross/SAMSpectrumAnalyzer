@@ -45,12 +45,16 @@ SOURCES += \
     ../lib/qcustomplot/qcustomplot.cpp \
     main.cpp \
     mainwindow.cpp \
-    serialworker.cpp
+    serialworker.cpp \
+    exportimagedialog.cpp
 
 HEADERS += \
     ../lib/qcustomplot/qcustomplot.h \
     mainwindow.h \
-    serialworker.h
+    serialworker.h \
+    exportimagedialog.h
 
 FORMS += \
-        mainwindow.ui
+        mainwindow.ui \
+    exportimagedialog.ui \
+    exportimagedialog.ui

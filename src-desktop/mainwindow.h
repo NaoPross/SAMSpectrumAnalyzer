@@ -7,6 +7,7 @@
 
 #include <complex>
 
+#include "qcustomplot.h"
 #include "serialworker.h"
 #include "serial/serial.h"
 
@@ -28,8 +29,14 @@ private slots:
     void serialDataReceiver(QVector<std::complex<int>> data);
 
     void on_serialBtn_clicked();
-    void on_adjustAxisCheckBox_toggled(bool value);
+    void on_adjustAxisCheckBox_toggled(bool checked);
+    void on_logFreqAxisCheckBox_toggled(bool checked);
     void on_plotTypeSelCombo_currentIndexChanged(int index);
+
+    void on_actionQuit_triggered();
+    void on_actionSave_data_triggered();
+    void on_actionExport_image_triggered();
+
 
 private:
     Ui::MainWindow *_ui;
@@ -38,6 +45,9 @@ private:
     SerialWorker _serialWorker;
     QVector<double> _xsamples;
     QVector<double> _ysamples;
+
+    QSharedPointer<QCPAxisTicker> _defaultTicker;
+    QSharedPointer<QCPAxisTicker> _logTicker;
 };
 
 #endif // MAINWINDOW_H

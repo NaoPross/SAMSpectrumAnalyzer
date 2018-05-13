@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>500</width>
-    <height>400</height>
+    <width>600</width>
+    <height>500</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -16,7 +16,7 @@
   <widget class="QWidget" name="centralWidget">
    <layout class="QVBoxLayout" name="verticalLayout" stretch="0,4,0,1">
     <item>
-     <layout class="QHBoxLayout" name="plotTypeHLayout" stretch="0,0,0,1">
+     <layout class="QHBoxLayout" name="plotTypeHLayout" stretch="0,0,0,0,1">
       <item>
        <widget class="QCheckBox" name="adjustAxisCheckBox">
         <property name="text">
@@ -28,14 +28,24 @@
        </widget>
       </item>
       <item>
-       <widget class="QPushButton" name="setAxisBtn">
-        <property name="enabled">
-         <bool>true</bool>
-        </property>
+       <widget class="QCheckBox" name="logFreqAxisCheckBox">
         <property name="text">
-         <string>Set Axis</string>
+         <string>Log frequency axis</string>
         </property>
        </widget>
+      </item>
+      <item>
+       <spacer name="horizontalSpacer">
+        <property name="orientation">
+         <enum>Qt::Horizontal</enum>
+        </property>
+        <property name="sizeHint" stdset="0">
+         <size>
+          <width>40</width>
+          <height>20</height>
+         </size>
+        </property>
+       </spacer>
       </item>
       <item>
        <widget class="QLabel" name="plotTypeSelLabel">
@@ -137,6 +147,9 @@
         <property name="text">
          <string>Open</string>
         </property>
+        <property name="shortcut">
+         <string>Ctrl+Return</string>
+        </property>
        </widget>
       </item>
      </layout>
@@ -182,12 +195,123 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>500</width>
-     <height>20</height>
+     <width>600</width>
+     <height>28</height>
     </rect>
    </property>
+   <widget class="QMenu" name="menuFile">
+    <property name="title">
+     <string>File</string>
+    </property>
+    <addaction name="actionSave_data"/>
+    <addaction name="actionExport_image"/>
+    <addaction name="separator"/>
+    <addaction name="actionQuit"/>
+   </widget>
+   <widget class="QMenu" name="menuPlot">
+    <property name="title">
+     <string>Plot</string>
+    </property>
+    <widget class="QMenu" name="menuPlot_Type">
+     <property name="title">
+      <string>Plot Type</string>
+     </property>
+     <addaction name="actionAmplitude"/>
+     <addaction name="actionPhase"/>
+     <addaction name="actionComplex"/>
+     <addaction name="actionReal"/>
+     <addaction name="actionImaginary"/>
+    </widget>
+    <addaction name="actionAuto_adjust_axis"/>
+    <addaction name="actionLog_frequency_axis"/>
+    <addaction name="menuPlot_Type"/>
+   </widget>
+   <widget class="QMenu" name="menuAbout">
+    <property name="title">
+     <string>About</string>
+    </property>
+    <addaction name="actionAbout"/>
+   </widget>
+   <addaction name="menuFile"/>
+   <addaction name="menuPlot"/>
+   <addaction name="menuAbout"/>
   </widget>
   <widget class="QStatusBar" name="statusBar"/>
+  <action name="actionSave_data">
+   <property name="text">
+    <string>Export data</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+S</string>
+   </property>
+  </action>
+  <action name="actionExport_image">
+   <property name="text">
+    <string>Export image</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+E</string>
+   </property>
+  </action>
+  <action name="actionQuit">
+   <property name="text">
+    <string>Quit</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+Q</string>
+   </property>
+  </action>
+  <action name="actionAbout">
+   <property name="text">
+    <string>SAMSpectrumAnalyzer</string>
+   </property>
+  </action>
+  <action name="actionAuto_adjust_axis">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>Auto adjust axis</string>
+   </property>
+  </action>
+  <action name="actionAmplitude">
+   <property name="text">
+    <string>Amplitude</string>
+   </property>
+  </action>
+  <action name="actionPhase">
+   <property name="text">
+    <string>Phase</string>
+   </property>
+  </action>
+  <action name="actionComplex">
+   <property name="text">
+    <string>Complex</string>
+   </property>
+  </action>
+  <action name="actionReal">
+   <property name="text">
+    <string>Real</string>
+   </property>
+  </action>
+  <action name="actionImaginary">
+   <property name="text">
+    <string>Imaginary</string>
+   </property>
+  </action>
+  <action name="actionNaoki_Pross_4E_2018">
+   <property name="text">
+    <string>Naoki Pross 4E - 2018</string>
+   </property>
+  </action>
+  <action name="actionLog_frequency_axis">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>Log frequency axis</string>
+   </property>
+  </action>
  </widget>
  <layoutdefault spacing="6" margin="11"/>
  <customwidgets>
@@ -199,5 +323,70 @@
   </customwidget>
  </customwidgets>
  <resources/>
- <connections/>
+ <connections>
+  <connection>
+   <sender>actionAuto_adjust_axis</sender>
+   <signal>toggled(bool)</signal>
+   <receiver>adjustAxisCheckBox</receiver>
+   <slot>setChecked(bool)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>-1</x>
+     <y>-1</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>72</x>
+     <y>52</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>actionLog_frequency_axis</sender>
+   <signal>toggled(bool)</signal>
+   <receiver>logFreqAxisCheckBox</receiver>
+   <slot>setChecked(bool)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>-1</x>
+     <y>-1</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>218</x>
+     <y>52</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>adjustAxisCheckBox</sender>
+   <signal>toggled(bool)</signal>
+   <receiver>actionAuto_adjust_axis</receiver>
+   <slot>setChecked(bool)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>72</x>
+     <y>52</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>-1</x>
+     <y>-1</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>logFreqAxisCheckBox</sender>
+   <signal>toggled(bool)</signal>
+   <receiver>actionLog_frequency_axis</receiver>
+   <slot>setChecked(bool)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>218</x>
+     <y>52</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>-1</x>
+     <y>-1</y>
+    </hint>
+   </hints>
+  </connection>
+ </connections>
 </ui>

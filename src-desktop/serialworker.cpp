@@ -24,13 +24,21 @@ void SerialWorker::run()
         QVector<std::complex<int>> data;
 
         while (!isInterruptionRequested()) {
-            // wait for serial buffer to accumulate at least 12 bytes
-            while (_serial.available() < 14)
-                if (isInterruptionRequested())
-                    return;
+            QString str;
 
-            // read data
-            QString str = QString::fromStdString(_serial.readline());
+            try {
+                // wait for serial buffer to accumulate at least 12 bytes
+                while (_serial.available() < 14)
+                    if (isInterruptionRequested())
+                        return;
+
+                // read data
+                str = QString::fromStdString(_serial.readline());
+            } catch (serial::IOException e) {
+                emit exception();
+                return;
+            }
+
                 
             // start of data
             if (str.trimmed() == "S") {

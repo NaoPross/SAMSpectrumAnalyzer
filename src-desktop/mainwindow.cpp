@@ -1,7 +1,12 @@
 #include "mainwindow.h"
+#include "exportimagedialog.h"
+
 #include "ui_mainwindow.h"
 
 #include <QMetaType>
+#include <QFileDialog>
+#include <QFileInfo>
+#include <QDir>
 
 #include <exception>
 #include <algorithm>
@@ -30,9 +35,11 @@ MainWindow::MainWindow(QWidget *parent) :
 
     // enable automatic axis scaling
     _ui->adjustAxisCheckBox->setChecked(true);
-    _ui->setAxisBtn->setEnabled(false);
+    // _ui->setAxisBtn->setEnabled(false);
 
     // graph 0 on bottom and left axis
+    _ui->plot->addGraph(_ui->plot->xAxis, _ui->plot->yAxis);
+    // graph 1 on bottom and left axis
     _ui->plot->addGraph(_ui->plot->xAxis, _ui->plot->yAxis);
 
     // set graph data
@@ -49,16 +56,18 @@ MainWindow::MainWindow(QWidget *parent) :
     _ui->plot->xAxis->setRange(0, 10000);
     _ui->plot->yAxis->setRange(0, 5);
 
+    _ui->plot->xAxis->setNumberFormat("f");
+    _ui->plot->yAxis->setNumberFormat("gb");
+
+    _ui->plot->xAxis->setNumberPrecision(0);
+    _ui->plot->yAxis->setNumberPrecision(0);
+
+    _defaultTicker = _ui->plot->xAxis->ticker();
+    _logTicker = QSharedPointer<QCPAxisTickerLog>(new QCPAxisTickerLog);
+
     // secondary axis
     // _ui->plot->xAxis2->setLabel("");
     // _ui->plot->yAxis2->setLabel("");
-
-    // set seconday axis to log
-    // QSharedPointer<QCPAxisTickerLog> logTicker(new QCPAxisTickerLog);
-    // _ui->plot->xAxis2->setTicker(logTicker);
-    // _ui->plot->xAxis2->setScaleType(QCPAxis::stLogarithmic);
-    // _ui->plot->xAxis2->setNumberPrecision(0);
-    // _ui->plot->xAxis2->setNumberFormat("ebc");
 
     // _ui->plot->xAxis2->setRange(0, 1000);
     // _ui->plot->yAxis2->setRange(0, 5);
@@ -67,7 +76,6 @@ MainWindow::MainWindow(QWidget *parent) :
     // _ui->plot->xAxis2->setVisible(true);
     // _ui->plot->yAxis2->setVisible(true);
 
-
     // register metatype to use on qt events (signals)
     qRegisterMetaType<QVector<std::complex<int>>>("QVector<std::complex<int>>");
 
@@ -75,6 +83,13 @@ MainWindow::MainWindow(QWidget *parent) :
     connect(
         &_serialWorker, SIGNAL(receivedData(QVector<std::complex<int>>)),
         this, SLOT(serialDataReceiver(QVector<std::complex<int>>))
+    );
+
+    // connect serial exception to close button
+    // TODO: build a slot to close the serial device
+    connect(
+        &_serialWorker, SIGNAL(exception()),
+        this, SLOT(on_serialBtn_clicked())
     );
 
     // combobox changed index callback
@@ -229,9 +244,26 @@ void MainWindow::on_serialBtn_clicked()
     }
 }
 
-void MainWindow::on_adjustAxisCheckBox_toggled(bool value)
+void MainWindow::on_adjustAxisCheckBox_toggled(bool checked)
 {
-    _ui->setAxisBtn->setEnabled(!value);
+    _ui->plot->replot();
+}
+
+
+void MainWindow::on_logFreqAxisCheckBox_toggled(bool checked)
+{
+    if (checked) {
+        // set log axis
+        _ui->plot->xAxis->setTicker(_logTicker);
+        _ui->plot->xAxis->setScaleType(QCPAxis::stLogarithmic);
+        _ui->plot->xAxis->setNumberFormat("ebc");
+    } else {
+        _ui->plot->xAxis->setTicker(_defaultTicker);
+        _ui->plot->xAxis->setScaleType(QCPAxis::stLinear);
+        _ui->plot->xAxis->setNumberFormat("f");
+    }
+
+    _ui->plot->replot();
 }
 
 void MainWindow::on_plotTypeSelCombo_currentIndexChanged(int index)
@@ -253,5 +285,118 @@ void MainWindow::on_plotTypeSelCombo_currentIndexChanged(int index)
             _ui->plot->yAxis->setTicker(piTicker);
         }
         break;
+    }
+
+    _ui->plot->replot();
+}
+
+void MainWindow::on_actionQuit_triggered()
+{
+    QApplication::quit();
+}
+
+void MainWindow::on_actionSave_data_triggered()
+{
+    QString filename = QFileDialog::getSaveFileName(this,
+                "Save Data", QDir::homePath(),
+                "Comma Separated Values (*.csv)");
+
+    if (filename.isNull())
+        return;
+
+    // check if there is any data to write
+    if (_xsamples.empty() || _ysamples.empty()) {
+        serialLog("No data to write");
+        return;
+    }
+
+    // check that file has an extensions
+    QFileInfo fileInfo(filename);
+    if (fileInfo.suffix() == "")
+        filename += ".csv";
+
+    QFile file(filename);
+    if (!file.open(QIODevice::WriteOnly | QIODevice::Text)) {
+        serialLog("Failed to open file:");
+        serialLog(filename);
+        return;
+    }
+
+#ifdef _WIN32
+    const QString eol = "\n\r";
+#else
+    const QString eol = "\n";
+#endif
+
+    QTextStream out(&file);
+
+    // header
+    out << "time, magnitude" << eol;
+
+    const int samples_size = (_xsamples.size() > _ysamples.size())
+            ? _xsamples.size() : _ysamples.size();
+
+    for (int i = 0; i < samples_size; i++) {
+        out << QString::number(_xsamples[i]) << ", "
+            << QString::number(_ysamples[i]) << eol;
+    }
+
+    file.close();
+}
+
+void MainWindow::on_actionExport_image_triggered()
+{
+    // ask output image size
+    ExportImageDialog dialog(this);
+    if (dialog.exec() != QDialog::Accepted) {
+        return;
+    }
+
+    QString selectedFilter;
+    QString filename = QFileDialog::getSaveFileName(this,
+        "Save plot image", QDir::homePath(),
+        "Vector Image (*.pdf);;Bitmap Image (*.bmp);;Compressed Image (*.png *.jpg)",
+        &selectedFilter
+    );
+
+    // the user did not select a file
+    if (filename.isNull())
+        return;
+
+    QFileInfo fileInfo(filename);
+
+    // if the user has not specified an extension
+    if (fileInfo.suffix() == "") {
+        if (selectedFilter == "Vector Image (*.pdf)")
+            filename += ".pdf";
+        else if (selectedFilter == "Bitmap Image (*.bmp)")
+            filename += ".bmp";
+        else if (selectedFilter == "Compressed Image (*.png *.jpg)")
+            filename += ".png";
+
+        // update FileInfo
+        fileInfo = QFileInfo(filename);
+    }
+
+    // write data
+    if (fileInfo.suffix() == "pdf")
+        _ui->plot->savePdf(filename,
+                           dialog.getImageWidth(),
+                           dialog.getImageHeight());
+    else if (fileInfo.suffix() == "bmp")
+        _ui->plot->saveBmp(filename,
+                           dialog.getImageWidth(),
+                           dialog.getImageHeight());
+    else if (fileInfo.suffix() == "png")
+        _ui->plot->savePng(filename,
+                           dialog.getImageWidth(),
+                           dialog.getImageHeight());
+    else if (fileInfo.suffix() == "jpg" || fileInfo.suffix() == "jpeg")
+        _ui->plot->saveJpg(filename,
+                           dialog.getImageWidth(),
+                           dialog.getImageHeight());
+    else {
+        serialLog("Invalid file type: ");
+        serialLog(filename);
     }
 }
