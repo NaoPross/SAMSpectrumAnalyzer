@@ -1,10 +1,65 @@
 \chapter{Conclusioni}
 \section{Problemi riscontrati}
 
+\subsection{Errore nella scelta dell'opamp}
+\label{sec:err-opamp}
 
-\subsection{Errore nella scelta dell'opamp} \label{sec:err-opamp}
+Durante la fase di test, dopo l'assemblaggio, si \`e notato che
+l'amplificatore operazionale AD826 non \`e un opamp rail to rail come l'AD820,
+utilizzato durante la fase di sviluppo su piastra sperimentale.  Ci\`o limita
+l'escursione del segnale amplificato di quasi 1\,V, riducendo la precisione
+del campionamento.
+
+Fortunatamente il pinout DIP8 degli operazionali dual package \`e standard,
+perci\`o non vi sono eccessive difficolt\`a nella sostituzione del componente.
+
+
 \subsection{Errore nel dimensionamento del filtro attivo}
+\label{sec:err-filter}
+
+Durante la fase di test \`e stato inoltre rilevato che il filtro attivo (vedi
+figura \ref{fig:filter-ampl}) di anti-alias aveva un amplificazione non
+unitaria, dunque incorretta.  La tensione di offset di 2.5\,V veniva
+amplificata ed in molti punti l'operazionale entrava in saturazione.  Ci\`o
+era causato dal valore incorretto di \(R_{11}\) poich\`e l'amplificazione,
+data dalla relazione sottostante, era  di 2.
+\[
+    A_v = 1+R_{12}/R_{11} = 1+15\,\text{k}\Omega/15\,\text{k}\Omega = 2
+\]
+
+Il valore corretto per il resistore \(R_{11}\) \`e
+\(\geq 750\,\text{k}\Omega\), in modo da ottenere un amplificazione quasi
+unitaria, con un errore di \(+0.02\), che corrisponde ad un incremento di
+50\,mV della tensione di offset di 2.5\,V. Valori di ordini di grandezza
+maggiori sono preferibili, infatti dopo aver rilevato il guasto a \(R_{11}\)
+\`e stato assegnato un valore di \(910\,\text{k}\Omega\).
+\[
+    A_v = 1+R_{12}/R_{11} = 1+15\,\text{k}\Omega/910\,\text{k}\Omega \approx 1.016
+\]
+
 \subsection{Sincronizzazione dei threads}
+Durante lo sviluppo del software desktop \`e stato riscontrato un unico
+problema riguardante la sincronizzazione dei threads. La risorsa
+\texttt{serial::Serial MainWindow::\_serial}  come implica il nome \`e
+instanziata nella classe \texttt{MainWindow}, ma essa \`e gestita anche dalla
+classe \texttt{SerialWorker} siccome \`e suo compito leggere i dati.
+
+Perci\`o la risorsa deve essere protetta da un \texttt{QMutex} e la sua
+\emph{lifetime} (ciclo di vita) deve essere gestita tenendo in considerazione
+il thread parallelo.  Il bug era causato da una chiusura della risorsa seriale
+mentre il thread era ancora attivo.  Chiudendo la risorsa mentre il thread del
+\texttt{SerialWorker} \`e attivo, al prossimo tentativo di lettura il metodo
+\texttt{serial::Serial::read()} causa una \texttt{serial::IOException} che fa
+crashare il programma.
+
+La ragione per cui il thread non veniva fermato, era da da utilizzo incorretto
+dell'API dei \texttt{QThread}. Per chiudere correttamente un thread secondo il
+framework di Qt si richiede un interruzione con
+\texttt{QThread::requestInterruption()}. Invece nel codice veniva utilizzato
+\texttt{QThread::quit()}, che se non in condizioni particolari non chiude il
+processo parallelo.
+
+Il diff  sottostante mostra il commit in cui il problma viene risolto.
 \lstinputlisting[language=diff]{res/serialworker-crash-fix.diff}
 
 \section{Commento}
