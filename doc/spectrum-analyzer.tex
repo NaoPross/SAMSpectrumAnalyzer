@@ -233,19 +233,30 @@
         \newgeometry{margin=1.5cm}
         \pagestyle{empty}
 
-        %\chapter*{Allegati}
+        % \chapter*{Allegati}
+
         \addcontentsline{toc}{chapter}{Allegati}
         \stepcounter{chapter}
 
+        % planning
         \addcontentsline{toc}{section}{Pianificazione del progetto}
         \includepdf[pages={-}, angle=90]{Pianificazione.pdf}
 
+        % journal
         \addcontentsline{toc}{section}{Diario giornaliero}
         \includepdf[pages={-}]{journal.pdf}
 
-        \addcontentsline{toc}{section}{Schema Elettrico}
-        \includepdf[pages=-, angle=90]{res/schematic.pdf}
+        % schematic
+        \addcontentsline{toc}{section}{Schema Elettrico (V.1)}
+        \includepdf[pages=-, angle=90]{res/schematic-v1.pdf}
+        \addcontentsline{toc}{section}{Schema Elettrico (V.2)}
+        \includepdf[pages=-, angle=90]{res/schematic-v2.pdf}
 
+        % pcb
+        \addcontentsline{toc}{section}{Design del PCB (V.1)}
+        \includepdf[pages={1,2,3}, angle=90]{res/pcb-v1.pdf}
+
+        % source code
         \section*{Codice sorgente}
         \subsection*{Codice del microcontroller}
         \begin{figure}[H] \centering
@@ -274,6 +285,10 @@
         \subsubsection*{Finestra principale}
         \lstinputlisting[language=c++]{../src-desktop/mainwindow.h}
         \lstinputlisting[language=c++]{../src-desktop/mainwindow.cpp}
+
+        \subsubsection*{Dialog per esportare le immagini}
+        \lstinputlisting[language=c++]{../src-desktop/exportimagedialog.h}
+        \lstinputlisting[language=c++]{../src-desktop/exportimagedialog.cpp}
 
         \subsubsection*{Gestione della risorsa seriale}
         \lstinputlisting[language=c++]{../src-desktop/serialworker.h}
