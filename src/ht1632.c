@@ -1,10 +1,17 @@
 #include "ht1632.h"
 
+/* Variabili globali */
+static uint8_t _numActivePins;
+static uint8_t _currSelectionMask;
+static uint8_t _tgtRender;
+static uint8_t _tgtChannel;
+static byte mem[NUM_CHANNEL][ADDR_SPACE_SIZE];
+
 /* Funzioni interne alla libreria:*/
-inline void pulse_clk() {
+inline void ht1632_pulse_clk() {
 	//digitalWrite(_pinCLK, HIGH);
     _pinCLK = HIGH;
-	NOP();
+	HT1632_NOP();
 	//digitalWrite(_pinCLK, LOW);
     _pinCLK = LOW;
 }
@@ -20,7 +27,7 @@ inline int min(int a, int b) {
 #if defined TYPE_3216_BICOLOR
 // This is used to send initialization commands, and so selects all chips
 // in the selected board.
-void select(uint8_t mask) {
+void ht1632_select(uint8_t mask) {
     
     uint8_t t=1;
             
@@ -44,45 +51,45 @@ void select(uint8_t mask) {
     #endif
         
 	for (uint8_t tmp = 0; tmp < NUM_ACTIVE_CHIPS; tmp++) {
-		pulse_clk();
+		ht1632_pulse_clk();
 	}
 }
 #endif
 
 // Write single bit to display, used as padding between commands.
 // PRECONDITION: WR is LOW
-void write_single_bit() {
+void ht1632_write_single_bit() {
 	// Set the DATA pin to the correct state
     _pinDATA = LOW;
-	NOP(); // Delay
+	HT1632_NOP(); // Delay
 	// Raise the WR momentarily to allow the device to capture the data
     _pinWR = HIGH;
-	NOP(); // Delay
+	HT1632_NOP(); // Delay
 	// Lower it again, in preparation for the next cycle.
     _pinWR = LOW;
 }
 
 // Integer write to display. Used to write commands/addresses.
 // PRECONDITION: WR is LOW
-void write_data(byte data, uint8_t len) {
+void ht1632_write_data(byte data, uint8_t len) {
 	for(int j = len - 1, t = 1 << (len - 1); j >= 0; --j, t >>= 1){
 		// Set the DATA pin to the correct state
         _pinDATA =(((data & t) == 0)?LOW:HIGH);
-		NOP(); // Delay 
+		HT1632_NOP(); // Delay 
 		// Raise the WR momentarily to allow the device to capture the data
 		_pinWR = HIGH;
-        NOP(); // Delay
+        HT1632_NOP(); // Delay
 		// Lower it again, in preparation for the next cycle.
         _pinWR = LOW;
 	}
 }
 
-void write_command(char data) {
-	write_data(data, HT1632_CMD_LEN);
-	write_single_bit();
+void ht1632_write_command(char data) {
+	ht1632_write_data(data, HT1632_CMD_LEN);
+	ht1632_write_single_bit();
 }
 
-int get_char_width(int font_end [], uint8_t font_height, uint8_t font_index) {
+int ht1632_get_char_width(int font_end [], uint8_t font_height, uint8_t font_index) {
 	uint8_t bytesPerColumn = (font_height >> 3) + ((font_height & 0b111)?1:0); // Assumes that PIXELS_PER_BYTE is 8
 
 	if(font_index == 0) {
@@ -93,7 +100,7 @@ int get_char_width(int font_end [], uint8_t font_height, uint8_t font_index) {
 	return (font_end[font_index] - font_end[font_index - 1])/bytesPerColumn;
 }
 
-int get_char_offset(int font_end [], uint8_t font_index) {
+int ht1632_get_char_offset(int font_end [], uint8_t font_index) {
 	if(font_index == 0) {
 		return 0;
 	}
@@ -101,18 +108,18 @@ int get_char_offset(int font_end [], uint8_t font_index) {
 	return font_end[font_index - 1];
 }
 
-void set_clk() {
+void ht1632_set_clk() {
     _pinCLK = LOW;
 }
 
 /* Funzioni esterne alla libreria:*/
-void render_target(uint8_t target) {
+void ht1632_render_target(uint8_t target) {
 	if(target < _numActivePins) {
 		_tgtRender = target;
 	}
 }
 
-void clear() {
+void ht1632_clear() {
 	for(uint8_t c = 0; c < NUM_CHANNEL; ++c) {
 		for(uint8_t i = 0; i < ADDR_SPACE_SIZE; ++i) {
 			mem[c][i] = 0x00; // Needs to be redrawn
@@ -122,7 +129,7 @@ void clear() {
 
 #if defined TYPE_3216_BICOLOR
 // Draw the contents of mem
-void render() {
+void ht1632_render() {
 	if(_tgtRender >= _numActivePins) {
 		return;
 	}
@@ -138,11 +145,11 @@ void render() {
                 if (tmp == nChip) {
                 	//digitalWrite(_pinForCS, LOW);
                     _pinCS1 = LOW;
-            		pulse_clk();
+            		ht1632_pulse_clk();
         			//digitalWrite(_pinForCS, HIGH);
                     _pinCS1 = HIGH;
     			} else {
-                    pulse_clk();
+                    ht1632_pulse_clk();
                 }
             }
         }
@@ -155,11 +162,11 @@ void render() {
                 if (tmp == nChip) {
                 	//digitalWrite(_pinForCS, LOW);
                     _pinCS2 = LOW;
-            		pulse_clk();
+            		ht1632_pulse_clk();
         			//digitalWrite(_pinForCS, HIGH);
                     _pinCS2 = HIGH;
     			} else {
-                    pulse_clk();
+                    ht1632_pulse_clk();
                 }
             }
         }
@@ -173,11 +180,11 @@ void render() {
                 if (tmp == nChip) {
                 	//digitalWrite(_pinForCS, LOW);
                     _pinCS3 = LOW;
-            		pulse_clk();
+            		ht1632_pulse_clk();
         			//digitalWrite(_pinForCS, HIGH);
                     _pinCS3 = HIGH;
     			} else {
-                    pulse_clk();
+                    ht1632_pulse_clk();
                 }
             }
         }
@@ -191,19 +198,19 @@ void render() {
                 if (tmp == nChip) {
                 	//digitalWrite(_pinForCS, LOW);
                     _pinCS4 = LOW;
-            		pulse_clk();
+            		ht1632_pulse_clk();
         			//digitalWrite(_pinForCS, HIGH);
                     _pinCS4 = HIGH;
     			} else {
-                    pulse_clk();
+                    ht1632_pulse_clk();
                 }
             }
         }
     #endif
         
 		// Output data!
-		write_data(HT1632_ID_WR, HT1632_ID_LEN);
-		write_data(0, HT1632_ADDR_LEN); // Selecting the memory address
+		ht1632_write_data(HT1632_ID_WR, HT1632_ID_LEN);
+		ht1632_write_data(0, HT1632_ADDR_LEN); // Selecting the memory address
 
 		// Write the channels in order
 		for(uint8_t c = 0; c < NUM_CHANNEL; ++c) {
@@ -225,20 +232,20 @@ void render() {
 
 			for(; i < iMax; i+=2) { // Write every other byte.
 				// Write the higher bits before the the lower bits.
-				write_data(mem[c][i] >> HT1632_WORD_LEN, HT1632_WORD_LEN);
-				write_data(mem[c][i], HT1632_WORD_LEN);
+				ht1632_write_data(mem[c][i] >> HT1632_WORD_LEN, HT1632_WORD_LEN);
+				ht1632_write_data(mem[c][i], HT1632_WORD_LEN);
 			}
 		}
 	}
 }
 #endif
 
-int get_text_width(const char text [], int font_end [], uint8_t font_height, uint8_t gutter_space) {
+int ht1632_get_text_width(const char text [], int font_end [], uint8_t font_height, uint8_t gutter_space) {
 	int wd = 0;
 	char i = 0;
 	char currchar;
 	
-	while(1){  
+	while (1) {  
 		if (text[i] == '\0') {
 			return wd - gutter_space;
 		}
@@ -253,12 +260,14 @@ int get_text_width(const char text [], int font_end [], uint8_t font_height, uin
 			continue; // Skip this character.
 		}
 
-		wd += get_char_width(font_end, font_height, currchar) + gutter_space;
+		wd += ht1632_get_char_width(font_end, font_height, currchar) + gutter_space;
 		++i;
 	}
+    
+    return -1;
 }
 
-void draw_image(const byte * img, uint8_t width, uint8_t height, int8_t x, int8_t y, int img_offset, uint8_t offsetLeft, uint8_t offsetRight) {
+void ht1632_draw_image(const byte * img, uint8_t width, uint8_t height, int8_t x, int8_t y, int img_offset, uint8_t offsetLeft, uint8_t offsetRight) {
 	// Assuming that we are using 8 PIXELS_PER_BYTE, this does the equivalent of Math.ceil(height/PIXELS_PER_BYTE):
 	uint8_t bytesPerColumn = (height >> 3) + ((height & 0b111)?1:0);
 
@@ -332,7 +341,7 @@ void draw_image(const byte * img, uint8_t width, uint8_t height, int8_t x, int8_
 	}
 }
 
-void draw_text(const char text [], int x, int y, const byte font [], int font_end [], uint8_t font_height, uint8_t gutter_space, uint8_t offsetLeft, uint8_t offsetRight) {
+void ht1632_draw_text(const char text [], int x, int y, const byte font [], int font_end [], uint8_t font_height, uint8_t gutter_space, uint8_t offsetLeft, uint8_t offsetRight) {
 	int curr_x = x;
 	char i = 0;
 	char currchar;
@@ -359,17 +368,17 @@ void draw_text(const char text [], int x, int y, const byte font [], int font_en
 			break; // Stop rendering - all other characters are no longer within the screen 
         
         // Check to see if character is not too far left.
-		int chr_width = get_char_width(font_end, font_height, currchar);
+		int chr_width = ht1632_get_char_width(font_end, font_height, currchar);
         
         if(curr_x + chr_width + gutter_space >= 0){
             //if(curr_x <= offsetLeft)
               //  break;
             
-            draw_image(font, chr_width, font_height, curr_x, y,  get_char_offset(font_end, currchar), offsetLeft, offsetRight);
+            ht1632_draw_image(font, chr_width, font_height, curr_x, y,  ht1632_get_char_offset(font_end, currchar), offsetLeft, offsetRight);
 			
 			// Draw the gutter space
 			for(char j = 0; j < gutter_space; ++j)
-			draw_image(font, 1, font_height, curr_x + chr_width + j, y, 0, 0, 0);
+			ht1632_draw_image(font, 1, font_height, curr_x + chr_width + j, y, 0, 0, 0);
 		}
 		
 		curr_x += chr_width + gutter_space;
@@ -378,12 +387,12 @@ void draw_text(const char text [], int x, int y, const byte font [], int font_en
 }
 
 // (Funzione interna)
-void initialize() {
+void ht1632_initialize() {
 
-	select(0);
+	ht1632_select(0);
     
     // Clear all memory
-	clear();
+	ht1632_clear();
 
 	// Send configuration to chip:
 	// This configuration is from the HT1632 datasheet, with one modification:
@@ -393,87 +402,87 @@ void initialize() {
 	
 	// Send Master commands
 	
-	select(0b1111); // Assume that board 1 is the master.
-	write_data(HT1632_ID_CMD, HT1632_ID_LEN);    // Command mode
+	ht1632_select(0b1111); // Assume that board 1 is the master.
+	ht1632_write_data(HT1632_ID_CMD, HT1632_ID_LEN);    // Command mode
 	
-	write_command(HT1632_CMD_SYSDIS); // Turn off system oscillator
+	ht1632_write_command(HT1632_CMD_SYSDIS); // Turn off system oscillator
 	
 	// Custom initialization from each:
 #if defined TYPE_3216_BICOLOR
-	write_command(HT1632_CMD_COMS00);
-	write_command(HT1632_CMD_RCCLK);  // Master Mode, external clock
+	ht1632_write_command(HT1632_CMD_COMS00);
+	ht1632_write_command(HT1632_CMD_RCCLK);  // Master Mode, external clock
 #endif
 
-	write_command(HT1632_CMD_SYSEN); //Turn on system
-	write_command(HT1632_CMD_LEDON); // Turn on LED duty cycle generator
-	write_command(HT1632_CMD_PWM(16)); // PWM 16/16 duty
+	ht1632_write_command(HT1632_CMD_SYSEN); //Turn on system
+	ht1632_write_command(HT1632_CMD_LEDON); // Turn on LED duty cycle generator
+	ht1632_write_command(HT1632_CMD_PWM(16)); // PWM 16/16 duty
 	
-	select(0);
+	ht1632_select(0);
 	
 	// Clear all screens by default:
 	for(uint8_t i = 0; i < _numActivePins; ++i) {
-		render_target(i);
-		render();
+		ht1632_render_target(i);
+		ht1632_render();
 	}
 	// Set render_target to the first board.
-	render_target(0);
+	ht1632_render_target(0);
 }
 
-void begin_cs(){    
-    set_clk();
+void ht1632_begin_cs(){    
+    ht1632_set_clk();
     
 #if defined _pinCS4 
     _numActivePins = 4;
-	initialize();
+	ht1632_initialize();
 
 
 #elif defined _pinCS3
     _numActivePins = 3;
-	initialize();    
+	ht1632_initialize();    
 
 
 #elif defined _pinCS2 
     _numActivePins = 2;
-	initialize();
+	ht1632_initialize();
 
         
 #elif defined _pinCS1
     _numActivePins = 1;
-	initialize();    
+	ht1632_initialize();    
 #endif
 }
 
-void select_channel(uint8_t channel) {
+void ht1632_select_channel(uint8_t channel) {
 	if(channel < NUM_CHANNEL) {
 		_tgtChannel = channel;
 	}
 }
 
-void set_pixel(uint8_t x, uint8_t y, uint8_t channel) {
+void ht1632_set_pixel(uint8_t x, uint8_t y, uint8_t channel) {
 	if( x < 0 || x > OUT_SIZE || y < 0 || y > COM_SIZE )
 		return;
 	mem[channel][GET_ADDR_FROM_X_Y(x, y)] |= GET_BIT_FROM_Y(y);
 }
 
-void clear_pixel(uint8_t x, uint8_t y, uint8_t channel) {
+void ht1632_clear_pixel(uint8_t x, uint8_t y, uint8_t channel) {
 	if( x < 0 || x > OUT_SIZE || y < 0 || y > COM_SIZE )
 		return;
 	mem[channel][GET_ADDR_FROM_X_Y(x, y)] &= ~(GET_BIT_FROM_Y(y));
 }
 
-uint8_t get_pixel(uint8_t x, uint8_t y, uint8_t channel) {
+uint8_t ht1632_get_pixel(uint8_t x, uint8_t y, uint8_t channel) {
 	if( x < 0 || x > OUT_SIZE || y < 0 || y > COM_SIZE )
 		return 0;
 	return mem[channel][GET_ADDR_FROM_X_Y(x, y)] & GET_BIT_FROM_Y(y);
 }
 
-void fill() {
+void ht1632_fill() {
 	for(uint8_t i = 0; i < ADDR_SPACE_SIZE; ++i) {
 		mem[_tgtChannel][i] = 0xFF;
 	}
 }
 
-void fill_all() {
+void ht1632_fill_all() {
 	for(uint8_t c = 0; c < NUM_CHANNEL; ++c) {
 		for(uint8_t i = 0; i < ADDR_SPACE_SIZE; ++i) {
 			mem[c][i] = 0xFF; // Needs to be redrawn

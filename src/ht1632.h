@@ -30,16 +30,16 @@
 //#define _pinCS2                   //Pin chip_2 select 
 //#define _pinCS3                   //Pin chip_3 select 
 //#define _pinCS4                   //Pin chip_4 select 
-#define _pinWR      LATCbits.LATC4  //Pin write
+#define _pinWR      LATCbits.LATC1  //Pin write
 #define _pinCLK     LATCbits.LATC3  //Pin clock
 #define _pinDATA    LATCbits.LATC5  //Pin data 
 
 //Le definizioni input/output sono eseguite nel tool MCC
 
 // Custom typedefs
-typedef unsigned char uint8_t;
+//typedef unsigned char uint8_t;
 typedef unsigned char byte;
-typedef char int8_t;
+//typedef char int8_t;
 
 /*
  * USER OPTIONS
@@ -77,8 +77,8 @@ typedef char int8_t;
 #define GET_BIT_FROM_Y(_y) ( (0b1 << PIXELS_PER_BYTE-1) >> (y % PIXELS_PER_BYTE) )
 
 // NO-OP Definition
-//#define NOP(); __asm__("nop\n\t");
-// #define NOP() asm("nop")
+// #define NOP(); __asm__("nop\n\t");
+#define HT1632_NOP() NOP(); NOP(); NOP(); NOP(); NOP();
 // The HT1632 requires at least 50 ns between the change in data and the rising
 // edge of the WR signal. On a 16MHz processor, this provides 62.5ns per NOP. 
 
@@ -122,42 +122,36 @@ typedef char int8_t;
 #define INPUT 1
 #define OUTPUT 0
 
-/* Variabili globali */
-uint8_t _numActivePins;
-uint8_t _currSelectionMask;
-uint8_t _tgtRender;
-uint8_t _tgtChannel;
-byte mem[NUM_CHANNEL][ADDR_SPACE_SIZE];
 
-extern void write_single_bit();
-extern void write_data(byte data, uint8_t len);
-extern void write_command(char data);
-extern int get_char_width(int font_end [], uint8_t font_height, uint8_t font_index);
-extern int get_chat_offset(int font_end[], uint8_t font_index);
-extern void set_clk();
-extern void render_target(uint8_t target);
-extern void clear();
+extern void ht1632_write_single_bit();
+extern void ht1632_write_data(byte data, uint8_t len);
+extern void ht1632_write_command(char data);
+extern int ht1632_get_char_width(int font_end [], uint8_t font_height, uint8_t font_index);
+extern int ht1632_get_chat_offset(int font_end[], uint8_t font_index);
+extern void ht1632_set_clk();
+extern void ht1632_render_target(uint8_t target);
+extern void ht1632_clear();
 
 #if defined TYPE_3216_BICOLOR
-extern void select(uint8_t mask);
-extern void render();
+extern void ht1632_select(uint8_t mask);
+extern void ht1632_render();
 #endif
 
-extern int get_text_width(const char text [], int font_end [], uint8_t font_height, uint8_t gutter_space);
-extern void draw_image(const byte * img, uint8_t width, uint8_t height, int8_t x, int8_t y, int img_offset, uint8_t offsetLeft, uint8_t offsetRight);
-extern void draw_text(const char text [], int x, int y, const byte font [], int font_end [], uint8_t font_height, uint8_t gutter_space, uint8_t offsetLeft, uint8_t offsetRight);
+extern int ht1632_get_text_width(const char text [], int font_end [], uint8_t font_height, uint8_t gutter_space);
+extern void ht1632_draw_image(const byte * img, uint8_t width, uint8_t height, int8_t x, int8_t y, int img_offset, uint8_t offsetLeft, uint8_t offsetRight);
+extern void ht1632_draw_text(const char text [], int x, int y, const byte font [], int font_end [], uint8_t font_height, uint8_t gutter_space, uint8_t offsetLeft, uint8_t offsetRight);
 
 // function for internal use
 // extern void initialize();
-extern void begin_cs();
-extern void select_channel(uint8_t channel);
+extern void ht1632_begin_cs();
+extern void ht1632_select_channel(uint8_t channel);
 
 
-extern void set_pixel(uint8_t x, uint8_t y, uint8_t channel);
-extern void clear_pixel(uint8_t x, uint8_t y, uint8_t channel);
-extern uint8_t get_pixel(uint8_t x, uint8_t y, uint8_t channel);
-extern void fill();
-extern void fill_all();
+extern void ht1632_set_pixel(uint8_t x, uint8_t y, uint8_t channel);
+extern void ht1632_clear_pixel(uint8_t x, uint8_t y, uint8_t channel);
+extern uint8_t ht1632_get_pixel(uint8_t x, uint8_t y, uint8_t channel);
+extern void ht1632_fill();
+extern void ht1632_fill_all();
 
 #else
 //#error "HT1632.h" already defined!
