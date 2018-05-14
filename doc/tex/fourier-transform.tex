@@ -15,7 +15,7 @@ Consideriamo di avere gli insiemi \(X\) e \(Y\) entrambi con \(N\) termini di
 cui si prende le coppie ordinate di valori, ossia i punti da interopolare.  Il
 metodo dei minimi quadrati trova i coefficienti della retta minimizzando il
 quadrato della differenza tra il valore stimato dalla retta \(y = r(x_k)\) e il
-valore reale\(y_k\).
+valore reale \(y_k\).
 \begin{equation*}
     \min((r(x_k) - y_k)^2)\quad \forall x_k\in X,\, y_k\in Y
 \end{equation*}
@@ -36,21 +36,23 @@ definendo la matrice di trasformazione \(\mathbf{A}\) e il vettore dei termini
 noti \(\vec{u}\)
 \begin{equation*}
     \nabla \varepsilon = \mathbf{A}
-        \langle a_0, \dots,  a_m \rangle + \vec{u} \iff
-    \langle a_0, \dots, a_m \rangle =
+        ( a_0, \dots, a_m ) + \vec{u} \iff
+        ( a_0, \dots, a_m ) =
         \mathbf{A}^{-1}(-\vec{u})
 \end{equation*}
 
 \subsection{Funzione armonica}
 Una funzione armonica, sinusoidale, pu\`o essere descritta in molteplici modi.
+Nella forma trigonometrica, data la pulsazione \(\omega = 2\pi f = \dfrac{2\pi}{T}\)
+e la fase \(\varphi = \dfrac{\pi}{2} - \vartheta\).
 \begin{align*}
     f(x) &= a\cdot\sin (\omega x + \varphi) \\
     f(x) &= b\cdot\cos(\omega x + \vartheta)
 \end{align*}
 Conoscendo la formula di Eulero 
-\[
+\(
     e^{i\varphi} = \cos(\varphi) + i\cdot\sin(\varphi)
-\]
+\)
 possiamo riscrivere \(f(x)\) utilizzando la forma complessa del seno e del coseno.
 \begin{align*}
     f(x) &= \frac{a}{2i}\cdot(e^{i(x\omega + \varphi)} - e^{-i(x\omega + \varphi)}) \\
@@ -306,7 +308,7 @@ In tutti i casi possiamo osservare che il polinomio trogonometrico \`e una
 somma di sinusoidi di frequenze multiple ad una base \(f = \omega/2\pi\).  Se
 descritto mediante la terminologia dell'algebra lineare, si pu\`o anche
 osservare che un polinomio trigonometrico \`e una combinazione lineare nello
-spazio funzionale ortonormato dalle basi \(\sin(\omega x)\) e \(\cos(\omega
+spazio funzionale dalle basi ortonormate \(\sin(\omega x)\) e \(\cos(\omega
 x)\).
 
 
@@ -395,13 +397,12 @@ caso di un polinomio trigonometrico, anche dal numero di termini di
 quest'ultimo.
 
 \noindent\fbox{\begin{minipage}{\textwidth}\[
-    X_k = c_k \cdot T = \int_0^T f(x)\cdot e^{-ik2\pi fx}\,\dd{x}
+    X_k = c_k \cdot T = \int_0^T f(x)\cdot e^{-i\omega kx}\,\dd{x}
 \]\end{minipage}}
 
-Nella figura \ref{fig:dftplot}, possiamo osservare sul grafico \(x\bot z\) in rosso la
-funzione campionata, ed il suo spettro discretto sull'asse \(y\bot z\) in blu.
-Pi\`u lo spettro \`e denso, ossia pi\`u campioni, pi\`u \`e precisa
-l'approssimazione.
+Nella figura \ref{fig:dftplot}, possiamo osservare sul grafico \(x\bot z\) in
+rosso una funzione, ed il suo spettro sull'asse \(y\bot z\) in blu. Si pu\`o
+intuire che pi\`u
 
 \subsection{Derivazione della DFT}
 Per trovare la DFT, supponiamo di voler approssimare una funzione,
@@ -491,6 +492,46 @@ unico valore complesso \(c_k\), come descritto nella sezione
     c_k &= \frac{1}{T}\int_0^T f(x)\cdot e^{-i\omega kx}\,\dd{x}
 \end{align*}
 
+\subsection{DFT da un insieme di campioni discreti}
+L'operazione della DFT pu\`o essere applicata anche ad un insieme di \(N\) valori
+discreti, che per esempio potrebbero originare da un campionamento di un
+segnale elettrico. In tal caso la trasformata discreta di Fourier \`e la
+seguente.
+
+\noindent\fbox{\begin{minipage}{\textwidth}\[
+    X_k = c_k \cdot T = \sum_{n=0}^{N-1} x_n\cdot e^{-i\omega kn}
+\]\end{minipage}}
+
+Utilizzando questa notazione con gli indici \`e possibile anche notare che la
+TFD pu\`o essere espressa come una matrice \(\mathbf{V}\). Definendo il vettore
+\(\vec{x} = (x_0,x_1,\dots,x_{N-1})\) e \(\vec{X} = (X_0,\dots,X_{N-1})\) si ottiene
+
+\noindent\fbox{\begin{minipage}{\textwidth}\[
+    \vec{X} = \mathbf{V}\cdot\vec{x}
+    \vspace{2mm}
+\]\end{minipage}}
+
+\noindent Dove 
+\[
+    [\mathbf{V}]_{kn} = (e^{i\omega})^{-kn}
+\]
+ossia, se rappresentata come tabella
+\[
+    \mathbf{V} = 
+    \begin{pmatrix}
+    1      & 1                      & 1                       & \dots  & 1                        \\[1em]
+    1      & (e^{i\omega})^{-1}     & (e^{i\omega})^{-2}      & \dots  & (e^{i\omega})^{-(N-1)}   \\[1em]
+    1      & (e^{i\omega})^{-2}     & (e^{i\omega})^{-4}      & \dots  & (e^{i\omega})^{-2(N-1)}  \\[1em]
+    \vdots & \vdots                 &  \vdots                 & \ddots & \vdots                   \\[1em]
+    1      & (e^{i\omega})^{-(N-1)} & (e^{i\omega})^{-2(N-1)} & \dots  & (e^{i\omega})^{-(N-1)^2} \\[1em]
+    \end{pmatrix}
+\]
+
+Osservando la matrice si nota subito una simmetria diagonale, che \`e data
+dalla  progressione geometrica \([\mathbf{V}]_{ij} = [\mathbf{V}]_i^{j-1}\).
+Questa matrice \`e detta una matrice di Vandermonde, da cui \`e stato scelto
+il nome \(\mathbf{V}\).
+
 \section{Trasformata di Fourier}
 Dalla DFT si \`e sviluppato lo strumento matematico per ottenere lo spettro
 discreto di una funzione. Il risultato della DFT per\`o \`e una funzione
@@ -511,7 +552,7 @@ dall'approssimazione data dalla DFT possiamo asserire che
         \frac{1}{T}\,
         \underbrace{
             \int_{-T/2}^{T/2} s(x)\cdot e^{-i2\pi xn/T}\,\dd{x}
-        }_{X_n =\,c_n\cdot T}
+        }_{X_n}
         \cdot\,e^{i2\pi xn/T}
 \]
 
