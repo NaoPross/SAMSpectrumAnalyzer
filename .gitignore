@@ -21,3 +21,6 @@ hw/debug.log
 
 # other
 lib/qcustomplot-win
+
+# doc
+doc/tikz
