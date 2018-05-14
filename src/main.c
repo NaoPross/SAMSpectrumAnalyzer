@@ -20,6 +20,7 @@
 #include <stdint.h>
 #include <string.h>
 
+
 // number of samples to collect
 #define SAMPLES_SIZE_POW    7
 #define SAMPLES_SIZE        (1<<SAMPLES_SIZE_POW)
@@ -28,16 +29,27 @@
 
 volatile uint8_t samples_count;
 volatile bool start_sample;
+volatile uint8_t mux_channel = 0;
 
 
 interrupt void isr(void)
 {
-    if (PIR1bits.TMR2IF && samples_count < SAMPLES_SIZE) {        
+    if (INTCONbits.PEIE && PIR1bits.TMR2IF && samples_count < SAMPLES_SIZE) {        
         // start sampling
         start_sample = true;
         
         // reset interrupt flag
         PIR1bits.TMR2IF = 0;
+    }
+    
+    if (INTCONbits.INT0IE && INTCONbits.INT0IF) {
+        mux_channel = (mux_channel < 3) ? mux_channel +1 : 0;
+        
+        PORTD &= ~(0x07);
+        PORTD |= mux_channel & 0x07;
+
+        
+        INTCONbits.INT0IF = 0;
     }
 }
 
@@ -66,9 +78,19 @@ inline void init_hw()
     // input selection button
     TRISBbits.TRISB0 = 1;
     ANSELBbits.ANSB0 = 0;
+    // interrupt on PB0
+    INTCONbits.RBIE = 1;
+    INTCONbits.RBIF = 0;
+    // interrupt on falling edge
+    INTCON2bits.INTEDG0 = 0;
+    
+    INTCONbits.INT0IE = 1;
+    INTCONbits.INT0IF = 0;
+
     // eusart and mssp port
     ANSELC = 0x00;
     TRISC = 0x00;
+    
     // mux selection port
     TRISD = 0x00; // 0xF8;
     ANSELD = 0x00; // 0xF8;
@@ -109,6 +131,9 @@ inline void init_hw()
     /* initialize serial devices */
     eusart1_init();
     eusart2_init();
+    
+    // enable global interrupts 
+    ei();
 }
 
 
@@ -126,6 +151,9 @@ void main(void)
 
     // initialize hardware
     init_hw();
+    PORTB = 0x00;
+    PORTD = 0x00;
+    
     
     while (true) {
         // reset samples count
@@ -133,11 +161,11 @@ void main(void)
         start_sample = false;
 
 #ifdef DEBUG
-        PORTDbits.RD1 = 0;
+        PORTDbits.RD4 = 0;
 #endif
 
         // sample signal
-        ei();        
+        PIE1bits.TMR2IE = 1;
         while (samples_count < SAMPLES_SIZE){
             while (!start_sample);
 
@@ -149,10 +177,10 @@ void main(void)
             samples_count++;
             start_sample = false;
         }
-        di();
+        PIE1bits.TMR2IE = 0;
         
 #ifdef DEBUG
-        PORTDbits.RD1 = 1;
+        PORTDbits.RD4 = 1;
 #endif
         // compute FFT
         fix_fft(real, imag, SAMPLES_SIZE_POW);
@@ -165,7 +193,6 @@ void main(void)
         }
         printf("E\n\r");
 
-        
 #ifdef DEBUG        
         // wait
         // __delay_ms(500);
