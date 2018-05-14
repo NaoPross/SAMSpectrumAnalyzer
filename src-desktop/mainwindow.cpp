@@ -257,10 +257,12 @@ void MainWindow::on_logFreqAxisCheckBox_toggled(bool checked)
         _ui->plot->xAxis->setTicker(_logTicker);
         _ui->plot->xAxis->setScaleType(QCPAxis::stLogarithmic);
         _ui->plot->xAxis->setNumberFormat("ebc");
+        _ui->plot->xAxis->setRangeLower(100);
     } else {
         _ui->plot->xAxis->setTicker(_defaultTicker);
         _ui->plot->xAxis->setScaleType(QCPAxis::stLinear);
         _ui->plot->xAxis->setNumberFormat("f");
+        _ui->plot->xAxis->setRangeLower(0);
     }
 
     _ui->plot->replot();
