@@ -66,7 +66,7 @@ conosciuto anche come circuito di filtraggio \emph{anti-alias}.
     \includegraphics[width=.8\linewidth]{figures/circuits/filter-ampl.pdf}
     \caption[Circuito di adattamento del segnale]{
         Circuito di adattamento del segnale in entrata.
-        \label{fig:filter-ampl}
+        \label{fig:filter-ampl-v1}
     }
 \end{figure}
 
@@ -78,7 +78,7 @@ sarebbero possibili con un opamp normale siccome l'alimentazione del circuito
 \`e asimmetrica tra 0 e 12\,V.
 
 \paragraph{Amplificatore.} Come si pu\`o notare a sinistra nella figura
-\ref{fig:filter-ampl}, il circuito di amplificazione non ha una configurazione
+\ref{fig:filter-ampl-v1}, il circuito di amplificazione non ha una configurazione
 tipica. Esso \`e basato su una configurazione non invertente ma dispone di un
 consensatore (C11) che modifica la retroazione in modo da reagire unicamente
 alla componente AC del segnale. Questo permette di amplificare la componente
@@ -88,7 +88,7 @@ un'alimentazione simmetrica \(\pm\)5\,V.
 L'amplificazione di questo amplificatore \`e comunque data dal rapporto
 \(1+R_{14}/R_{13}\) che permette un un guadagno fino a 6 oppure 15,5\,dB.
 
-\paragraph{Filtro.} A destra della figura \ref{fig:filter-ampl} vi \`e il
+\paragraph{Filtro.} A destra della figura \ref{fig:filter-ampl-v1} vi \`e il
 circuito di filtraggio, realizzato utilizzando un tipico filtro passa basso
 attivo di primo ordine. Esso \`e dimensionato con una frequenza di taglio di
 10\,kHz poich\`e quest'ultimo \`e il limite di Nyquist, conosciuto anche dal
@@ -117,5 +117,36 @@ per la visualizzazione, adattata da Arduino da P. Randjelovic in un LPI
 precedente.
 
 In allegato \`e presente una pagina riassuntiva dal datasheet.
+
+\begin{table}[H] \centering
+    \caption{Sommario della configurazione utilizzata}
+    \begin{tabularx}{\textwidth}{l l X}
+        \toprule
+        \bfseries Componente utilizzato & \bfseries Valore & \bfseries Osservazioni \\
+        \midrule
+        Oscillatore Interno & 16\,MHz & 
+            Questa \emph{non} \`e la frequenza di lavoro \\
+        %
+        PLL & \(\times\)4 & 
+            La frequenza di lavoro \`e di 16\(\times\)4\,MHz = 64\,MHz \\
+        %
+        ADC & \ttfamily ANSA0 &
+            Utilizzato per il campionamento \\
+        %
+        I/O ports & \ttfamily A, B, C, D & \\
+        %
+        Timer 2 & Vedi \ref{sec:sampling} & Utilizzato per il campionamento \\
+        %
+        I/O interrupts & \ttfamily INT0 (RB0) &
+            Utilizzato per la selezione del canale \\
+        %
+        EUSART 1 & & 
+            Utilizzato per trasferire i campioni della FFT. \\
+        %
+        EUSART 2 & &
+            Porta di debugging \\
+        \bottomrule
+    \end{tabularx}
+\end{table}
 
  \section{Visualizzazione}

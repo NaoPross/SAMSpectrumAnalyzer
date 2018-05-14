@@ -42,7 +42,7 @@
 \titlespacing*{\chapter}{0pt}{-30pt}{10pt}
 
 % language
-\usepackage[italian]{babel}
+\usepackage[english,italian]{babel}
 
 % quotes
 \usepackage{csquotes}
@@ -50,14 +50,6 @@
 
 % sans serif font
 \renewcommand{\familydefault}{\sfdefault}
-
-% urls
-\usepackage[
-    colorlinks=true,
-    linkcolor=.,
-	citecolor=.,
-    urlcolor=blue
-]{hyperref}
 
 % maths
 \usepackage{amsmath}
@@ -74,10 +66,10 @@
 \usepackage{array}
 \usepackage{booktabs}
 \usepackage{tabularx}
-% plots
-\usepackage{pgfplots}
-\usepgfplotslibrary{fillbetween}
-\pgfplotsset{compat=1.14}
+
+% colors
+\usepackage[dvipsnames]{xcolor}
+
 % diagrams
 \usepackage{tikz}
 \usetikzlibrary{calc}
@@ -88,13 +80,26 @@
 \usepackage{tikz-timing}
 \usepackage{tikzscale}
 
+% plots
+\usepackage{pgfplots}
+\usepgfplotslibrary{fillbetween}
+\pgfplotsset{compat=1.13}
+
 % include PDFs
 \usepackage{pdfpages}
 
 % code
-\usepackage{xcolor}
 \usepackage{listings}
 
+% urls
+\usepackage[
+    colorlinks=true,
+    linkcolor=.,
+	citecolor=.,
+    urlcolor=blue
+]{hyperref}
+
+% configure listings
 \lstdefinelanguage{diff}{
     sensitive=true,
     % diff command line
@@ -214,7 +219,28 @@
 \begin{document}
 
     \input{tex/titlepage}
-    \blankpage
+
+    \iffalse
+
+    \selectlanguage{english}
+    \begin{abstract}
+    \selectlanguage{italian}
+        Per completare un percorso formativo alla SAM \`e richiesto lo
+        sviluppo di un progetto. Questa documentazione descrive e documenta lo
+        sviluppo di un prototipo di un circuito di analisi spettrale a 3
+        entrate: 2 jack ed un Cinc/RCA, in grado di offrire uno spettro fino a
+        10\,kHz. Realizzato intorno ad un PIC18F45K22 con l'utilizzo
+        dell'algoritmo della Fast Fourier Transform (FFT), \`e possibile
+        osservare i valori complessi dello spettro mediante la porta seriale
+        RS232 oppure utilizzando il software sviluppato in C++ per Windows e
+        Linux (probabilmente \`e possibile compilarlo anche sotto MacOS).
+
+        Il progetto si \`e concluso con lo sviluppo di un primo design per un
+        PCB, funzionante, ed uno schema elettrico revisionato.
+    \end{abstract}
+    \selectlanguage{italian}
+
+    % \blankpage
     \tableofcontents
 
 	% spacing between paragraphs
@@ -264,38 +290,39 @@
             \caption{Diagramma di flusso del codice del microcontrollore}
         \end{figure}
 
-        \lstinputlisting{../src/main.c}
-        \lstinputlisting{../src/hwconfig.h}
+        % \lstinputlisting{../src/main.c}
+        % \lstinputlisting{../src/hwconfig.h}
 
-        \subsubsection*{Fast Fourier Transform}
-        \lstinputlisting{../src/fft.h}
-        \lstinputlisting{../src/fft.c}
+        % \subsubsection*{Fast Fourier Transform}
+        % \lstinputlisting{../src/fft.h}
+        % \lstinputlisting{../src/fft.c}
 
-        % \subsubsection*{Controllo del display}
-        % \lstinputlisting{../src/ht1632.h}
-        % \lstinputlisting{../src/ht1632.c}
-        
-        \subsubsection*{Libreria RS232}
-        \lstinputlisting{../src/rs232.h}
-        \lstinputlisting{../src/rs232.c}
+        % % \subsubsection*{Controllo del display}
+        % % \lstinputlisting{../src/ht1632.h}
+        % % \lstinputlisting{../src/ht1632.c}
+        % 
+        % \subsubsection*{Libreria RS232}
+        % \lstinputlisting{../src/rs232.h}
+        % \lstinputlisting{../src/rs232.c}
 
-        \subsection*{Codice dell'applicativo desktop}
-        \lstinputlisting[language=c++]{../src-desktop/main.cpp}
+        % \subsection*{Codice dell'applicativo desktop}
+        % \lstinputlisting[language=c++]{../src-desktop/main.cpp}
 
-        \subsubsection*{Finestra principale}
-        \lstinputlisting[language=c++]{../src-desktop/mainwindow.h}
-        \lstinputlisting[language=c++]{../src-desktop/mainwindow.cpp}
+        % \subsubsection*{Finestra principale}
+        % \lstinputlisting[language=c++]{../src-desktop/mainwindow.h}
+        % \lstinputlisting[language=c++]{../src-desktop/mainwindow.cpp}
 
-        \subsubsection*{Dialog per esportare le immagini}
-        \lstinputlisting[language=c++]{../src-desktop/exportimagedialog.h}
-        \lstinputlisting[language=c++]{../src-desktop/exportimagedialog.cpp}
+        % \subsubsection*{Dialog per esportare le immagini}
+        % \lstinputlisting[language=c++]{../src-desktop/exportimagedialog.h}
+        % \lstinputlisting[language=c++]{../src-desktop/exportimagedialog.cpp}
 
-        \subsubsection*{Gestione della risorsa seriale}
-        \lstinputlisting[language=c++]{../src-desktop/serialworker.h}
-        \lstinputlisting[language=c++]{../src-desktop/serialworker.cpp}
+        % \subsubsection*{Gestione della risorsa seriale}
+        % \lstinputlisting[language=c++]{../src-desktop/serialworker.h}
+        % \lstinputlisting[language=c++]{../src-desktop/serialworker.cpp}
 
         \clearpage
         \restoregeometry
     }
+    \fi 
 
 \end{document}

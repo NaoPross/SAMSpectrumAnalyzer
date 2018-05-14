@@ -1,6 +1,39 @@
 \chapter{Conclusioni}
 \section{Risultati}
 
+\subsection{Esempi di misurazioni}
+I dati illustrati nella figura \ref{fig:measurement} sono esportati dal
+programma desktop.
+\begin{figure}[H] \centering
+    \begin{tikzpicture}
+        \begin{axis}[
+            width = \textwidth,
+            height = .4\textwidth,
+            axis x line = center,
+            axis y line = center,
+            xlabel = {\(t\)},
+            xlabel style = {right},
+            ylabel = {\(A\)},
+            ylabel style = {above},
+            grid=both,
+            grid style = dotted,
+            % axis equal,
+            % xticklabels = \empty,
+            extra x ticks = {-10,-9,...,10},
+            extra x tick labels= \empty,
+            extra y ticks = {-10,-9,...,10},
+            extra y tick labels= \empty,
+        ]
+            \addplot [smooth, red, mark size=1] table [col sep=comma] {res/data/fft-sine-wave.csv};
+            \addplot [smooth, blue, mark size=1] table [col sep=comma] {res/data/fft-square-wave-lf.csv};
+        \end{axis}
+    \end{tikzpicture}
+    \caption{
+        Spettro di un'onda sinusoidale (rosso) e di un segnale quadrato (blu)
+        \label{fig:measurements}
+    }
+\end{figure}
+
 \section{Problemi riscontrati}
 \subsection{Errore nella scelta dell'opamp}
 \label{sec:err-opamp}
@@ -14,13 +47,15 @@ del campionamento.
 Fortunatamente il pinout DIP8 degli operazionali dual package \`e standard,
 perci\`o non vi sono eccessive difficolt\`a nella sostituzione del componente.
 Purtroppo per\`o non sar\`a possibile acquistare in tempo un opamp
-sostitutivo.
+sostitutivo. Un possibile sostituto, utilizzato nella seconda revisione dello
+schema, potrebbe essere l'operazionale MCP6292 (in alternativa: MCP6002, TI
+OPA2340, ICL7621DCPAZ).
 
 \subsection{Errore nel dimensionamento del filtro attivo}
 \label{sec:err-filter}
 
 Durante la fase di test \`e stato inoltre rilevato che il filtro attivo (vedi
-figura \ref{fig:filter-ampl}) di anti-alias aveva un amplificazione non
+figura \ref{fig:filter-ampl-v1}) di anti-alias aveva un amplificazione non
 unitaria, dunque incorretta.  La tensione di offset di 2.5\,V veniva
 amplificata ed in molti punti l'operazionale entrava in saturazione.  Ci\`o
 era causato dal valore incorretto di \(R_{11}\) poich\`e l'amplificazione,
@@ -29,7 +64,7 @@ data dalla relazione sottostante, era  di 2.
     A_v = 1+R_{12}/R_{11} = 1+15\,\text{k}\Omega/15\,\text{k}\Omega = 2
 \]
 
-Il valore corretto per il resistore \(R_{11}\) \`e
+Un valore sostitutivo per il resistore \(R_{11}\) \`e
 \(\geq 750\,\text{k}\Omega\), in modo da ottenere un amplificazione quasi
 unitaria, con un errore di \(+0.02\), che corrisponde ad un incremento di
 50\,mV della tensione di offset di 2.5\,V. Valori di ordini di grandezza
@@ -38,6 +73,8 @@ maggiori sono preferibili, infatti dopo aver rilevato il guasto a \(R_{11}\)
 \[
     A_v = 1+R_{12}/R_{11} = 1+15\,\text{k}\Omega/910\,\text{k}\Omega \approx 1.016
 \]
+
+Cos\`i facendo per\`o viene variata la frequenza di taglio del filtro.
 
 \subsection{Sincronizzazione dei threads}
 \label{sec:err-sync}
@@ -64,6 +101,8 @@ processo parallelo.
 
 Il diff  sottostante mostra il commit in cui il problema viene risolto.
 \lstinputlisting[language=diff]{res/serialworker-crash-fix.diff}
+
+\section{Possibili miglioramenti e sviluppi futuri}
 
 \section{Commento}
 Personalmente ho trovato il progetto molto interessante e coinvolgente.

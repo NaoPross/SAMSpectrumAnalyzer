@@ -1,5 +1,5 @@
 \chapter{Software}
-\section{Campionamento}
+\section{Campionamento} \label{sec:sampling}
 Per campionare il segnale \`e stato scelto di utilizzare il TIMER2, sia per la
 sua semplicit\`a che per la granulati\`a offerta dal registro di comparazione.
 Il campionamento \`e eseguito ad una frequenza di 20\,kHz, poco sotto al
@@ -240,11 +240,6 @@ classe \texttt{MainWindow} in quanto essa esiste unicamente quando esiste
 diagramma delle sequenze che mostra il flusso dei dati attraverso le
 componenti del programma.
 
-\begin{figure}[H] \centering
-    \includegraphics[width=.6\textwidth]{figures/uml/desktop-sequence}
-    \caption{Diagramma delle sequenze \label{fig:desktop-sequence}}
-\end{figure}
-
 Per l'implementazione nella figura \ref{fig:desktop-classes} \`e possibile
 osservare il diagramma UML delle classi. \`E importante notare che Qt 
 introduce dei nuovi tipi di membri chiamati \emph{slots} e \emph{signals}.
@@ -264,17 +259,30 @@ segnale, dunque un vettore di numeri complessi interi, che processa i dati e li
 mostra nell'interfaccia utente.
 
 \begin{figure}[H] \centering
+    \includegraphics[width=.6\textwidth]{figures/uml/desktop-sequence}
+    \caption{Diagramma delle sequenze \label{fig:desktop-sequence}}
+\end{figure}
+
+\begin{figure}[H] \centering
     \includegraphics[width=\textwidth]{figures/uml/desktop-classes}
     \caption{Diagramma delle classi \label{fig:desktop-classes}}
 \end{figure}
 
 \subsection{Interfaccia utente}
 L'interfaccia utente, realizzata con Qt \`e molto semplice e non dovrebbe
-richiedere spiegazioni. 
+richiedere delle istruzioni d'utilizzo.
+Dal software \`e possibile esportare i dati sia in formato CSV sia in un
+immagine del grafico in formato vettoriale o bitmap / compresso (png, jpg).
 \begin{figure}[H] \centering
-	\includegraphics[width=.5\textwidth]{figures/screenshots/desktop-debian-empty}
-    \caption{L'applicativo sotto Debian 9.4 Stretch}
+	\includegraphics[width=.45\textwidth]{figures/screenshots/desktop-fedora-sine}
+	\includegraphics[width=.45\textwidth]{figures/screenshots/desktop-windows7-square}
+    \caption{L'applicativo sotto Fedora 27 (sinistra) e Windows 7 (destra)}
 \end{figure}
+\begin{figure}[H] \centering
+	\includegraphics[width=.8\linewidth]{figures/screenshots/desktop-exported-sine-wave-img}
+    \caption{Esempio di immagine esportata dal software}
+\end{figure}
+
 
 \section{Interfaccia al Display}
 
