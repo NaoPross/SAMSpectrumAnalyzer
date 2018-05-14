@@ -331,7 +331,7 @@ void MainWindow::on_actionSave_data_triggered()
     QTextStream out(&file);
 
     // header
-    out << "time, magnitude" << eol;
+    out << "frequency, magnitude" << eol;
 
     const int samples_size = (_xsamples.size() > _ysamples.size())
             ? _xsamples.size() : _ysamples.size();
