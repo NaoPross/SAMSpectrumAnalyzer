@@ -5,12 +5,12 @@ skinparam defaultFontName DejaVu Sans Mono
 start
 :Initialize hardware;
 while (Repeat forever) is (always)
-    :Enable interrupts;
+    :Enable timer;
     while (Enough samples?) is (yes)
-        :Wait for interrupt;
+        :Wait timer;
         :Sample data;
     endwhile (no)
-    :Disable interrupts;
+    :Disable timer;
     :Send data;
     :Display data;
 endwhile (never)

@@ -41,8 +41,8 @@ microcontroller. Per la sua semplicit\`a non sono necessari particolari
 osservarzioni.
 
 \begin{figure}[H] \centering
-    \includegraphics[width=.8\linewidth]{figures/circuits/input-selection.pdf}
-    \caption{Circuito di selezione delle entrate \label{fig:input-selection}}
+    \includegraphics[width=.9\linewidth]{figures/circuits/input-selection-v2.pdf}
+    \caption{Circuito di selezione delle entrate \label{fig:input-selection-v2}}
 \end{figure}
 
 Tutte le entrate dispongono di un condensatore di disaccoppiamento seguito da
@@ -63,19 +63,18 @@ prima di un circuito di conversione AD (analogico - digitale), ed \`e
 conosciuto anche come circuito di filtraggio \emph{anti-alias}.
 
 \begin{figure}[H] \centering
-    \includegraphics[width=.8\linewidth]{figures/circuits/filter-ampl.pdf}
+    \includegraphics[width=.9\linewidth]{figures/circuits/filter-ampl-v2.pdf}
     \caption[Circuito di adattamento del segnale]{
         Circuito di adattamento del segnale in entrata.
-        \label{fig:filter-ampl-v1}
+        \label{fig:filter-ampl-v2}
     }
 \end{figure}
 
 \`E importante notare che per questa applicazione si \`e scelto utilizzare
-degli opamp \emph{rail to rail}\footnote{Vedi sezione \ref{sec:err-opamp}},
-che hanno una tensione di saturazione vicina a quella di alimentazione. Essi
-sono necessari per poter raggiungere tensioni vicino allo 0\,V, che non
-sarebbero possibili con un opamp normale siccome l'alimentazione del circuito
-\`e asimmetrica tra 0 e 12\,V.
+degli opamp \emph{rail to rail}, che hanno una tensione di saturazione vicina
+a quella di alimentazione. Essi sono necessari per poter raggiungere tensioni
+vicino allo 0\,V, che non sarebbero possibili con un opamp normale siccome
+l'alimentazione del circuito \`e asimmetrica tra 0 e 12\,V.
 
 \paragraph{Amplificatore.} Come si pu\`o notare a sinistra nella figura
 \ref{fig:filter-ampl-v1}, il circuito di amplificazione non ha una configurazione
@@ -95,11 +94,6 @@ attivo di primo ordine. Esso \`e dimensionato con una frequenza di taglio di
 teorema di Shannon, il quale stata che la frequenza di campionamento deve
 essere almeno doppia della frequenza dell'armonica di frequenza maggiore.
 
-Anche il filtro essendo non invertente ha un rapporto di amplificazione dato
-da \(1+R_{12}/R_{11}\). Nella figura il valore della resistenza \(R_{11}\) \`e
-\textbf{incorretto} (Vedi sezione \ref{sec:err-filter}). Dopo la correzzione
-(\(R_{11} \geq 750\,\textrm{k}\Omega\)) il filtro ha un amplificazione
-approssimativamente unitaria (\(\approx 1.02\)).
 
 \section{Microcontroller}
 Per questa applicazione \`e stato deciso di utilizzare il microcontroller a 8
@@ -149,4 +143,29 @@ In allegato \`e presente una pagina riassuntiva dal datasheet.
     \end{tabularx}
 \end{table}
 
- \section{Visualizzazione}
+% \section{Visualizzazione}
+
+\section{Schemi originali}
+Dopo la realizzazione del primo prototipo, gli schemi sono stati revisionati,
+apportando delle correzioni. In questa sezione sono presenti gli schemi
+originali utilizzati per produrre il (primo) prototipo.
+\begin{figure}[H] \centering
+    \includegraphics[width=.9\linewidth]{figures/circuits/input-selection-v1.pdf}
+    \caption{
+        Circuito di selezione delle entrate (prima versione)
+        \label{fig:input-selection-v1}
+    }
+\end{figure}
+% Il filtro essendo non invertente ha un rapporto di amplificazione dato
+% da \(1+R_{12}/R_{11}\). Nella figura \ref{fig:filter-ampl-v1} il valore della
+% resistenza \(R_{11}\) \`e \textbf{incorretto} (Vedi sezione
+% \ref{sec:err-filter}). Dopo la correzzione (\(R_{11} \geq
+% 750\,\textrm{k}\Omega\)) il filtro ha un amplificazione approssimativamente
+% unitaria (\(\approx 1.02\)).
+\begin{figure}[H] \centering
+    \includegraphics[width=.9\linewidth]{figures/circuits/filter-ampl-v1.pdf}
+    \caption[Circuito di adattamento del segnale]{
+        Circuito di adattamento del segnale in entrata (prima versione)
+        \label{fig:filter-ampl-v1}
+    }
+\end{figure}

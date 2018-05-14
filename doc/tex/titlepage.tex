@@ -3,12 +3,14 @@
 \newgeometry{margin=3cm}
 \renewcommand{\arraystretch}{1.5}
 
+\tikzexternaldisable
 \begin{tikzpicture}[remember picture,overlay]
     \node[anchor=north west, inner sep=0pt] 
         at ($(current page.north west)+(3cm, -3cm)$) {
             \includegraphics[height=2.25cm]{figures/logo/LOGO_SAM}
         };
 \end{tikzpicture}
+\tikzexternalenable
 
 \begin{flushright}
     \LARGE \bfseries
@@ -19,7 +21,7 @@
 \large
 \noindent\begin{tabularx}{\textwidth}{l X}
     \midrule
-    Nome Cognome: & \textbf{\name} \\
+    Nome e cognome: & \textbf{\name} \\
 
     \midrule
     Professione: & \textbf{Elettronico} \\
@@ -34,6 +36,7 @@
 % immagine opizonale
 % \includegraphics[\height=]{figures}
 \begin{center}
+    \tikzsetnextfilename{titlepage-front}
     \begin{tikzpicture}[=latex]
 		\begin{axis}[
 			width = \linewidth,
@@ -94,7 +97,7 @@
     Data d'inizio: & \textbf{\projstart} & Ore a disposizione: & \textbf{\plannedtime}\\
 
     \midrule
-    Data file lavoro: & \textbf{\projend} & Ore effettive: &  \textbf{\actualtime} \\
+    Data di fine lavoro: & \textbf{\projend} & Ore effettive: &  \textbf{\actualtime} \\
 
     % \midrule
     % Data di compilazione & \textbf{\today} \\

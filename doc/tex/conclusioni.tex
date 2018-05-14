@@ -2,7 +2,7 @@
 \section{Risultati}
 
 \subsection{Esempi di misurazioni}
-I dati illustrati nella figura \ref{fig:measurement} sono esportati dal
+I dati illustrati nella figura \ref{fig:measurements} sono esportati dal
 programma desktop.
 \begin{figure}[H] \centering
     \begin{tikzpicture}
@@ -11,7 +11,7 @@ programma desktop.
             height = .4\textwidth,
             axis x line = center,
             axis y line = center,
-            xlabel = {\(t\)},
+            xlabel = {\(f\)},
             xlabel style = {right},
             ylabel = {\(A\)},
             ylabel style = {above},
@@ -39,7 +39,7 @@ programma desktop.
 \label{sec:err-opamp}
 
 Durante la fase di test, dopo l'assemblaggio, si \`e notato che
-l'amplificatore operazionale AD826 non \`e un opamp rail to rail come l'AD820,
+l'amplificatore operazionale AD826 non \`e un opamp rail to rail, come l'AD820
 utilizzato durante la fase di sviluppo su piastra sperimentale.  Ci\`o limita
 l'escursione del segnale amplificato di quasi 1\,V, riducendo la precisione
 del campionamento.
@@ -74,7 +74,10 @@ maggiori sono preferibili, infatti dopo aver rilevato il guasto a \(R_{11}\)
     A_v = 1+R_{12}/R_{11} = 1+15\,\text{k}\Omega/910\,\text{k}\Omega \approx 1.016
 \]
 
-Cos\`i facendo per\`o viene variata la frequenza di taglio del filtro.
+Cos\`i facendo per\`o \`e stata modificata la frequenza di taglio del filtro.
+Perci\`o si \`e concluso che il circuito scelto non \`e utilizzabile e nella
+seconda revisione la configurazione \`e stata sostituita da una cella RC con
+un amplificatore non invertente.
 
 \subsection{Sincronizzazione dei threads}
 \label{sec:err-sync}
@@ -88,11 +91,11 @@ Perci\`o la risorsa deve essere protetta da un \texttt{QMutex} e la sua
 \emph{lifetime} (ciclo di vita) deve essere gestita tenendo in considerazione
 il thread parallelo.  Il bug era causato da una chiusura della risorsa seriale
 mentre il thread era ancora attivo.  Chiudendo la risorsa mentre il thread del
-\texttt{SerialWorker} \`e attivo, al prossimo tentativo di lettura il metodo
+\texttt{SerialWorker} \`e attivo, al tentativo di lettura seguente il metodo
 \texttt{serial::Serial::read()} causa una \texttt{serial::IOException} che fa
 crashare il programma.
 
-La ragione per cui il thread non veniva fermato, era da da utilizzo incorretto
+La ragione per cui il thread non veniva fermato, era l'utilizzo incorretto
 dell'API dei \texttt{QThread}. Per chiudere correttamente un thread secondo il
 framework di Qt si richiede un interruzione con
 \texttt{QThread::requestInterruption()}. Invece nel codice veniva utilizzato
@@ -103,6 +106,20 @@ Il diff  sottostante mostra il commit in cui il problema viene risolto.
 \lstinputlisting[language=diff]{res/serialworker-crash-fix.diff}
 
 \section{Possibili miglioramenti e sviluppi futuri}
+\subsection{Filtro}
+Il circuito di filtraggio del rumore di alta frequenza potrebbe essere
+sostituito con un filtro di secondo o di terzo ordine per migliorarne le
+prestazioni.
+
+\subsection{Circuito di selezione dell'entrata}
+Il multiplexer utilizzato per l'entrata ha un valore d'impedenza non
+particolarmente eccezionale, per migliorare le prestazioni si dovrebbe
+scegliere un multiplexer differente.
+
+\subsection{Supporto per MacOS}
+Il software dell'analisi spettrale attualmente non utilizza dipendenze che
+richiedono una piattaforma particolare. Portare il software per MacOS non
+dovrebbe essere difficile.
 
 \section{Commento}
 Personalmente ho trovato il progetto molto interessante e coinvolgente.

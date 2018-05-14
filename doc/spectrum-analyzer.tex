@@ -76,6 +76,9 @@
 \usetikzlibrary{quotes}
 \usetikzlibrary{patterns}
 \usetikzlibrary{angles}
+\usetikzlibrary{external}
+\tikzexternalize[prefix=tikz/]
+
 \usepackage[european]{circuitikz}
 \usepackage{tikz-timing}
 \usepackage{tikzscale}
@@ -220,8 +223,6 @@
 
     \input{tex/titlepage}
 
-    \iffalse
-
     \selectlanguage{english}
     \begin{abstract}
     \selectlanguage{italian}
@@ -271,6 +272,8 @@
         % journal
         \addcontentsline{toc}{section}{Diario giornaliero}
         \includepdf[pages={-}]{journal.pdf}
+        % if the number of pages of the journal is odd
+        \blankpage
 
         % schematic
         \addcontentsline{toc}{section}{Schema Elettrico (V.1)}
@@ -323,6 +326,5 @@
         \clearpage
         \restoregeometry
     }
-    \fi 
 
 \end{document}
