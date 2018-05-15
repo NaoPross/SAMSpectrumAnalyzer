@@ -129,7 +129,7 @@ In allegato \`e presente una pagina riassuntiva dal datasheet.
         %
         I/O ports & \ttfamily A, B, C, D & \\
         %
-        Timer 2 & Vedi \ref{sec:sampling} & Utilizzato per il campionamento \\
+        Timer 2 & Vedi \S\ref{sec:sampling} & Utilizzato per il campionamento \\
         %
         I/O interrupts & \ttfamily INT0 (RB0) &
             Utilizzato per la selezione del canale \\
@@ -141,6 +141,18 @@ In allegato \`e presente una pagina riassuntiva dal datasheet.
             Porta di debugging \\
         \bottomrule
     \end{tabularx}
+\end{table}
+
+\begin{table}[H] \centering
+    \caption{Configurazione della porta seriale}
+    \begin{tabular}{l r l}
+        \toprule
+        Baudrate & 57.6 & kbps \\
+        Data size & 8 & bits \\
+        Stop bits & 1 & -- \\
+        Flow control & off & -- \\
+        \bottomrule
+    \end{tabular}
 \end{table}
 
 % \section{Visualizzazione}

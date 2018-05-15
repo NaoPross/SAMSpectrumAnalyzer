@@ -32,8 +32,11 @@ microsecondo. Perci\`o il comparatore \`e impostato a 50, poich\`e
         \frac{1}{1}\cdot
         \frac{1}{\textrm{comparator}}\cdot
         \frac{1}{16}
-      = \frac{1\,\textrm{MHz}}{\textrm{comparator}}
+      = \frac{1\,\textrm{MHz}}{\textrm{comparator}} 
+      = \frac{1\,\textrm{MHz}}{50} = 20\,\textrm{kHz}
 \]
+In allegato la figura \ref{fig:embedded-flowchart} mostra il diagramma di
+flusso del programma.
 
 \section{Trasferimento dei dati}
 Per trasferire i dati campionati era inizialmente stato scelto di utilizzare
@@ -73,6 +76,10 @@ I dati sono trasferiti con un semplice protocollo illustrato nella figura
 riga seguente \`e un numero complesso a 4 cifre con il carattere `i' come
 separatore tra la parte immaginaria e complessa (Es: \texttt{0140i0670}). Il
 frame termina con il carattere ASCII maiuscolo `E'.
+
+La trasmissione di basso livello \`e gestita dalla porta EUSART del
+microcontroller, impostato per funzionare in modalit\`a asincrona con i dati
+da 8 bit, 1 stop bit ad una velocit\`a di 57600 bps.
 
 \section{Interfaccia al Computer}
 Per preferenze principalmente personali \`e stato scelto di realizzare
