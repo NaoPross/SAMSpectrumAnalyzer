@@ -1,6 +1,6 @@
 \chapter{Conclusioni}
 \section{Risultati}
-Il circuito stampato realizzato \`e funzionante, come il protototipo iniziale
+Il circuito stampato realizzato \`e funzionante, come il prototipo iniziale
 su piastra sperimentale, malgrado gli errori rilevati durante la messa in
 servizio.
 
@@ -46,12 +46,12 @@ programma desktop.
 \label{sec:err-opamp}
 
 Durante la fase di test, dopo l'assemblaggio, si \`e notato che
-l'amplificatore operazionale AD826 non \`e un opamp rail to rail, come l'AD820
+l'amplificatore operazionale AD826 non \`e rail to rail come l'AD820
 utilizzato durante la fase di sviluppo su piastra sperimentale.  Ci\`o limita
 l'escursione del segnale amplificato di quasi 1\,V, riducendo la precisione
 del campionamento.
 
-Fortunatamente il pinout DIP8 degli operazionali dual package \`e standard,
+Fortunatamente il footprint DIP8 degli operazionali dual package \`e standard,
 perci\`o non vi sono eccessive difficolt\`a nella sostituzione del componente.
 Purtroppo per\`o non sar\`a possibile acquistare in tempo un opamp
 sostitutivo. Un possibile sostituto, utilizzato nella seconda revisione dello
@@ -91,7 +91,7 @@ un amplificatore non invertente.
 Durante lo sviluppo del software desktop \`e stato riscontrato un unico
 problema riguardante la sincronizzazione dei threads. La risorsa
 \texttt{serial::Serial MainWindow::\_serial}  come implica il nome \`e
-instanziata nella classe \texttt{MainWindow}, ma essa \`e gestita anche dalla
+istanziata nella classe \texttt{MainWindow}, ma essa \`e gestita anche dalla
 classe \texttt{SerialWorker} siccome \`e suo compito leggere i dati.
 
 Perci\`o la risorsa deve essere protetta da un \texttt{QMutex} e la sua
@@ -99,8 +99,8 @@ Perci\`o la risorsa deve essere protetta da un \texttt{QMutex} e la sua
 il thread parallelo.  Il bug era causato da una chiusura della risorsa seriale
 mentre il thread era ancora attivo.  Chiudendo la risorsa mentre il thread del
 \texttt{SerialWorker} \`e attivo, al tentativo di lettura seguente il metodo
-\texttt{serial::Serial::read()} causa una \texttt{serial::IOException} che fa
-crashare il programma.
+\texttt{serial::Serial::read()} causa una \texttt{serial::IOException} che
+termina il programma.
 
 La ragione per cui il thread non veniva fermato, era l'utilizzo incorretto
 dell'API dei \texttt{QThread}. Per chiudere correttamente un thread secondo il
@@ -128,10 +128,9 @@ Il software (al computer) dell'analisi spettrale attualmente non utilizza
 dipendenze che richiedono una piattaforma particolare. Portare il software per
 MacOS non dovrebbe essere difficile.
 
-
 \subsection{Supporto per altri formati di dati}
 Il software al computer attualmente supporta unicamente il formato CSV (Comma
-Separated Values) per l'esportazione dei dati. Sarebbe opportuto aggiungere il
+Separated Values) per l'esportazione dei dati. Sarebbe opportuno aggiungere il
 supporto di altri formati come DAT (Data), TSV (Tab Separated Values) e ODS
 (Open Document format for Spreadsheet).
 

@@ -5,7 +5,6 @@ DOCUMENTATION := spectrum-analyzer.tex
 # LaTeX compiler settings
 BUILD_DIR := build
 TEX := xelatex \
-		-8bit \
 		-shell-escape \
 		-interaction=nonstopmode \
 		-halt-on-error \

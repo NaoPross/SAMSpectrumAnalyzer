@@ -38,14 +38,14 @@
 Essendo richiesta dai requisiti la possibilit\`a di selezione tra 3 entrate,
 \`e stato utilizzando un semplice multiplexer controllato direttamente dal
 microcontroller. Per la sua semplicit\`a non sono necessari particolari
-osservarzioni.
+osservazioni.
 
 \begin{figure}[H] \centering
     \includegraphics[width=.9\linewidth]{figures/circuits/input-selection-v2.pdf}
     \caption{Circuito di selezione delle entrate \label{fig:input-selection-v2}}
 \end{figure}
 
-Tutte le entrate dispongono di un condensatore di disaccoppiamento seguito da
+Tutte le entrate dispongono di un condensatore di disaccoppiamento, seguito da
 un partitore di tensione simmetrico per aggiungere un offset pari a met\`a
 dell'alimentazione. Il valore delle resistenze di 20\,k\(\Omega\) \`e scelto
 per avere un impedenza rispetto al connettore uguale all'impedenza
@@ -55,7 +55,7 @@ caratteristica dei cavi audio di 10\,k\(\Omega\).
 Il segnale di cui si analizza lo spettro, prima di essere campionato, viene
 adattato mediate un circuito di amplificazione e filtraggio. Esso \`e
 necessario per due ragioni. Il circuito di amplificazione \`e presente per
-poter regolare il circuito nel caso in cui si dovesse avere in entrata un
+poter regolare il guadagno nel caso in cui si dovesse avere in entrata un
 segnale di ampiezza molto piccola. Il secondo circuito invece, di filtraggio,
 \`e necessario per rimuovere disturbi di alta frequenza che potrebbero
 introdurre disturbi nel campionamento. Questa \`e una tipica configurazione
@@ -99,7 +99,7 @@ essere almeno doppia della frequenza dell'armonica di frequenza maggiore.
 Per questa applicazione \`e stato deciso di utilizzare il microcontroller a 8
 bit di Microchip PIC18F45K22, principalmente per la sua frequenza di lavoro.
 Questo PIC senza oscillatori esterni dispone di un clock a 16\,MHz che grazie
-ad un PLL interno pu\`o essere aumentata fino a ad un massimo di 64\,MHz.
+ad un PLL interno pu\`o essere aumentato fino a ad un massimo di 64\,MHz.
 
 Inoltre questo microcontroller dispone di un moltiplicatore hardware 8x8 che
 impiega un solo ciclo, risparmiando la difficolt\`a di dover ottimizzare le
