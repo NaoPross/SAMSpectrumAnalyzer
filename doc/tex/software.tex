@@ -74,8 +74,9 @@ I dati sono trasferiti con un semplice protocollo illustrato nella figura
 \ref{fig:proto}. Un frame di dati incomincia con il carattere ASCII maiuscolo
 `S' seguito da un line break (\texttt{\textbackslash n\textbackslash r}). Ogni
 riga seguente \`e un numero complesso a 4 cifre con il carattere `i' come
-separatore tra la parte immaginaria e complessa (Es: \texttt{0140i0670\\n\\r}).
-Il frame termina con il carattere ASCII maiuscolo `E' seguito da un line break.
+separatore tra la parte immaginaria e complessa (Es:
+\texttt{0140i0670\textbackslash n\textbackslash r}).  Il frame termina con il
+carattere ASCII maiuscolo `E' seguito da un line break.
 
 La trasmissione di basso livello \`e gestita dalla porta EUSART del
 microcontroller, impostato per funzionare in modalit\`a asincrona con i dati
