@@ -1,8 +1,9 @@
 \chapter{Conclusioni}
 \section{Risultati}
-Il circuito stampato realizzato \`e funzionante, come il prototipo iniziale
-su piastra sperimentale, malgrado gli errori rilevati durante la messa in
-servizio.
+Il circuito stampato realizzato \`e funzionante, come il prototipo iniziale su
+piastra sperimentale, malgrado gli errori rilevati durante la messa in
+servizio. \`E stato possibile correggere tutti gli sbagli entro i tempi di
+consegna.
 
 % \begin{figure}[H] \centering
 %     \includegraphics[height=7cm]{figures/photos/pcb-1}
@@ -10,7 +11,9 @@ servizio.
 
 \subsection{Esempi di misurazioni}
 I dati illustrati nella figura \ref{fig:measurements} sono esportati dal
-programma desktop.
+programma desktop. Lo spettrogramma, malgrado i limiti del campionamento, \`e
+sufficientemente preciso per applicazioni in cui \`e necessaria solamente una
+misura indicativa.
 \begin{figure}[H] \centering
     \begin{tikzpicture}
         \begin{axis}[
@@ -112,7 +115,22 @@ processo parallelo.
 Il diff  sottostante mostra il commit in cui il problema viene risolto.
 \lstinputlisting[language=diff]{res/serialworker-crash-fix.diff}
 
+\subsection{Libreria HT1632} \label{sec:ht1632}
+Purtroppo per mancanza di tempo non \`e stato possibile realizzare la
+visualizzazione con la matrice led HT1632. La libreria adattata da un LPI
+precedente, doveva garantire il supporto per il microcontrollore scelto
+durante il progetto. Nella fase di sviluppo per\`o si \`e notato che il codice
+(opinione personale) non \`e di qualit\`a eccellente, in quanto utilizza
+tecniche come \texttt{NOP} per generare delay (dipendenza dal clock) e
+\textit{bit-banging} delle porte malgrado il microcontroller disponga di un
+chip SPI dedicato.  Dunque molto tempo \`e stato perso ad analizzare il codice
+della libreria, purtroppo senza arrivare ad esito positivo.
+
 \section{Possibili miglioramenti e sviluppi futuri}
+\subsection{Completare il supporto per la matrice}
+Come descritto nella sezione \ref{sec:ht1632}, il supporto della visualizzazione
+attraverso la matrice \`e mancante.
+
 \subsection{Filtro}
 Il circuito di filtraggio del rumore di alta frequenza potrebbe essere
 sostituito con un filtro di secondo o di terzo ordine per migliorarne le
