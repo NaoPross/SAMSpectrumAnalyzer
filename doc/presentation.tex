@@ -1,0 +1,85 @@
+\documentclass[10pt]{beamer}
+
+\usetheme[progressbar=frametitle]{metropolis}
+\usepackage{appendixnumberbeamer}
+
+\usepackage[italian]{babel}
+\usepackage{booktabs}
+\usepackage[scale=2]{ccicons}
+\usepackage{float}
+
+\usepackage{tikz}
+\usetikzlibrary{calc}
+\usetikzlibrary{quotes}
+\usetikzlibrary{patterns}
+\usetikzlibrary{angles}
+
+\usepackage[european]{circuitikz}
+\usepackage{tikz-timing}
+\usepackage{tikzscale}
+
+\usepackage{pgfplots}
+\usepgfplotslibrary{dateplot}
+
+\usepackage{xspace}
+
+\title{Spectrum Analyzer}
+\subtitle{Lavoro Professionale Individuale}
+\date{\today}
+\author{Naoki Pross}
+\institute{SAM Bellinzona}
+\titlegraphic{\hfill\includegraphics[height=1.3cm]{figures/logo/LOGO_SAM.pdf}}
+
+\begin{document}
+
+\maketitle
+
+\begin{frame}{Table of contents}
+    \setbeamertemplate{section in toc}[sections numbered]
+    \tableofcontents[hideallsubsections]
+\end{frame}
+
+\section{Introduzione}
+\begin{frame}{Obiettivo}
+    Realizzare un circuito di analisi spettrale
+    \begin{block}{Requisiti}
+    \begin{itemize}
+        \item Analisi dello spettro fino a 10\,kHz
+        \item Entrate Jack e RCA
+        \item Visualizzazione 
+        \item Utilizzo di un PIC18F45K22
+    \end{itemize}
+    \end{block}
+    \begin{block}{Componenti}
+    \begin{itemize}
+        \item Circuito di adattamento in entrata
+        \item Design di un PCB
+        \item Software per il uC e per il PC
+    \end{itemize}
+    \end{block}
+\end{frame}
+
+\begin{frame}{Schema a blocchi}
+    \resizebox{\textwidth}{!}{
+        \includegraphics{figures/block-diagram.tikz}
+    }
+\end{frame}
+
+\section{Fourier Transform}
+\begin{frame}{Rappresentazione grafica}
+\end{frame}
+
+\section{Fast Fourier Transform}
+\begin{frame}{Il problema della DFT}
+\end{frame}
+
+\section{Prodotto realizzato}
+\begin{frame}{}
+\end{frame}
+
+\section{Conclusioni}
+\begin{frame}{Possibili miglioramenti}
+\end{frame}
+
+
+\end{document}

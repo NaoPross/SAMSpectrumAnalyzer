@@ -2,35 +2,7 @@
 \section{Schema a blocchi}
 
 \begin{figure}[H] \centering \rmfamily
-    \tikzstyle{block} = [draw, thick, fill=gray!10, rectangle, minimum height=3em, minimum width=6em]
-    \begin{tikzpicture}[auto, node distance=3cm,>=latex']
-
-        \coordinate (mic) at (0,1);
-        \coordinate (jack) at (0,0);
-        \coordinate (cinc) at (0,-1);
-
-        \node[block, right of=jack, minimum height=9em] (mux) {MUX};
-        \node[block, right of=mux] (ampl) {Amplifier};
-        \node[block, right of=ampl] (filter) {LP Filter};
-        \node[block, right of=filter, node distance=4cm] (mcu) {MCU};
-
-        \node[block, below of=mcu, node distance=2cm] (dpy) {Display};
-        \node[block, above of=mcu, node distance=2cm] (pc) {Computer};
-
-        \draw[->] (mic) -- node {Mic} (mux.west |- mic);
-        \draw[->] (jack) -- node {Jack} (mux.west |- jack);
-        \draw[->] (cinc) -- node {Cinc} (mux.west |- cinc);
-
-        \draw[->] (mux.east) -- node {\(u\)} (ampl.west);
-        \draw[->] (ampl.east) -- (filter.west);
-        \draw[->] (filter.east) -- node {\(H(j\omega)\,u\)}(mcu.west);
-
-        \draw[->] (mux.north) ++(0,1) node [above] {S} -- (mux.north);
-        \draw[->] (ampl.north) ++(0,1) node [above] {G} -- (ampl.north);
-
-        \draw[->] (mcu.south) -- (dpy.north);
-        \draw[->] (mcu.north) -- node {\small RS232}(pc.south);
-    \end{tikzpicture}
+    \includegraphics[]{figures/block-diagram.tikz}
     \caption{Schema a blocchi}
 \end{figure}
 

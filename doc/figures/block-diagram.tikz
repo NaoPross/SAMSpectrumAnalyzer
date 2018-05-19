@@ -1,0 +1,29 @@
+\begin{tikzpicture}[node distance=3cm,>=latex']
+    \tikzstyle{block} = [draw, thick, fill=gray!10, rectangle, minimum height=1cm, minimum width=2cm]
+
+    \coordinate (mic) at (0,1);
+    \coordinate (jack) at (0,0);
+    \coordinate (cinc) at (0,-1);
+
+    \node[block, right of=jack, minimum height=3cm] (mux) {MUX};
+    \node[block, right of=mux] (ampl) {Amplifier};
+    \node[block, right of=ampl] (filter) {LP Filter};
+    \node[block, right of=filter, node distance=4cm] (mcu) {MCU};
+
+    \node[block, below of=mcu, node distance=2cm] (dpy) {Display};
+    \node[block, above of=mcu, node distance=2cm] (pc) {Computer};
+
+    \draw[->] (mic) --  node[above] {Mic}  (mux.west |- mic);
+    \draw[->] (jack) -- node[above] {Jack} (mux.west |- jack);
+    \draw[->] (cinc) -- node[above] {Cinc} (mux.west |- cinc);
+
+    \draw[->] (mux.east) -- node[above] {\(u\)} (ampl.west);
+    \draw[->] (ampl.east) -- (filter.west);
+    \draw[->] (filter.east) -- node[above] {\(H(j\omega)\,u\)}(mcu.west);
+
+    \draw[->] (mux.north) ++(0,1) node [above] {S} -- (mux.north);
+    \draw[->] (ampl.north) ++(0,1) node [above] {G} -- (ampl.north);
+
+    \draw[->] (mcu.south) -- node[left] {SPI} (dpy.north);
+    \draw[->] (mcu.north) -- node[left] {\small RS232}(pc.south);
+\end{tikzpicture}
