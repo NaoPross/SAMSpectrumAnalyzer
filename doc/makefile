@@ -4,7 +4,6 @@ DOCS := spectrum-analyzer.pdf journal.pdf presentation.pdf
 # LaTeX compiler settings
 BUILD_DIR := build
 TEX := xelatex \
-		-8bit \
 		-shell-escape \
 		-interaction=nonstopmode \
 		-halt-on-error \

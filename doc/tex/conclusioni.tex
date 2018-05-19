@@ -1,9 +1,19 @@
 \chapter{Conclusioni}
 \section{Risultati}
+Il circuito stampato realizzato \`e funzionante, come il prototipo iniziale su
+piastra sperimentale, malgrado gli errori rilevati durante la messa in
+servizio. \`E stato possibile correggere tutti gli sbagli entro i tempi di
+consegna.
+
+% \begin{figure}[H] \centering
+%     \includegraphics[height=7cm]{figures/photos/pcb-1}
+% \end{figure}
 
 \subsection{Esempi di misurazioni}
 I dati illustrati nella figura \ref{fig:measurements} sono esportati dal
-programma desktop.
+programma desktop. Lo spettrogramma, malgrado i limiti del campionamento, \`e
+sufficientemente preciso per applicazioni in cui \`e necessaria solamente una
+misura indicativa.
 \begin{figure}[H] \centering
     \begin{tikzpicture}
         \begin{axis}[
@@ -39,12 +49,12 @@ programma desktop.
 \label{sec:err-opamp}
 
 Durante la fase di test, dopo l'assemblaggio, si \`e notato che
-l'amplificatore operazionale AD826 non \`e un opamp rail to rail, come l'AD820
+l'amplificatore operazionale AD826 non \`e rail to rail come l'AD820
 utilizzato durante la fase di sviluppo su piastra sperimentale.  Ci\`o limita
 l'escursione del segnale amplificato di quasi 1\,V, riducendo la precisione
 del campionamento.
 
-Fortunatamente il pinout DIP8 degli operazionali dual package \`e standard,
+Fortunatamente il footprint DIP8 degli operazionali dual package \`e standard,
 perci\`o non vi sono eccessive difficolt\`a nella sostituzione del componente.
 Purtroppo per\`o non sar\`a possibile acquistare in tempo un opamp
 sostitutivo. Un possibile sostituto, utilizzato nella seconda revisione dello
@@ -84,7 +94,7 @@ un amplificatore non invertente.
 Durante lo sviluppo del software desktop \`e stato riscontrato un unico
 problema riguardante la sincronizzazione dei threads. La risorsa
 \texttt{serial::Serial MainWindow::\_serial}  come implica il nome \`e
-instanziata nella classe \texttt{MainWindow}, ma essa \`e gestita anche dalla
+istanziata nella classe \texttt{MainWindow}, ma essa \`e gestita anche dalla
 classe \texttt{SerialWorker} siccome \`e suo compito leggere i dati.
 
 Perci\`o la risorsa deve essere protetta da un \texttt{QMutex} e la sua
@@ -92,8 +102,8 @@ Perci\`o la risorsa deve essere protetta da un \texttt{QMutex} e la sua
 il thread parallelo.  Il bug era causato da una chiusura della risorsa seriale
 mentre il thread era ancora attivo.  Chiudendo la risorsa mentre il thread del
 \texttt{SerialWorker} \`e attivo, al tentativo di lettura seguente il metodo
-\texttt{serial::Serial::read()} causa una \texttt{serial::IOException} che fa
-crashare il programma.
+\texttt{serial::Serial::read()} causa una \texttt{serial::IOException} che
+termina il programma.
 
 La ragione per cui il thread non veniva fermato, era l'utilizzo incorretto
 dell'API dei \texttt{QThread}. Per chiudere correttamente un thread secondo il
@@ -105,7 +115,22 @@ processo parallelo.
 Il diff  sottostante mostra il commit in cui il problema viene risolto.
 \lstinputlisting[language=diff]{res/serialworker-crash-fix.diff}
 
+\subsection{Libreria HT1632} \label{sec:ht1632}
+Purtroppo per mancanza di tempo non \`e stato possibile realizzare la
+visualizzazione con la matrice led HT1632. La libreria adattata da un LPI
+precedente, doveva garantire il supporto per il microcontrollore scelto
+durante il progetto. Nella fase di sviluppo per\`o si \`e notato che il codice
+(opinione personale) non \`e di qualit\`a eccellente, in quanto utilizza
+tecniche come \texttt{NOP} per generare delay (dipendenza dal clock) e
+\textit{bit-banging} delle porte malgrado il microcontroller disponga di un
+chip SPI dedicato.  Dunque molto tempo \`e stato perso ad analizzare il codice
+della libreria, purtroppo senza arrivare ad esito positivo.
+
 \section{Possibili miglioramenti e sviluppi futuri}
+\subsection{Completare il supporto per la matrice}
+Come descritto nella sezione \ref{sec:ht1632}, il supporto della visualizzazione
+attraverso la matrice \`e mancante.
+
 \subsection{Filtro}
 Il circuito di filtraggio del rumore di alta frequenza potrebbe essere
 sostituito con un filtro di secondo o di terzo ordine per migliorarne le
@@ -117,9 +142,15 @@ particolarmente eccezionale, per migliorare le prestazioni si dovrebbe
 scegliere un multiplexer differente.
 
 \subsection{Supporto per MacOS}
-Il software dell'analisi spettrale attualmente non utilizza dipendenze che
-richiedono una piattaforma particolare. Portare il software per MacOS non
-dovrebbe essere difficile.
+Il software (al computer) dell'analisi spettrale attualmente non utilizza
+dipendenze che richiedono una piattaforma particolare. Portare il software per
+MacOS non dovrebbe essere difficile.
+
+\subsection{Supporto per altri formati di dati}
+Il software al computer attualmente supporta unicamente il formato CSV (Comma
+Separated Values) per l'esportazione dei dati. Sarebbe opportuno aggiungere il
+supporto di altri formati come DAT (Data), TSV (Tab Separated Values) e ODS
+(Open Document format for Spreadsheet).
 
 \section{Commento}
 Personalmente ho trovato il progetto molto interessante e coinvolgente.

@@ -32,8 +32,11 @@ microsecondo. Perci\`o il comparatore \`e impostato a 50, poich\`e
         \frac{1}{1}\cdot
         \frac{1}{\textrm{comparator}}\cdot
         \frac{1}{16}
-      = \frac{1\,\textrm{MHz}}{\textrm{comparator}}
+      = \frac{1\,\textrm{MHz}}{\textrm{comparator}} 
+      = \frac{1\,\textrm{MHz}}{50} = 20\,\textrm{kHz}
 \]
+In allegato la figura \ref{fig:embedded-flowchart} mostra il diagramma di
+flusso del programma.
 
 \section{Trasferimento dei dati}
 Per trasferire i dati campionati era inizialmente stato scelto di utilizzare
@@ -71,8 +74,13 @@ I dati sono trasferiti con un semplice protocollo illustrato nella figura
 \ref{fig:proto}. Un frame di dati incomincia con il carattere ASCII maiuscolo
 `S' seguito da un line break (\texttt{\textbackslash n\textbackslash r}). Ogni
 riga seguente \`e un numero complesso a 4 cifre con il carattere `i' come
-separatore tra la parte immaginaria e complessa (Es: \texttt{0140i0670}). Il
-frame termina con il carattere ASCII maiuscolo `E'.
+separatore tra la parte immaginaria e complessa (Es:
+\texttt{0140i0670\textbackslash n\textbackslash r}).  Il frame termina con il
+carattere ASCII maiuscolo `E' seguito da un line break.
+
+La trasmissione di basso livello \`e gestita dalla porta EUSART del
+microcontroller, impostato per funzionare in modalit\`a asincrona con i dati
+da 8 bit, 1 stop bit ad una velocit\`a di 57600 bps.
 
 \section{Interfaccia al Computer}
 Per preferenze principalmente personali \`e stato scelto di realizzare
@@ -121,24 +129,25 @@ librerie.
 
 \subsection{Qt Framework}
 La dipendenza principale utilizzata per realizzare la grafica \`e il framework
-di Qt. Oggi Qt \`e un'azienda indipendente che vende un supporto commerciale
-per lo sviluppo di applicazioni su praticamente ogni piattaforma.
-Qt \`e un framework maturo che esiste oramai da 22 anni ed \`e disponibile sia
-con una licenza commerciale che con le licenze open source LGPL e GPL.
+di Qt. Inoltre Qt \`e un'azienda indipendente che vende un supporto
+commerciale per lo sviluppo di applicazioni su praticamente ogni piattaforma.
+Qt \`e un framework grafico maturo che esiste oramai da 22 anni ed \`e
+disponibile sia con una licenza commerciale che con le licenze open source
+LGPL e GPL.
 
 La toolchain di Qt aggiunge al normale sviluppo un preprocessore speciale
 chiamato MOC che genera in automatico il codice dalle strutture grafiche
 realizzate con QtDesigner. Il resto della toolchain \`e composta da componenti
 tipici che possono essere intercambiati liberamente poich\`e Qt supporta
 gcc/g++, clang, MSVC e MinGW. Per compilare il codice \`e dunque necessario un
-compiler qualsiasi di C++ e l'IDE QtCreator, oppure qmake. Poch\`e questi
+compiler qualsiasi di C++ e l'IDE QtCreator, oppure qmake. Questi ultimi due
 pacchetti offrono il preprocessore MOC. Per progetti open source entrambi sono
 offerti gratuitamente dal sito ufficiale \url{www.qt.io}.
 
 \subsection{Compilazione sotto Linux}
 Il programma \`e stato realizzato in parte sotto Debian 9.4 Stretch ed in
 parte sotto Fedora 27. Per entrambi i sistemi sono necessarie le dipendenze
-per lo sviluppo in Qt5.
+per lo sviluppo di Qt5.
 
 \noindent Una volta installate le dipendenze dalla cartella di progetto \`e
 possibile utilizzare il makefile per compilare le dipendenze e il codice.
@@ -146,7 +155,7 @@ possibile utilizzare il makefile per compilare le dipendenze e il codice.
 $ make build-deps   # dependencies
 $ make              # spectrum analyzer code 
 \end{Verbatim}
-Purtroppo la liberia QCustomPlot utilizza un sistema di build molto
+Purtroppo la libreria QCustomPlot utilizza un sistema di build molto
 particolare che richiede molte dipendenze. Perci\`o in alcuni casi \`e
 preferibile scaricare dal seguente link l'ultima versione dei due files
 \texttt{qcustomplot.cpp} e \texttt{qcustomplot.hpp} ed immetterli manualmente
@@ -161,7 +170,7 @@ $ make              # build spectrum analyzer code
 \end{Verbatim}
 
 \subsection{Compilazione manuale sotto Linux}
-Per compilare manualmente il progetto sono necessari pochi steps grazie a
+Per compilare manualmente il progetto sono necessari pochi passaggi grazie a
 qmake. Come per il caso precedente la libreria QCustomPlot pu\`o essere
 scaricata dal sito.
 
@@ -227,15 +236,15 @@ Nella cartella \texttt{build-desktop} sar\`a pronto l'eseguibile con tutte le
 librerie dinamiche (DLL) necessarie.
 
 \subsection{Architettura}
-Il programma desktop \`e programmato per agire ad eventi asincroni dati dalla
+Il programma desktop \`e programmato per reagire ad eventi asincroni dati dalla
 porta seriale del sistema operativo e dalle interazioni dell'utente.
-La gestione degli eventi grafici \`e gestita interamente da Qt, perci\`o sono
+La gestione degli eventi grafici \`e affidata interamente a Qt, perci\`o sono
 stati scritti solamente i metodi che vengono attivati in funzione degli eventi
 dall'utente.
 
-Per la porta seriale invece il compito della gestione \`e stato delegato ad una
-classe \texttt{SerialWorker} che ha un rapporto di \emph{composizione} con la
-classe \texttt{MainWindow} in quanto essa esiste unicamente quando esiste
+Per la porta seriale invece il compito della gestione \`e stato delegato ad
+una classe \texttt{SerialWorker} che ha un rapporto di \emph{composizione} con
+la classe \texttt{MainWindow} in quanto essa esiste unicamente quando esiste
 \texttt{MainWindow}. Nella figura \ref{fig:desktop-sequence} \`e mostrato un
 diagramma delle sequenze che mostra il flusso dei dati attraverso le
 componenti del programma.

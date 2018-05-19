@@ -13,7 +13,7 @@
 \newcommand{\projectyear}{2017-18}
 
 \newcommand{\plannedtime}{83 UD}
-\newcommand{\actualtime}{-- UD}
+\newcommand{\actualtime}{83 UD}
 
 % ---------------------------------------------------------------------------
 % layout
@@ -266,31 +266,43 @@
         \stepcounter{chapter}
 
         % planning
+
+        % if needed
+        \blankpage
+
         \addcontentsline{toc}{section}{Pianificazione del progetto}
         \includepdf[pages={-}, angle=90]{Pianificazione.pdf}
+        % if the number of pages of is odd
+        \blankpage
 
         % journal
         \addcontentsline{toc}{section}{Diario giornaliero}
         \includepdf[pages={-}]{journal.pdf}
         % if the number of pages of the journal is odd
-        \blankpage
+        % \blankpage
 
         % schematic
         \addcontentsline{toc}{section}{Schema Elettrico (V.1)}
         \includepdf[pages=-, angle=90]{res/schematic-v1.pdf}
+
         \addcontentsline{toc}{section}{Schema Elettrico (V.2)}
         \includepdf[pages=-, angle=90]{res/schematic-v2.pdf}
 
         % pcb
         \addcontentsline{toc}{section}{Design del PCB (V.1)}
         \includepdf[pages={1,2,3}, angle=90]{res/pcb-v1.pdf}
+        % if the number of pages of is odd
+        \blankpage
 
         % source code
         \section*{Codice sorgente}
         \subsection*{Codice del microcontroller}
         \begin{figure}[H] \centering
             \includegraphics{figures/uml/embedded-flowchart}
-            \caption{Diagramma di flusso del codice del microcontrollore}
+            \caption{
+                Diagramma di flusso del codice del microcontrollore
+                \label{fig:embedded-flowchart}
+            }
         \end{figure}
 
         % \lstinputlisting{../src/main.c}
