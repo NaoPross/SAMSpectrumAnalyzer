@@ -345,43 +345,7 @@ puntuale della serie di Fourier di una funzione reale a condizione che:
 
 \section{Trasformata di Fourier discreta}
 \begin{figure}[H] \centering
-	\begin{tikzpicture}
-		\begin{axis}[
-			width=\linewidth,
-			set layers=standard,
-			domain=0:10,
-			samples y=1,
-			view={40}{20},
-			hide axis,
-			unit vector ratio*=1 2 1,
-			xtick=\empty, ytick=\empty, ztick=\empty,
-			clip=false
-		]
-			\def\sumcurve{0}
-			\pgfplotsinvokeforeach{0.5,1.5,...,5.5}{
-				\draw [on layer=background, gray!20] (axis cs:0,#1,0) -- (axis cs:10,#1,0);
-
-				\addplot3 [on layer=main, blue!30, smooth, samples=101]
-				  (x,#1,{sin(#1*x*(157))/(#1*2)});
-
-				\addplot3 [on layer=axis foreground, thick, blue, ycomb, samples=2]
-				  (10.5,#1,{1/(#1*2)});
-
-				\xdef\sumcurve{\sumcurve + sin(#1*x*(157))/(#1*2)}
-			}
-
-			\draw (10.5,0.5,0) node [below right] {\(|c_0|\)};
-			\draw (10.5,1.5,0) node [below right] {\(|c_1|\)};
-			\draw (10.5,2.5,0) node [below right] {\(|c_2|\)};
-
-			\draw (10.5,4.5,0) node [below right] {\(|c_k|\)};
-
-			\addplot3 [red, samples=200] (x,0,{\sumcurve});
-
-			\draw [on layer=axis foreground]  (axis cs:0,0,0) -- (axis cs:10,0,0);
-			\draw (axis cs:10.5,0.25,0) -- (axis cs:10.5,5.5,0);
-		\end{axis}
-	\end{tikzpicture}
+    \includegraphics[]{figures/fourier-3d-plot.tikz}
 	\caption{
 		Rappresentazione grafica della transformata di Fourier \cite{ftplot}
 		\label{fig:dftplot}
@@ -515,7 +479,7 @@ TFD pu\`o essere espressa come una matrice \(\mathbf{V}\). Definendo il vettore
 \[
     [\mathbf{V}]_{kn} = (e^{i\omega})^{-kn}
 \]
-ossia, se rappresentata come tabella
+ossia, se rappresentata nel suo intero
 \[
     \mathbf{V} = 
     \begin{pmatrix}

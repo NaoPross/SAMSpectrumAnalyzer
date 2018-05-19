@@ -1,7 +1,12 @@
-\documentclass[10pt]{beamer}
+\documentclass[10pt, xetex]{beamer}
 
-\usetheme[progressbar=frametitle]{metropolis}
+\usetheme[
+    progressbar=frametitle, 
+    block=fill
+]{metropolis}
 \usepackage{appendixnumberbeamer}
+
+\usefonttheme[onlymath]{serif}
 
 \usepackage[italian]{babel}
 \usepackage{booktabs}
@@ -13,6 +18,8 @@
 \usetikzlibrary{quotes}
 \usetikzlibrary{patterns}
 \usetikzlibrary{angles}
+% \usetikzlibrary{external}
+% \tikzexternalize[prefix=tikz/]
 
 \usepackage[european]{circuitikz}
 \usepackage{tikz-timing}
@@ -22,6 +29,13 @@
 \usepgfplotslibrary{dateplot}
 
 \usepackage{xspace}
+
+% maths
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{amsthm}
+\newcommand{\dd}[1]{{d}#1}
+
 
 \title{Spectrum Analyzer}
 \subtitle{Lavoro Professionale Individuale}
@@ -50,6 +64,8 @@
         \item Utilizzo di un PIC18F45K22
     \end{itemize}
     \end{block}
+    
+    \pause
     \begin{block}{Componenti}
     \begin{itemize}
         \item Circuito di adattamento in entrata
@@ -60,17 +76,70 @@
 \end{frame}
 
 \begin{frame}{Schema a blocchi}
+    \begin{figure} \centering
     \resizebox{\textwidth}{!}{
         \includegraphics{figures/block-diagram.tikz}
     }
+    \end{figure}
 \end{frame}
 
 \section{Fourier Transform}
 \begin{frame}{Rappresentazione grafica}
+    \begin{figure} \centering
+        \includegraphics{figures/fourier-3d-plot.tikz}
+    \end{figure}
+    \[
+        \hat{f\,} (\omega) 
+        = \int_{-\infty}^\infty f\,(x)\,\cdot e^{-i\omega x}\,\dd{x}
+    \]
 \end{frame}
 
 \section{Fast Fourier Transform}
 \begin{frame}{Il problema della DFT}
+    La trasformata di Fourier discreta \`e
+    \[
+        \vec{X} = \mathbf{V}\cdot\vec{x_n}
+    \]
+    In cui
+    \[
+        \mathbf{V} = 
+        \begin{pmatrix}
+        1      & 1                      & 1                       & \dots  & 1                        \\[1em]
+        1      & (e^{i\omega})^{-1}     & (e^{i\omega})^{-2}      & \dots  & (e^{i\omega})^{-(N-1)}   \\[1em]
+        1      & (e^{i\omega})^{-2}     & (e^{i\omega})^{-4}      & \dots  & (e^{i\omega})^{-2(N-1)}  \\[1em]
+        \vdots & \vdots                 &  \vdots                 & \ddots & \vdots                   \\[1em]
+        1      & (e^{i\omega})^{-(N-1)} & (e^{i\omega})^{-2(N-1)} & \dots  & (e^{i\omega})^{-(N-1)^2} \\[1em]
+        \end{pmatrix}
+    \]
+\end{frame}
+
+
+\begin{frame}{Complessit\`a temporale}
+    \begin{block}{Definizione}
+        In informatica, la complessità temporale di un algoritmo quantifica la
+        quantità di tempo impiegata da un algoritmo a essere eseguito.
+    \end{block}
+    Descrivendo il prodotto nelle componenti
+    \[
+        X_k = \sum_{n=0}^{N-1} x_n\cdot e^{-i\omega kn}
+        \qquad 0 \leq k < N
+    \]
+    Osserviamo che la complessit\`a temporale \`e \(\mathcal{O}(N^2)\).
+\end{frame}
+
+\begin{frame}{Divide et impera (Divide and Conquer)}
+    \begin{block}{Definizione}
+        Il termine è più strettamente riconducibile a un algoritmo. Esso
+        divide ricorsivamente un problema in due o più sotto-problemi fin
+        quando questi ultimi diventino di semplice risoluzione; quindi si
+        combinano le soluzioni al fine di ottenere la soluzione del problema
+        dato. 
+    \end{block}
+    \begin{enumerate}
+        \item \emph{Divide} il problema in sottoproblemi
+        \item \emph{Impera} (risolvi) i sottoproblemi
+        \item \emph{Combina} i risultati dei sottoproblemi
+    \end{enumerate}
 \end{frame}
 
 \section{Prodotto realizzato}
