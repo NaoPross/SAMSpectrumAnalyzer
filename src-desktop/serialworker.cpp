@@ -60,9 +60,6 @@ void SerialWorker::run()
                     valueStr.at(1).toInt(&isInt[1])
                 );
 
-                // if (!isInt[0] || !isInt[1])
-                //     continue
-
                 data.push_back(value);
             }
         }

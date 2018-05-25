@@ -27,6 +27,8 @@ public:
 
 private slots:
     void serialDataReceiver(QVector<std::complex<int>> data);
+    bool openSerialDevice();
+    void closeSerialDevice();
 
     void on_serialBtn_clicked();
     void on_adjustAxisCheckBox_toggled(bool checked);

@@ -40,7 +40,11 @@ MainWindow::MainWindow(QWidget *parent) :
     // graph 0 on bottom and left axis
     _ui->plot->addGraph(_ui->plot->xAxis, _ui->plot->yAxis);
     // graph 1 on bottom and left axis
-    _ui->plot->addGraph(_ui->plot->xAxis, _ui->plot->yAxis);
+    // _ui->plot->addGraph(_ui->plot->xAxis, _ui->plot->yAxis);
+
+    // graph 0 line style
+    _ui->plot->graph(0)->setLineStyle(QCPGraph::lsImpulse);
+    // _ui->plot->graph(0)->setScatterStyle(QCPScatterStyle(QCPScatterStyle::ssDisc, 2));
 
     // set graph data
     _xsamples.clear();
@@ -85,11 +89,10 @@ MainWindow::MainWindow(QWidget *parent) :
         this, SLOT(serialDataReceiver(QVector<std::complex<int>>))
     );
 
-    // connect serial exception to close button
-    // TODO: build a slot to close the serial device
+    // connect serial exception to close event
     connect(
         &_serialWorker, SIGNAL(exception()),
-        this, SLOT(on_serialBtn_clicked())
+        this, SLOT(closeSerialDevice())
     );
 
     // combobox changed index callback
@@ -118,15 +121,16 @@ void MainWindow::serialLog(const QString &text)
     _ui->serialDisplay->append(text);
 }
 
+/* private slots */
+
 void MainWindow::serialDataReceiver(QVector<std::complex<int>> data)
 {
     // constants to convert from integer data to double
-    //
-    const double xConvert = 20000.0/128.0;
-    double yConvert;
-    // 
     const double yAdjustLowerFactor = 1.0;
     const double yAdjustUpperFactor = 1.1;
+
+    const double xConvert = 20000.0/128.0;
+    double yConvert;
 
     // reset data
     _xsamples.clear();
@@ -147,8 +151,6 @@ void MainWindow::serialDataReceiver(QVector<std::complex<int>> data)
         break;
     }
 
-
-
     // add data to plot
     // the first frequency bucket and the second half cannot be used
     for (int i = 1; i < data.size() / 2; i++) {
@@ -167,7 +169,7 @@ void MainWindow::serialDataReceiver(QVector<std::complex<int>> data)
             break;
         case 2:
             // complex
-            // TODO
+            // TODO use graph(1)
             break;
         case 3:
             // real
@@ -200,28 +202,11 @@ void MainWindow::serialDataReceiver(QVector<std::complex<int>> data)
     _ui->plot->replot();
 }
 
-void MainWindow::on_serialBtn_clicked()
+bool MainWindow::openSerialDevice()
 {
-    if (_serial.isOpen()) {
-        // close serial thread
-        if (_serialWorker.isRunning()) {
-            _serialWorker.requestInterruption();
-            _serialWorker.wait();
-        }
+    if (_serial.isOpen())
+        return true;
 
-        // close serial device
-        _serial.close();
-        serialLog("Serial device closed");
-
-        // change text and enable widgets
-        _ui->serialBtn->setText("Open");
-        _ui->serialDevice->setEnabled(true);
-        _ui->baudSpinBox->setEnabled(true);
-
-        return;
-    }
-
-    // open serial device
     try {
         _serial.setPort(_ui->serialDevice->text().toStdString());
         _serial.setBaudrate(_ui->baudSpinBox->value());
@@ -229,11 +214,8 @@ void MainWindow::on_serialBtn_clicked()
         _serialWorker.start();
 
         serialLog("Serial device opened");
+        return true;
 
-        // change text and disable widgets
-        _ui->serialBtn->setText("Close");
-        _ui->serialDevice->setEnabled(false);
-        _ui->baudSpinBox->setEnabled(false);
     } catch (const serial::IOException &e) {
         serialLog("Failed to open serial device");
         serialLog("IOException:");
@@ -242,13 +224,49 @@ void MainWindow::on_serialBtn_clicked()
         serialLog("Exception:");
         serialLog(e.what());
     }
+
+    return false;
+}
+
+void MainWindow::closeSerialDevice()
+{
+    if (!_serial.isOpen())
+        return;
+
+    if (_serialWorker.isRunning()) {
+        _serialWorker.requestInterruption();
+        _serialWorker.wait();
+    }
+
+    // close serial device
+    _serial.close();
+    serialLog("Serial device closed");
+}
+
+/* private slots for ui events */
+
+void MainWindow::on_serialBtn_clicked()
+{
+    if (_serial.isOpen()) {
+        closeSerialDevice();
+
+        // change text and enable widgets
+        _ui->serialBtn->setText("Open");
+        _ui->serialDevice->setEnabled(true);
+        _ui->baudSpinBox->setEnabled(true);
+
+    } else if (openSerialDevice()) {
+        // change text and disable widgets
+        _ui->serialBtn->setText("Close");
+        _ui->serialDevice->setEnabled(false);
+        _ui->baudSpinBox->setEnabled(false);
+    }
 }
 
 void MainWindow::on_adjustAxisCheckBox_toggled(bool checked)
 {
     _ui->plot->replot();
 }
-
 
 void MainWindow::on_logFreqAxisCheckBox_toggled(bool checked)
 {
