@@ -1,4 +1,4 @@
-\documentclass[10pt, xetex]{beamer}
+\documentclass[10pt, xetex, handout]{beamer}
 
 \usetheme[
     progressbar=frametitle, 
@@ -34,7 +34,7 @@
 \usepackage{amsmath}
 \usepackage{amssymb}
 \usepackage{amsthm}
-\newcommand{\dd}[1]{{d}#1}
+\newcommand{\dd}[1]{\mathrm{d}#1}
 
 
 \title{Spectrum Analyzer}
@@ -98,7 +98,7 @@
 \begin{frame}{Il problema della DFT}
     La trasformata di Fourier discreta \`e
     \[
-        \vec{X} = \mathbf{V}\cdot\vec{x_n}
+        \vec{X} = \mathbf{V}\cdot\vec{x}_n
     \]
     In cui
     \[
@@ -137,9 +137,38 @@
     \end{block}
     \begin{enumerate}
         \item \emph{Divide} il problema in sottoproblemi
-        \item \emph{Impera} (risolvi) i sottoproblemi
+        \item \emph{Impera} (conquista) i sottoproblemi
         \item \emph{Combina} i risultati dei sottoproblemi
     \end{enumerate}
+\end{frame}
+
+\begin{frame}{Problema}
+    \begin{block}{Problema}
+        Moltiplicare due polinomi in tempo minore di \(\mathcal{O}(N^2)\).
+    \end{block}
+    \begin{table}
+        \begin{tabular}{l | l l l}
+                            & Coeff             & Radici             & Campioni \\
+                            \midrule
+            Valutare        & \(\mathcal{O}(N\,)\)   & \(\mathcal{O}(N\,)\) & \(\mathcal{O}(N^2)\) \\
+            Somma           & \(\mathcal{O}(N\,)\)   & \(\infty        \) & \(\mathcal{O}(N\,)\) \\
+            Moltiplicazione & \(\mathcal{O}(N^2)\) & \(\mathcal{O}(N\,)\) & \(\mathcal{O}(N\,)\) \\
+        \end{tabular}
+    \end{table}
+\end{frame}
+
+\begin{frame}{Divide}
+    Dato \(0 \leq k < N\) sia \[A(k) = X_k\]
+    \[
+        X_k' = \sum_{n=0}^{N-1} x_{2n}\cdot e^{-i\omega k2n}
+    \]
+    \[
+        X_k'' = \sum_{n=0}^{N-1} x_{2n+1}\cdot e^{-i\omega kn}
+    \]
+    \[
+        X_k = X_k' + X_k''
+    \]
+
 \end{frame}
 
 \section{Prodotto realizzato}
