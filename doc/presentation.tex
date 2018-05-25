@@ -54,6 +54,34 @@
 \end{frame}
 
 \section{Introduzione}
+\begin{frame}{A cosa servono l'analisi spettrale e la FT?}
+    \vfill
+    Alcuni esempi pratici
+    \begin{description}
+        \item [Elettronica] Filtri digitali, analisi di segnali
+        \item [Informatica] Audio editing, Riconoscimento sonoro / vocale
+        \item [Matematica] Risoluzione di equazioni differenziali
+        \item [Fisica] Principio di inteterminazione di Heisenberg
+    \end{description}
+    \vfill
+    \begin{figure} \centering
+        \includegraphics[height=1.5cm]{figures/logo/logic}
+        \hfill
+        \includegraphics[height=1.5cm]{figures/logo/shazam}
+        \hfill
+        \includegraphics[height=1.5cm]{figures/logo/siri}
+        \hfill
+        \begin{minipage}[b][1.5cm][c]{.25\linewidth}
+        \begin{align*}
+            \langle x\,|\,\hat p\,|\,\psi \rangle &= 
+                -i\mathbf{\hbar}\frac{d}{dx} \psi(x) \\
+            \langle x\,|\,\hat x\,|\,\psi \rangle &= 
+                i\mathbf{\hbar}\frac{d}{dp} \psi(p) \\
+        \end{align*}
+        \end{minipage}
+    \end{figure}
+\end{frame}
+
 \begin{frame}{Obiettivo}
     Realizzare un circuito di analisi spettrale
     \begin{block}{Requisiti}
@@ -95,6 +123,21 @@
 \end{frame}
 
 \section{Fast Fourier Transform}
+\begin{frame}{Divide et impera (Divide and Conquer)}
+    La FFT appartiene ad una classe di algoritmi chiamata
+    \begin{center}
+        \Large Divide et Impera
+    \end{center}
+
+    \begin{block}{Definizione}
+    \begin{enumerate}
+        \item \emph{Divide} il problema in sottoproblemi
+        \item \emph{Impera} (conquista) i sottoproblemi
+        \item \emph{Combina} i risultati dei sottoproblemi
+    \end{enumerate}
+    \end{block}
+\end{frame}
+
 \begin{frame}{Il problema della DFT}
     La trasformata di Fourier discreta \`e
     \[
@@ -113,8 +156,7 @@
     \]
 \end{frame}
 
-
-\begin{frame}{Complessit\`a temporale}
+\begin{frame}{Complessit\`a temporale (analisi asintotica)}
     \begin{block}{Definizione}
         In informatica, la complessità temporale di un algoritmo quantifica la
         quantità di tempo impiegata da un algoritmo a essere eseguito.
@@ -127,56 +169,34 @@
     Osserviamo che la complessit\`a temporale \`e \(\mathcal{O}(N^2)\).
 \end{frame}
 
-\begin{frame}{Divide et impera (Divide and Conquer)}
-    \begin{block}{Definizione}
-        Il termine è più strettamente riconducibile a un algoritmo. Esso
-        divide ricorsivamente un problema in due o più sotto-problemi fin
-        quando questi ultimi diventino di semplice risoluzione; quindi si
-        combinano le soluzioni al fine di ottenere la soluzione del problema
-        dato. 
-    \end{block}
-    \begin{enumerate}
-        \item \emph{Divide} il problema in sottoproblemi
-        \item \emph{Impera} (conquista) i sottoproblemi
-        \item \emph{Combina} i risultati dei sottoproblemi
-    \end{enumerate}
-\end{frame}
-
-\begin{frame}{Problema}
-    \begin{block}{Problema}
-        Moltiplicare due polinomi in tempo minore di \(\mathcal{O}(N^2)\).
-    \end{block}
-    \begin{table}
-        \begin{tabular}{l | l l l}
-                            & Coeff             & Radici             & Campioni \\
-                            \midrule
-            Valutare        & \(\mathcal{O}(N\,)\)   & \(\mathcal{O}(N\,)\) & \(\mathcal{O}(N^2)\) \\
-            Somma           & \(\mathcal{O}(N\,)\)   & \(\infty        \) & \(\mathcal{O}(N\,)\) \\
-            Moltiplicazione & \(\mathcal{O}(N^2)\) & \(\mathcal{O}(N\,)\) & \(\mathcal{O}(N\,)\) \\
-        \end{tabular}
-    \end{table}
-\end{frame}
-
-\begin{frame}{Divide}
-    Dato \(0 \leq k < N\) sia \[A(k) = X_k\]
-    \[
-        X_k' = \sum_{n=0}^{N-1} x_{2n}\cdot e^{-i\omega k2n}
-    \]
-    \[
-        X_k'' = \sum_{n=0}^{N-1} x_{2n+1}\cdot e^{-i\omega kn}
-    \]
-    \[
-        X_k = X_k' + X_k''
-    \]
-
-\end{frame}
-
-\begin{frame}{}
-\end{frame}
 
 \section{Prodotto realizzato}
-%\begin{frame}{}
-%\end{frame}
+\begin{frame}{Hardware Analogico}
+    \begin{figure}
+        \includegraphics[width=\linewidth]{figures/circuits/filter-ampl-v2}
+    \end{figure}
+\end{frame}
+
+\begin{frame}{FFT Software}
+    L'implementazione si chiama
+    \vfill
+    \begin{center}
+        \Large Fixed-Point In-Place FFT
+    \end{center}
+    \vfill
+    \begin{description}
+        \item [Fixed-Point] Il numero di bit per la mantissa e per
+            l'esponente del valore floating point sono costanti
+        \item [In-Place] La memoria non viene riallocata ma riscritta
+        \item [FFT] Fast Fourier Transform
+    \end{description}
+\end{frame}
+
+\begin{frame}{Software}
+    \begin{center}
+        \Large Demo!
+    \end{center}
+\end{frame}
 
 \section{Conclusioni}
 \begin{frame}{Obiettivi}
