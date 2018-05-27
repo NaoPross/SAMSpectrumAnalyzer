@@ -43,7 +43,7 @@ MainWindow::MainWindow(QWidget *parent) :
     // _ui->plot->addGraph(_ui->plot->xAxis, _ui->plot->yAxis);
 
     // graph 0 line style
-    _ui->plot->graph(0)->setLineStyle(QCPGraph::lsImpulse);
+    // _ui->plot->graph(0)->setLineStyle(QCPGraph::lsImpulse);
     // _ui->plot->graph(0)->setScatterStyle(QCPScatterStyle(QCPScatterStyle::ssDisc, 2));
 
     // set graph data
@@ -187,14 +187,14 @@ void MainWindow::serialDataReceiver(QVector<std::complex<int>> data)
 
     // set scale axis
     if (_ui->adjustAxisCheckBox->isChecked()) {
-        // only y axis needs adjustments
-        _ui->plot->yAxis->setRangeLower((
-                *std::min_element(_ysamples.begin(), _ysamples.end())
-         ) * yAdjustLowerFactor);
+        double min = *std::min_element(_ysamples.begin(), _ysamples.end());
+        double max = *std::max_element(_ysamples.begin(), _ysamples.end());
 
-        _ui->plot->yAxis->setRangeUpper((
-                *std::max_element(_ysamples.begin(), _ysamples.end())
-        ) * yAdjustUpperFactor);
+        // min = (min < .1) ? .1 : min;
+
+        // only y axis needs adjustments
+        _ui->plot->yAxis->setRangeLower(min * yAdjustLowerFactor);
+        _ui->plot->yAxis->setRangeUpper(max * yAdjustUpperFactor);
     }
 
     // plot data

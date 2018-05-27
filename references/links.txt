@@ -7,3 +7,5 @@ https://stackoverflow.com/questions/8312725/how-to-create-executable-file-for-a-
 https://gitlab.com/DerManu/QCustomPlot/blob/master/examples/interactions/mainwindow.cpp
 
 https://github.com/bazaar-projects/kissfft
+
+http://mathworld.wolfram.com/FourierMatrix.html

@@ -39,7 +39,6 @@ private slots:
     void on_actionSave_data_triggered();
     void on_actionExport_image_triggered();
 
-
 private:
     Ui::MainWindow *_ui;
     serial::Serial _serial;
