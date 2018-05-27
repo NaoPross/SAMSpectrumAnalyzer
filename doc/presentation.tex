@@ -1,4 +1,4 @@
-\documentclass[10pt, xetex, handout]{beamer}
+\documentclass[10pt, xetex]{beamer}
 
 \usetheme[
     progressbar=frametitle, 
@@ -130,21 +130,6 @@
 \end{frame}
 
 \section{Fast Fourier Transform {\small radix-2}}
-\begin{frame}{Divide et impera (Divide and Conquer)}
-    La FFT appartiene ad una classe di algoritmi chiamata
-    \begin{center}
-        \Large Divide et Impera
-    \end{center}
-
-    \begin{block}{Definizione}
-    \begin{enumerate}
-        \item \emph{Divide} il problema in sottoproblemi
-        \item \emph{Impera} (conquista) i sottoproblemi
-        \item \emph{Combina} i risultati dei sottoproblemi
-    \end{enumerate}
-    \end{block}
-\end{frame}
-
 \begin{frame}{Il problema della DFT}
     La trasformata di Fourier discreta \`e
     \[
@@ -176,53 +161,82 @@
     Osserviamo che la complessit\`a temporale \`e \(\mathcal{O}(N^2)\).
 \end{frame}
 
-\begin{frame}{Perch\'e la FFT funziona}
-    \textbf{\LARGE 1. Divide}
-    \vfill
-    \begin{block}{Danielson-Lanczos Lemma}
-        \[
-            X_k = E_k + W^{\,k}\cdot O_k
-        \]
+\begin{frame}{Divide et impera (Divide and Conquer)}
+    La FFT appartiene ad una classe di algoritmi chiamata
+    \begin{center}
+        \Large Divide et Impera
+    \end{center}
+
+    \begin{block}{Definizione}
+    \begin{enumerate}
+        \item \emph{Divide} il problema in sottoproblemi
+        \item \emph{Impera} (conquista) i sottoproblemi
+        \item \emph{Combina} i risultati dei sottoproblemi
+    \end{enumerate}
     \end{block}
-    \begin{description}
-        \item[\(E_k\)] Termini pari
-            % \(\sum_{m=0}^{N/2-1} x_{2m}\cdot e^{-i2\pi mk / (N/2)}\)
-        \item[\(O_k\)] Termini dispari
-            % \(\sum_{m=0}^{N/2-1} x_{2m+1}\cdot e^{-i2\pi mk / (N/2)}\)
-        \item[\(W^{\,k}\)] Twiddle factor \(e^{-i2\pi k /N}\)
-    \end{description}
 \end{frame}
 
-\begin{frame}[fragile]{Recursione}
-    \(E_k\) e \(O_k\) sono delle serie di campioni come \(X_k\) dunque
+\begin{frame}{Perch\'e la FFT funziona}
+    \textbf{\LARGE 1. Divide}
+    {\color{gray} in sottoproblemi}
+
+    \vspace{1.5em}
+    \begin{columns}[b]
+        \column{.5\textwidth}{
+            \begin{minipage}[t][2.2cm][t]{\linewidth}
+                \vspace{-1em}
+                \begin{block}{Danielson-Lanczos Lemma}
+                    \[X_k = E_k + W^{\,k}_N\cdot O_k\]
+                \end{block}
+            \end{minipage}
+            \begin{minipage}[t][2.2cm][t]{\linewidth}
+            Twiddle factor  \(W^{\,k}_N\)
+                \[e^{-i2\pi k /N}\]
+            \end{minipage}
+        }
+        \column{.5\textwidth}{
+            \begin{minipage}[t][2.2cm][t]{\linewidth}
+            Termini pari \(E_k\)
+                \[\sum_{m=0}^{N/2-1} x_{2m}\cdot e^{-i2\pi mk / (N/2)}\]
+            \end{minipage}
+            \begin{minipage}[t][2.2cm][t]{\linewidth}
+            Termini dispari \(O_k\)
+                \[\sum_{m=0}^{N/2-1} x_{2m+1}\cdot e^{-i2\pi mk / (N/2)}\]
+            \end{minipage}
+        }
+    \end{columns}
+\end{frame}
+
+\begin{frame}[fragile]{Albero di recursione}
+    \(E_k\) e \(O_k\) sono delle serie di campioni come \(X_k \implies\) recursione!
     \begin{figure} \centering
         \begin{forest}
             [\(X_k\), name=root
                 [\(E_k\), name=e
-                    [\(E_k'\), name=ee
-                        [\(E_k''\), name=eee
+                    [\(E_k\), name=ee
+                        [\(E_k\), name=eee
                         ]
-                        [\(W^{\,k}\cdot O_k''\), name = eeo
+                        [\(W^{\,k}\cdot O_k\), name = eeo
                         ]
                     ]
-                    [\(W^{\,k}\cdot O_k'\), name = eo
-                        [\(E_k''\), name = eoe
+                    [\(W^{\,k}\cdot O_k\), name = eo
+                        [\(E_k\), name = eoe
                         ]
-                        [\(W^{\,k}\cdot O_k''\), name=eoo
+                        [\(W^{\,k}\cdot O_k\), name=eoo
                         ]
                     ]
                 ]
                 [\(W^{\,k}\cdot O_k\), name=o
-                    [\(E_k'\), name=oe
-                        [\(E_k''\), name=oee
+                    [\(E_k\), name=oe
+                        [\(E_k\), name=oee
                         ]
-                        [\(W^{\,k}\cdot O_k''\), name=oeo
+                        [\(W^{\,k}\cdot O_k\), name=oeo
                         ]
                     ]
-                    [\(W^{\,k}\cdot O_k'\), name=oo
-                        [\(E_k''\), name=ooe
+                    [\(W^{\,k}\cdot O_k\), name=oo
+                        [\(E_k\), name=ooe
                         ]
-                        [\(W^{\,k}\cdot O_k''\), name=ooo
+                        [\(W^{\,k}\cdot O_k\), name=ooo
                         ]
                     ]
                 ]
@@ -238,10 +252,153 @@
             \draw[<->,thick, orange] (root.east) ++(5.5,0) -- node[above,rotate=-90] {\(\log_2 N\)} ++(0,-4);
         \end{forest}
     \end{figure}
+
+    \pause
+    Ogni foglia risulta essere: \quad
+    \(
+        \underbrace{
+            W^{\,k}_{a} \cdot W^{\,k}_{b} \cdot W^{\,k}_{c} \dots W^{\,k}_{1}
+        }_{\text{Dipende dalla strada}} \cdot \,x_{\,m}
+    \)
 \end{frame}
 
 \begin{frame}{Perch\'e la FFT funziona}
     \textbf{\LARGE 2. Impera}
+    {\color{gray} i sottoproblemi}
+    \vspace{1.5em}
+    \vfill
+
+    Ogni foglia \(E_k\) risulta essere: \quad
+    \(
+        \overbrace{
+            W^{\,k}_{a} \cdot W^{\,k}_{b} \cdot W^{\,k}_{c}
+        }^{\text{Dipende dalla strada}} \cdot \,x_{\,m}
+    \)
+
+    Ogni foglia \(O_k\) risulta essere: \quad
+    \(
+        {
+            W^{\,k}_{a} \cdot W^{\,k}_{b} \cdot W^{\,k}_{c}
+        }
+        \cdot 
+        \underbrace{
+            W^{\,k}_{1}
+        }_{\text{!!}} \cdot \,x_{\,m+N/2}
+    \)
+
+\end{frame}
+
+\begin{frame}{Twiddle factor}
+    \begin{block}{Cosa sono i twiddle factor?}
+        Radici dell'unit\`a \quad
+        \(W^{\,k}_{N} = e^{-i2\pi k /N}\)
+    \end{block}
+    \vspace{1em}
+    \begin{columns}
+        \column{.4\textwidth}{
+            \[N = 2\]
+            \begin{figure} \centering
+                \begin{tikzpicture}[>=latex]
+                    \begin{axis}[
+                        width = \textwidth,
+                        height = \textwidth,
+                        axis x line = center,
+                        axis y line = center,
+                        xlabel = {\small \(1\)},
+                        xlabel style = {below},
+                        ylabel = {\small \(i\)},
+                        ylabel style = {right},
+                        axis equal,
+                        xticklabels = \empty,
+                        yticklabels = \empty,
+                        xmin=-1.3, xmax=1.3,
+                        ymin=-1.3, ymax=1.3,
+                        samples=800,
+                    ]
+                        \addplot[mark=none,domain=0:360] ({cos(x)}, {sin(x)});
+                        \foreach \k in {0,1}{
+                            \edef\temp{\noexpand
+                                \node[fill=orange, circle, draw=orange, scale=.4] at
+                                    (axis cs: {cos(deg(2 * pi * \k / 2))},
+                                        {sin(deg(2 * pi * \k / 2))})
+                                    {};
+                            }
+                            \temp
+                        }
+                    \end{axis}
+                \end{tikzpicture}
+            \end{figure}
+        }
+
+        \column{.4\textwidth}{
+            \[N = 4\]
+            \begin{figure} \centering
+                \begin{tikzpicture}[>=latex]
+                    \begin{axis}[
+                        width = \textwidth,
+                        height = \textwidth,
+                        axis x line = center,
+                        axis y line = center,
+                        xlabel = {\small \(1\)},
+                        xlabel style = {below},
+                        ylabel = {\small \(i\)},
+                        ylabel style = {right},
+                        axis equal,
+                        xticklabels = \empty,
+                        yticklabels = \empty,
+                        xmin=-1.3, xmax=1.3,
+                        ymin=-1.3, ymax=1.3,
+                        samples=800,
+                    ]
+                        \addplot[mark=none,domain=0:360] ({cos(x)}, {sin(x)});
+                        \foreach \k in {0,1,2,3}{
+                            \edef\temp{\noexpand
+                                \node[fill=orange, circle, draw=orange, scale=.4] at
+                                    (axis cs: {cos(deg(2 * pi * \k / 4))},
+                                        {sin(deg(2 * pi * \k / 4))})
+                                    {};
+                            }
+                            \temp
+                        }
+                    \end{axis}
+                \end{tikzpicture}
+            \end{figure}
+        }
+        \column{.4\textwidth}{
+            \[N = 8\]
+            \begin{figure} \centering
+                \begin{tikzpicture}[>=latex]
+                    \begin{axis}[
+                        width = \textwidth,
+                        height = \textwidth,
+                        axis x line = center,
+                        axis y line = center,
+                        xlabel = {\small \(1\)},
+                        xlabel style = {below},
+                        ylabel = {\small \(i\)},
+                        ylabel style = {right},
+                        axis equal,
+                        xticklabels = \empty,
+                        yticklabels = \empty,
+                        xmin=-1.3, xmax=1.3,
+                        ymin=-1.3, ymax=1.3,
+                        samples=800,
+                    ]
+                        \addplot[mark=none,domain=0:360] ({cos(x)}, {sin(x)});
+                        \foreach \k in {0,1,2,...,7}{
+                            \edef\temp{\noexpand
+                                \node[fill=orange, circle, draw=orange, scale=.4] at
+                                    (axis cs: {cos(deg(2 * pi * \k / 8))},
+                                        {sin(deg(2 * pi * \k / 8))})
+                                    {};
+                            }
+                            \temp
+                        }
+                    \end{axis}
+                \end{tikzpicture}
+            \end{figure}
+        }
+    \end{columns}
 \end{frame}
 
 \begin{frame}{Perch\'e la FFT funziona}
@@ -304,4 +461,9 @@
     \end{itemize}
 \end{frame}
 
+% \begin{frame}{Ringraziamenti}
+%     \begin{itemize}
+%     \end{itemize}
+% \end{frame}
+ 
 \end{document}
