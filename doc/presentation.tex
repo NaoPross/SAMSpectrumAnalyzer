@@ -13,6 +13,10 @@
 \usepackage[scale=2]{ccicons}
 \usepackage{float}
 
+\usepackage{xcolor}
+
+\usepackage{forest}
+
 \usepackage{tikz}
 \usetikzlibrary{calc}
 \usetikzlibrary{quotes}
@@ -48,7 +52,7 @@
 
 \maketitle
 
-\begin{frame}{Table of contents}
+\begin{frame}{Indice}
     \setbeamertemplate{section in toc}[sections numbered]
     \tableofcontents[hideallsubsections]
 \end{frame}
@@ -112,7 +116,7 @@
 \end{frame}
 
 \section{Fourier Transform}
-\begin{frame}{Rappresentazione grafica}
+\begin{frame}{Cos'\`e la FT?}
     \begin{figure} \centering
         \includegraphics{figures/fourier-3d-plot.tikz}
     \end{figure}
@@ -122,7 +126,10 @@
     \]
 \end{frame}
 
-\section{Fast Fourier Transform}
+\begin{frame}{Come funziona la FT?}
+\end{frame}
+
+\section{Fast Fourier Transform {\small radix-2}}
 \begin{frame}{Divide et impera (Divide and Conquer)}
     La FFT appartiene ad una classe di algoritmi chiamata
     \begin{center}
@@ -163,12 +170,83 @@
     \end{block}
     Descrivendo il prodotto nelle componenti
     \[
-        X_k = \sum_{n=0}^{N-1} x_n\cdot e^{-i\omega kn}
+        X_k = \sum_{n=0}^{N-1} x_n\cdot e^{-i2\pi kn/N}
         \qquad 0 \leq k < N
     \]
     Osserviamo che la complessit\`a temporale \`e \(\mathcal{O}(N^2)\).
 \end{frame}
 
+\begin{frame}{Perch\'e la FFT funziona}
+    \textbf{\LARGE 1. Divide}
+    \vfill
+    \begin{block}{Danielson-Lanczos Lemma}
+        \[
+            X_k = E_k + W^{\,k}\cdot O_k
+        \]
+    \end{block}
+    \begin{description}
+        \item[\(E_k\)] Termini pari
+            % \(\sum_{m=0}^{N/2-1} x_{2m}\cdot e^{-i2\pi mk / (N/2)}\)
+        \item[\(O_k\)] Termini dispari
+            % \(\sum_{m=0}^{N/2-1} x_{2m+1}\cdot e^{-i2\pi mk / (N/2)}\)
+        \item[\(W^{\,k}\)] Twiddle factor \(e^{-i2\pi k /N}\)
+    \end{description}
+\end{frame}
+
+\begin{frame}[fragile]{Recursione}
+    \(E_k\) e \(O_k\) sono delle serie di campioni come \(X_k\) dunque
+    \begin{figure} \centering
+        \begin{forest}
+            [\(X_k\), name=root
+                [\(E_k\), name=e
+                    [\(E_k'\), name=ee
+                        [\(E_k''\), name=eee
+                        ]
+                        [\(W^{\,k}\cdot O_k''\), name = eeo
+                        ]
+                    ]
+                    [\(W^{\,k}\cdot O_k'\), name = eo
+                        [\(E_k''\), name = eoe
+                        ]
+                        [\(W^{\,k}\cdot O_k''\), name=eoo
+                        ]
+                    ]
+                ]
+                [\(W^{\,k}\cdot O_k\), name=o
+                    [\(E_k'\), name=oe
+                        [\(E_k''\), name=oee
+                        ]
+                        [\(W^{\,k}\cdot O_k''\), name=oeo
+                        ]
+                    ]
+                    [\(W^{\,k}\cdot O_k'\), name=oo
+                        [\(E_k''\), name=ooe
+                        ]
+                        [\(W^{\,k}\cdot O_k''\), name=ooo
+                        ]
+                    ]
+                ]
+            ]
+            \draw[dotted] (eee.south) -- ++(0, -.5);
+            \draw[dotted] (eeo.south) -- ++(0, -.5);
+            \draw[dotted] (eoe.south) -- ++(0, -.5);
+            \draw[dotted] (eoo.south) -- ++(0, -.5);
+            \draw[dotted] (oee.south) -- ++(0, -.5);
+            \draw[dotted] (oeo.south) -- ++(0, -.5);
+            \draw[dotted] (ooe.south) -- ++(0, -.5);
+            \draw[dotted] (ooo.south) -- ++(0, -.5);
+            \draw[<->,thick, orange] (root.east) ++(5.5,0) -- node[above,rotate=-90] {\(\log_2 N\)} ++(0,-4);
+        \end{forest}
+    \end{figure}
+\end{frame}
+
+\begin{frame}{Perch\'e la FFT funziona}
+    \textbf{\LARGE 2. Impera}
+\end{frame}
+
+\begin{frame}{Perch\'e la FFT funziona}
+    \textbf{\LARGE 3. Combina}
+\end{frame}
 
 \section{Prodotto realizzato}
 \begin{frame}{Hardware Analogico}
@@ -178,7 +256,7 @@
 \end{frame}
 
 \begin{frame}{FFT Software}
-    L'implementazione si chiama
+    L'implementazione utilizzata si chiama
     \vfill
     \begin{center}
         \Large Fixed-Point In-Place FFT
@@ -193,8 +271,11 @@
 \end{frame}
 
 \begin{frame}{Software}
+    \begin{figure} \centering
+        \includegraphics[height=6cm]{figures/screenshots/desktop-windows7-square}
+    \end{figure}
     \begin{center}
-        \Large Demo!
+        \LARGE Demo!
     \end{center}
 \end{frame}
 
@@ -218,7 +299,9 @@
 \end{frame}
 
 \begin{frame}{Possibili miglioramenti}
+    \begin{itemize}
+        \item 
+    \end{itemize}
 \end{frame}
-
 
 \end{document}
