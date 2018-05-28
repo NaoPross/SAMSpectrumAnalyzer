@@ -115,7 +115,7 @@ inline void init_hw()
     /* interrupts initialization */
     // timer 2 comp value
     // with post 1:1 and pre 1:16, 1 unit is 1 us
-    PR2 = 50;
+    PR2 = 49;
     // postscaler 1:1
     T2CONbits.T2OUTPS = 0b0000;
     // prescaler 1:16
@@ -154,6 +154,7 @@ void main(void)
     PORTB = 0x00;
     PORTD = 0x00;
     
+    ht1632_begin_cs();
     
     while (true) {
         // reset samples count
@@ -192,6 +193,10 @@ void main(void)
 
         }
         printf("E\n\r");
+        
+        // display data
+        ht1632_set_pixel(1,1,0);
+        ht1632_render();
 
 #ifdef DEBUG        
         // wait
